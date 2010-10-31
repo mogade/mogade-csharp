@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
@@ -13,6 +12,10 @@ namespace Mogade
       public const string APIURL = "http://api.mogade.com/api/";
       public const string PUT = "PUT";
       private readonly IRequestContext _context;
+      private static readonly JsonSerializerSettings _jsonSettings = new JsonSerializerSettings
+                                                                     {
+                                                                        DefaultValueHandling = DefaultValueHandling.Ignore,                                                                        
+                                                                     };
 
       public Communicator(IRequestContext context)
       {

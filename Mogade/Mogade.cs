@@ -22,7 +22,7 @@ namespace Mogade
 
       public Ranks SaveScore(string leaderboardId, Score score)
       {
-         var payload = new Dictionary<string, object> { {"leaderboardId", leaderboardId}, {"score", score} };
+         var payload = new Dictionary<string, object> { {"leaderboard_id", leaderboardId}, {"score", score} };
          var communicator = new Communicator(this);
          var response = communicator.SendPayload(Communicator.PUT, "scores", payload);
          return null;

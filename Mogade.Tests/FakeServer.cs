@@ -27,7 +27,7 @@ namespace Mogade.Tests
          _listener = new HttpListener();
          _listener.Prefixes.Add("http://*:" + 9948 + "/");
          _listener.Start();
-         _thread = new Thread(Listen);
+         _thread = new Thread(Listen) {IsBackground = true};
          _thread.Start();
       }
 
@@ -40,7 +40,8 @@ namespace Mogade.Tests
       {
          while (true)
          {
-            var context = _listener.GetContext();
+            var context = GetContext();
+            if (context == null) { return; }
             var body = ExtractBody(context.Request);
             var expectation = FindExpectation(context, body);
             var response = context.Response;
@@ -52,6 +53,12 @@ namespace Mogade.Tests
             }            
             response.Close();
          }
+      }
+
+      private HttpListenerContext GetContext()
+      {
+         try {  return _listener.GetContext();  }
+         catch (HttpListenerException) { return null; }
       }
 
       private ApiExpectation FindExpectation(HttpListenerContext context, string body)
@@ -82,19 +89,19 @@ namespace Mogade.Tests
       private void Dispose(bool disposing)
       {
          if (!_disposed && disposing)
-         {
-            _thread.Abort();
+         {            
             _listener.Stop();
          }
          _disposed = true;       
       }
    }
 
-   /// <remarks
+   /// <remarks>
    /// All of these default to safe values, the most interesting of which is a null response will act as an echo server (return the request)
    /// </remarks>
    public class ApiExpectation
    {
+      public readonly static ApiExpectation EchoAll = new ApiExpectation();
       public string Method { get; set; }
       public string Url { get; set; }
       public string Request { get; set; }
