@@ -1,0 +1,48 @@
+h2. Mogade For .NET
+
+Mogade is a free service web-based service which allows game developers to quickly enchance their games with auxiliary functionality (such as leaderboards).
+
+This is the official .NET library - which is meant not only to be used within games, but also to serve as the basis for platform specific implementations. Developers interested in building a library for their own language will hopefully find this library to be decent documentation of the mogade API.
+
+h3. Other Libraries
+
+For a list of other libraries, please visit "http://mogade.com/libraries":http://mogade.com/libraries
+
+h3. Support
+
+The "http://groups.google.com/group/mogadedev":http://groups.google.com/group/mogadedev google group is the best place for developers, either of games or libraries, to visit.
+
+h3. Usage
+
+Coming soon
+
+h3. API Overview
+
+Mogade is based around a _RESTish_ API, accepting and returning JSON messages.  All message into the mogade service require at least 3 parameters:
+
+* v - the api version (currently set to 1)
+* key - the game key (which developers get when they create a game at "http://mogade.com":http://mogade.com)
+* sig - an md5 signature of the parameters including the game's secret key (also received from the website)
+
+A request to save a score might look something like:
+<pre>
+PUT http://api.mogade.com/api/scores
+{
+   key: '4cc3cb835346ed081f00003e',
+   v: 1,
+   sig: '97773672963b1f4c6160f31afd25da97',
+   leaderboard_id:'4cc425bf5346ed081f0000ee',
+   score:
+   {     
+     username: 'goku',
+     points: 9001     
+   }
+}
+</pre>
+
+In this case, the response might yield something along the lines of:
+<pre>
+{ daily: 10; weekly: 239: overall: 3044}
+</pre>
+
+Which are the daily, weekly and overall ranks for a score of 9001 for the specified leaderboard

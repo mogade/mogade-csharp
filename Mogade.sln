@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mogade", "Mogade\Mogade.csproj", "{B1BF8760-7C28-410E-813E-AC86514B2C8A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mogade.Tests", "Mogade.Tests\Mogade.Tests.csproj", "{C52F53E2-55D7-4627-967C-937700C4A20A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B1BF8760-7C28-410E-813E-AC86514B2C8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1BF8760-7C28-410E-813E-AC86514B2C8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1BF8760-7C28-410E-813E-AC86514B2C8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1BF8760-7C28-410E-813E-AC86514B2C8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C52F53E2-55D7-4627-967C-937700C4A20A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C52F53E2-55D7-4627-967C-937700C4A20A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C52F53E2-55D7-4627-967C-937700C4A20A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C52F53E2-55D7-4627-967C-937700C4A20A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
