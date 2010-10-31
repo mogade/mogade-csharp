@@ -5,6 +5,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mogade", "Mogade\Mogade.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mogade.Tests", "Mogade.Tests\Mogade.Tests.csproj", "{C52F53E2-55D7-4627-967C-937700C4A20A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "stuff", "stuff", "{D4262614-6FF4-4ACC-A76E-565054DC4F88}"
+	ProjectSection(SolutionItems) = preProject
+		license.txt = license.txt
+		README.textile = README.textile
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

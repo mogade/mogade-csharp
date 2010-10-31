@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("Mogade.NET")]
@@ -13,3 +14,4 @@ using System.Runtime.InteropServices;
 [assembly: Guid("dbc3f308-ac79-4279-916f-2ba1b8b42e08")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: InternalsVisibleTo("Mogade.Tests")]
