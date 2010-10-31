@@ -48,23 +48,20 @@ namespace Mogade
          }
       }
 
-      private byte[] FinalizePayload(IDictionary<string, object> payload)
+      public static string GetSignature(IEnumerable<KeyValuePair<string, object>> parameters, string secret)
       {
-         payload.Add("key", _context.Key);
-         payload.Add("v", _context.ApiVersion);
-         payload.Add("sig", GetSignature(payload, _context.Secret));
-         return Encoding.Default.GetBytes(JsonConvert.SerializeObject(payload));
-      }
-
-      private static string GetSignature(IEnumerable<KeyValuePair<string, object>> payload, string secret)
-      {
-         var sb = new StringBuilder(100);
-         BuildPayloadString(payload, sb);
+         var sortAndFlat = new SortedDictionary<string, string>();
+         BuildPayloadParameters(parameters, sortAndFlat);
+         var sb = new StringBuilder();
+         foreach (var parameter in sortAndFlat)
+         {
+            sb.AppendFormat("{0}={1}&", parameter.Key, parameter.Value);
+         }
          sb.Append(secret);
          using (var hasher = new MD5CryptoServiceProvider())
          {
             var bytes = hasher.ComputeHash(Encoding.Default.GetBytes(sb.ToString()));
-            var data = new StringBuilder(bytes.Length*2);
+            var data = new StringBuilder(bytes.Length * 2);
             for (var i = 0; i < bytes.Length; ++i)
             {
                data.Append(bytes[i].ToString("x2"));
@@ -72,33 +69,45 @@ namespace Mogade
             return data.ToString();
          }
       }
-
-      private static void BuildPayloadString(IEnumerable<KeyValuePair<string, object>> payload, StringBuilder sb)
+      private byte[] FinalizePayload(IDictionary<string, object> payload)
+      {
+         payload.Add("key", _context.Key);
+         payload.Add("v", _context.ApiVersion);
+         payload.Add("sig", GetSignature(payload, _context.Secret));
+         return Encoding.Default.GetBytes(JsonConvert.SerializeObject(payload));
+      }
+      private static void BuildPayloadParameters(IEnumerable<KeyValuePair<string, object>> payload, IDictionary<string, string> parameters)
       {
          foreach (var kvp in payload)
          {
             var valueType = kvp.Value.GetType();
             if (typeof(IEnumerable<KeyValuePair<string, object>>).IsAssignableFrom(valueType))
             {
-               BuildPayloadString((IEnumerable<KeyValuePair<string, object>>) kvp.Value, sb);               
+               BuildPayloadParameters((IEnumerable<KeyValuePair<string, object>>)kvp.Value, parameters);               
             }
-            if (typeof(IEnumerable).IsAssignableFrom(valueType))
+            else if (typeof(IEnumerable).IsAssignableFrom(valueType))
             {
-               sb.AppendFormat("{0}=", kvp.Key);
-               foreach (var v in (IEnumerable)kvp.Value)
-               {
-                  sb.AppendFormat("{0}-", v);
-               }
-               sb.Remove(sb.Length - 1, 1);
+               var sb = new StringBuilder();
+               foreach (var v in (IEnumerable)kvp.Value) { sb.AppendFormat("{0}-", v); }
+               if (sb.Length > 0) { sb.Remove(sb.Length - 1, 1); }
+               parameters.Add(kvp.Key, sb.ToString());
             }
             else
             {
-               sb.AppendFormat("{0}={1}", kvp.Key, kvp.Value);
+               string value;
+               if (typeof(bool).IsAssignableFrom(valueType))
+               {
+                  value = (bool) kvp.Value ? "true" : "false";
+               }
+               else
+               {
+                  value = kvp.Value.ToString();
+               }
+               parameters.Add(kvp.Key, value);
             }            
          }
       }
-
-
+      
       private static string _testUrlCuzImACheapLoser;
       internal static void IHateMyself(string dinosaursDiedBecauseITouchMyselfAtNight)
       {
