@@ -55,7 +55,7 @@ namespace Mogade
          payload.Add("key", _context.Key);
          payload.Add("v", _context.ApiVersion);
          payload.Add("sig", GetSignature(payload, _context.Secret));
-         return Encoding.Default.GetBytes(JsonConvert.SerializeObject(payload));
+         return Encoding.Default.GetBytes(JsonConvert.SerializeObject(payload, Formatting.None, _jsonSettings));
       }
 
       public static string GetSignature(IEnumerable<KeyValuePair<string, object>> parameters, string secret)

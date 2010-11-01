@@ -40,19 +40,28 @@ namespace Mogade.Tests
       {
          while (true)
          {
-            var context = GetContext();
+            var context = GetContext();            
             if (context == null) { return; }
             var body = ExtractBody(context.Request);
-            var expectation = FindExpectation(context, body);
-            var response = context.Response;
-            response.StatusCode = expectation.Status ?? 200;
-            response.ContentLength64 = (expectation.Response ?? body).Length;
-            using (var sw = new StreamWriter(response.OutputStream))
+            var expectation = FindExpectation(context, body);            
+            if (expectation == null)
             {
-               sw.Write(expectation.Response ?? body);               
-            }            
-            response.Close();
+               SendResponse(context, string.Format("Unexpected call: {0} {1}{2}{3}", context.Request.HttpMethod, context.Request.Url, Environment.NewLine, body), new ApiExpectation { Status = 500 });               
+            }
+            SendResponse(context, body, expectation);
          }
+      }
+
+      private void SendResponse(HttpListenerContext context, string body, ApiExpectation expectation)
+      {
+         var response = context.Response;
+         response.StatusCode = expectation.Status ?? 200;
+         response.ContentLength64 = (expectation.Response ?? body).Length;
+         using (var sw = new StreamWriter(response.OutputStream))
+         {
+            sw.Write(expectation.Response ?? body);               
+         }            
+         response.Close();
       }
 
       private HttpListenerContext GetContext()
@@ -67,11 +76,11 @@ namespace Mogade.Tests
          foreach (var expectation in _expectations)
          {
             if (expectation.Method != null && string.Compare(request.HttpMethod, expectation.Method, true) != 0) {  continue;  }
-            if (expectation.Url != null && string.Compare(request.Url.ToString(), expectation.Url, true) != 0) { continue; }
+            if (expectation.Url != null && string.Compare(request.Url.AbsolutePath, expectation.Url, true) != 0) { continue; }
             if (expectation.Request != null && string.Compare(body, expectation.Request, true) != 0) { continue; }            
             return expectation; //we found a match!
          }
-         throw new Exception(string.Format("Unexpected call: {0} {1}{2}{3}", request.HttpMethod, request.Url, Environment.NewLine, body));
+         return null;
       }
       private static string ExtractBody(HttpListenerRequest request)
       {

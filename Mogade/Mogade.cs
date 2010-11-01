@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Mogade.Leaderboard;
+using Newtonsoft.Json;
 
 namespace Mogade
 {
@@ -24,8 +25,7 @@ namespace Mogade
       {
          var payload = new Dictionary<string, object> { {"leaderboard_id", leaderboardId}, {"score", score} };
          var communicator = new Communicator(this);
-         var response = communicator.SendPayload(Communicator.PUT, "scores", payload);
-         return null;
+         return JsonConvert.DeserializeObject<Ranks>(communicator.SendPayload(Communicator.PUT, "scores", payload));         
       }
    }
 }
