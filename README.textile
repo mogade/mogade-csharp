@@ -18,7 +18,23 @@ The "http://groups.google.com/group/mogadedev":http://groups.google.com/group/mo
 
 h3. Usage
 
-Coming soon
+The library should be straightforward to most .NET developers. The main entry point is the @Mogade@ class (which implements @IMogade@ for you DI junkies).
+
+You instantiate @Mogade@ by supplying your game key and game secret (available from the details view of your game on the mogade.com website):
+<pre>var mogade = new Mogade("myGameKey", "shhhMySecret");</pre>
+
+From there, you can interact with the server via method calls. Sadly, this currently means that you can only call @SaveScore@:
+
+h4. SaveScore
+
+@SaveScore@ takes a leaderboard id (available from the leaderboard details page on the mogade.com website) and a user score. The most interesting parameter is the @data@ property of the score. @data@ is a 25-character (max) string which can be used to store whatever arbitrary data along with the score. The data is returned with each score of the leaderboard (you can stuff extra info in this like top level completed, time to completion, ect).
+<pre>//we just store and return the data, you are on you for parsing it
+var score = new Score{Points = 9001, UserName = "Teg", Data = "5|5:30"};  
+mogade.SaveScore("myLeaderboardId", score);</pre>
+
+The data parameter is optional.
+
+SaveScore returns a @Ranks@ objects, which includes the @Daily@, @Weekly@ and @Overall@ rank for the score on that specific leaderboard. Ranks aren't guaranteed, and will default to 0 (under heavy load, the server may skip calculating some, or all ranks).
 
 h3. API Overview
 
