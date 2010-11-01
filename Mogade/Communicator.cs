@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
@@ -38,14 +39,24 @@ namespace Mogade
          requestStream.Flush();         
          requestStream.Close();
 
-         var response = (HttpWebResponse)request.GetResponse();
-
-         using (var stream = response.GetResponseStream())
+         try
          {
-            var buffer = new byte[response.ContentLength];
-            stream.Read(buffer, 0, (int) response.ContentLength);
-            return Encoding.Default.GetString(buffer);
+            var response = request.GetResponse();            
+            return GetResponseBody(response);
          }
+         catch (Exception ex)
+         {
+            throw HandleException(ex);
+         }        
+      }
+
+
+      private byte[] FinalizePayload(IDictionary<string, object> payload)
+      {
+         payload.Add("key", _context.Key);
+         payload.Add("v", _context.ApiVersion);
+         payload.Add("sig", GetSignature(payload, _context.Secret));
+         return Encoding.Default.GetBytes(JsonConvert.SerializeObject(payload));
       }
 
       public static string GetSignature(IEnumerable<KeyValuePair<string, object>> parameters, string secret)
@@ -69,12 +80,15 @@ namespace Mogade
             return data.ToString();
          }
       }
-      private byte[] FinalizePayload(IDictionary<string, object> payload)
+
+      private static string GetResponseBody(WebResponse response)
       {
-         payload.Add("key", _context.Key);
-         payload.Add("v", _context.ApiVersion);
-         payload.Add("sig", GetSignature(payload, _context.Secret));
-         return Encoding.Default.GetBytes(JsonConvert.SerializeObject(payload));
+         using (var stream = response.GetResponseStream())
+         {
+            var buffer = new byte[response.ContentLength];
+            stream.Read(buffer, 0, (int)response.ContentLength);
+            return Encoding.Default.GetString(buffer);
+         }
       }
       private static void BuildPayloadParameters(IEnumerable<KeyValuePair<string, object>> payload, IDictionary<string, string> parameters)
       {
@@ -107,11 +121,35 @@ namespace Mogade
             }            
          }
       }
-      
+      private static Exception HandleException(Exception exception)
+      {
+         if (exception is WebException)
+         {            
+            var body = GetResponseBody(((WebException)exception).Response);
+            try
+            {
+               var message = JsonConvert.DeserializeObject<ErrorMessage>(body, _jsonSettings);
+               return new MogadeException(message.Error ?? message.Maintenance, message.Info, exception);
+            }
+            catch (Exception)
+            {
+               return new MogadeException(body, exception);
+            }                        
+         }
+         return new MogadeException("Unknown Error", exception);
+      }
+
       private static string _testUrlCuzImACheapLoser;
       internal static void IHateMyself(string dinosaursDiedBecauseITouchMyselfAtNight)
       {
          _testUrlCuzImACheapLoser = dinosaursDiedBecauseITouchMyselfAtNight;
+      }
+
+      private class ErrorMessage
+      {
+         public string Error { get; set; }
+         public string Info { get; set; }
+         public string Maintenance { get; set; }
       }
    }
 }

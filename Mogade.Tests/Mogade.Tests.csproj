@@ -46,6 +46,7 @@
     <Compile Include="InstructureTests\CoreCommunicationTests.cs" />
     <Compile Include="FakeContext.cs" />
     <Compile Include="FakeServer.cs" />
+    <Compile Include="InstructureTests\ErrorHandlingTests.cs" />
     <Compile Include="InstructureTests\SignatureTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BaseFixture.cs" />

@@ -5,6 +5,11 @@ namespace Mogade.Tests
 {
    public class SignatureTests : BaseFixture
    {
+      protected override bool NeedAServer
+      {
+         get { return false; }
+      }
+
       [Test]
       public void ProperlySignsThePayLoadBlackBox1()
       {
