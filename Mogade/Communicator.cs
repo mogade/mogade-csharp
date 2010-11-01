@@ -9,8 +9,7 @@ using Newtonsoft.Json;
 namespace Mogade
 {
    public class Communicator
-   {
-      public const string APIURL = "http://api.mogade.com/api/";
+   {      
       public const string PUT = "PUT";
       private readonly IRequestContext _context;
       private static readonly JsonSerializerSettings _jsonSettings = new JsonSerializerSettings
@@ -25,7 +24,7 @@ namespace Mogade
 
       public string SendPayload(string method, string endPoint, IDictionary<string, object> partialPayload)
       {
-         var request = (HttpWebRequest)WebRequest.Create(_testUrlCuzImACheapLoser ?? APIURL + endPoint);
+         var request = (HttpWebRequest)WebRequest.Create(MogadeConfiguration.Data.Url + endPoint);
          request.Method = method;
          request.ContentType = "application/json";
          request.Timeout = 10000;
@@ -137,12 +136,6 @@ namespace Mogade
             }                        
          }
          return new MogadeException("Unknown Error", exception);
-      }
-
-      private static string _testUrlCuzImACheapLoser;
-      internal static void IHateMyself(string dinosaursDiedBecauseITouchMyselfAtNight)
-      {
-         _testUrlCuzImACheapLoser = dinosaursDiedBecauseITouchMyselfAtNight;
       }
 
       private class ErrorMessage

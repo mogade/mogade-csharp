@@ -18,14 +18,18 @@ namespace Mogade.Tests
          if (NeedAServer)
          {
             Server = new FakeServer();
-            Communicator.IHateMyself("http://localhost:" + FakeServer.Port + "/");
+            MogadeConfiguration.Configuration(c => c.ConnectTo("http://localhost:" + FakeServer.Port + "/"));            
          }
          BeforeEachTest();
       }
       [TearDown]
       public void TearDown()
       {
-         if (Server != null) { Server.Dispose(); }
+         if (Server != null)
+         {
+            Server.Dispose();
+            MogadeConfiguration.ResetToDefaults();
+         }         
          AfterEachTest();
       }
       public virtual void AfterEachTest() { }
