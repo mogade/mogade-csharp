@@ -27,6 +27,7 @@ namespace Mogade
       {
          ValidationHelper.AssertValidId(leaderboardId, "leaderboardId");
          ValidationHelper.AssertNotNull(score, "score");
+         ValidationHelper.AssertMaximumLength(score.Data, 25, "score data");
 
          var payload = new Dictionary<string, object>
                        {

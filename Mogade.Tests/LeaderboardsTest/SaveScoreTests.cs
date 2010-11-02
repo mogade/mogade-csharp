@@ -67,5 +67,11 @@ namespace Mogade.Tests.LeaderboardsTest
       {
          AssertMogadeException("score is required and cannot be null", () => new Mogade("key", "secret").SaveScore("abc", null));
       }
+
+      [Test]
+      public void LongDataCausesAnExceptionToBeThrown()
+      {
+         AssertMogadeException("score data cannot be longer than 25 characters", () => new Mogade("key", "secret").SaveScore("abc", new Score{Data = new string('a', 25)}));
+      }
    }
 }
