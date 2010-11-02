@@ -1,4 +1,4 @@
-namespace Mogade.Leaderboard
+namespace Mogade.Leaderboards
 {
    public class Ranks
    {

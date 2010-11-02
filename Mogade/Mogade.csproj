@@ -43,12 +43,14 @@
     <Compile Include="IMogade.cs" />
     <Compile Include="Communicator.cs" />
     <Compile Include="IRequestContext.cs" />
-    <Compile Include="Leaderboard\Ranks.cs" />
+    <Compile Include="Leaderboards\Leaderboard.cs" />
+    <Compile Include="Leaderboards\LeaderboardScope.cs" />
+    <Compile Include="Leaderboards\Ranks.cs" />
     <Compile Include="Mogade.cs" />
     <Compile Include="Configuration\IMogadeConfiguration.cs" />
     <Compile Include="MogadeException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Leaderboard\Score.cs" />
+    <Compile Include="Leaderboards\Score.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

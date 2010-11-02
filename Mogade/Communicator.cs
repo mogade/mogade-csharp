@@ -9,12 +9,13 @@ using Newtonsoft.Json;
 namespace Mogade
 {
    public class Communicator
-   {      
+   {
       public const string PUT = "PUT";
+      public const string POST = "POST";
       private readonly IRequestContext _context;
       private static readonly JsonSerializerSettings _jsonSettings = new JsonSerializerSettings
                                                                      {
-                                                                        DefaultValueHandling = DefaultValueHandling.Ignore,                                                                        
+                                                                        DefaultValueHandling = DefaultValueHandling.Ignore,  
                                                                      };
 
       public Communicator(IRequestContext context)

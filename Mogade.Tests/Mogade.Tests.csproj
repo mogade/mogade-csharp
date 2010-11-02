@@ -48,7 +48,8 @@
     <Compile Include="FakeServer.cs" />
     <Compile Include="InstructureTests\ErrorHandlingTests.cs" />
     <Compile Include="InstructureTests\SignatureTests.cs" />
-    <Compile Include="LeaderboardTests.cs" />
+    <Compile Include="LeaderboardsTest\GetLeaderboardTests.cs" />
+    <Compile Include="LeaderboardsTest\SaveScoreTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BaseFixture.cs" />
   </ItemGroup>

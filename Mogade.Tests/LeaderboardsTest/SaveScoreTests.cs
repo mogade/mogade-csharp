@@ -1,17 +1,26 @@
-using Mogade.Leaderboard;
+using Mogade.Leaderboards;
 using NUnit.Framework;
 
-namespace Mogade.Tests
+namespace Mogade.Tests.LeaderboardsTest
 {
-   public class LeaderboardTests : BaseFixture
+   public class SaveScoreTests : BaseFixture
    {
       [Test]
-      public void SendsDataLessScoreToTheServer()
+      public void SendsScoreWithoutDataToTheServer()
       {
-         Server.Stub(new ApiExpectation { Method = "PUT",  Url = "/scores", Request = @"{""leaderboard_id"":""mybaloney"",""score"":{""username"":""Scytale"",""points"":10039},""key"":""thekey"",""v"":1,""sig"":""2fb1a639de341453bd41219383f4b279""}"});
+         Server.Stub(new ApiExpectation { Method = "PUT", Url = "/scores", Request = @"{""leaderboard_id"":""mybaloney"",""score"":{""username"":""Scytale"",""points"":10039},""key"":""thekey"",""v"":1,""sig"":""a4a793793b09c24bb9d4af726634aec4""}" });
          var score = new Score {Points = 10039, UserName = "Scytale"};
          new Mogade("thekey", "sssshh").SaveScore("mybaloney", score);
       }
+
+      [Test]
+      public void SendsScoreWithDataToTheServer()
+      {
+         Server.Stub(new ApiExpectation { Method = "PUT", Url = "/scores", Request = @"{""leaderboard_id"":""mybaloney"",""score"":{""username"":""Scytale"",""points"":10039,""data"":""mydata""},""key"":""thekey"",""v"":1,""sig"":""1e50fc7b84c0cd1d61ad543a5618c821""}" });
+         var score = new Score { Points = 10039, UserName = "Scytale", Data = "mydata" };
+         new Mogade("thekey", "sssshh").SaveScore("mybaloney", score);
+      }
+
 
       [Test]
       public void RetrievesAllTheRanksFromTheResponse()

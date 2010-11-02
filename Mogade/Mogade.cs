@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Mogade.Leaderboard;
+using Mogade.Leaderboards;
 using Newtonsoft.Json;
 
 namespace Mogade
@@ -23,9 +23,20 @@ namespace Mogade
 
       public Ranks SaveScore(string leaderboardId, Score score)
       {
-         var payload = new Dictionary<string, object> { {"leaderboard_id", leaderboardId}, {"score", score} };
+         var payload = new Dictionary<string, object>
+                       {
+                          {"leaderboard_id", leaderboardId}, 
+                          {"score", new {username = score.UserName, points = score.Points, data = score.Data}},
+                       };
          var communicator = new Communicator(this);
          return JsonConvert.DeserializeObject<Ranks>(communicator.SendPayload(Communicator.PUT, "scores", payload));         
+      }
+
+      public Leaderboard GetLeaderboard(string leaderboardId, LeaderboardScope scope, int page)
+      {
+         var payload = new Dictionary<string, object> {{"leaderboard", new {id = leaderboardId, scope = (int) scope, page = page}}};
+         var communicator = new Communicator(this);
+         return JsonConvert.DeserializeObject<Leaderboard>(communicator.SendPayload(Communicator.POST, "scores", payload));       
       }
    }
 }

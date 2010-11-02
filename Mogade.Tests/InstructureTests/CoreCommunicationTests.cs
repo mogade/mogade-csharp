@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Mogade.Leaderboard;
+using Mogade.Leaderboards;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
