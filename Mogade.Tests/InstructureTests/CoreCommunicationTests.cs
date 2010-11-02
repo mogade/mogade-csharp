@@ -29,7 +29,7 @@ namespace Mogade.Tests
                        {
                           {"key1", "value1"},
                           {"key2", 123.4},
-                          {"score", new Score{UserName = "Leto", Points = 2}}
+                          {"score", new {username = "Leto", points = 2}}
                        };
          var response = JObject.Parse(new Communicator(FakeContext.Defaults).SendPayload("PUT", "anything", payload));
          Assert.AreEqual(response["key1"].Value<string>(), "value1");
