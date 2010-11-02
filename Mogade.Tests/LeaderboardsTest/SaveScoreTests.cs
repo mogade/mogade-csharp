@@ -73,5 +73,16 @@ namespace Mogade.Tests.LeaderboardsTest
       {
          AssertMogadeException("score data cannot be longer than 25 characters", () => new Mogade("key", "secret").SaveScore("abc", new Score{Data = new string('a', 26)}));
       }
+      [Test]
+      public void NullOrEmptyUserNameCausesAnException()
+      {
+         AssertMogadeException("score username is required and cannot be null or empty", () => new Mogade("key", "secret").SaveScore("abc", new Score()));
+         AssertMogadeException("score username is required and cannot be null or empty", () => new Mogade("key", "secret").SaveScore("abc", new Score { UserName = string.Empty }));
+      }
+      [Test]
+      public void LongUserNameCausesAnException()
+      {
+         AssertMogadeException("score username cannot be longer than 20 characters", () => new Mogade("key", "secret").SaveScore("abc", new Score{UserName = new string('a', 21)}));         
+      }
    }
 }
