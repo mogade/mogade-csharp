@@ -31,5 +31,11 @@ namespace Mogade.Tests.LeaderboardsTest
          Assert.AreEqual(8999, leaderboard.Scores[1].Points);
          Assert.AreEqual(null, leaderboard.Scores[1].Data);         
       }
+      [Test]
+      public void NullOrEmptyLeaderboardIdCausesAnExceptionToBeThrown()
+      {
+         AssertMogadeException("leaderboardId is required and cannot be null or empty", () => new Mogade("key", "secret").GetLeaderboard(null, LeaderboardScope.Daily, 3));
+         AssertMogadeException("leaderboardId is required and cannot be null or empty", () => new Mogade("key", "secret").GetLeaderboard(string.Empty, LeaderboardScope.Overall, 4));
+      }
    }
 }

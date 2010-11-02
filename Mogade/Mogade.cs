@@ -10,6 +10,8 @@ namespace Mogade
       
       public Mogade(string gameKey, string secret)
       {
+         ValidationHelper.AssertNotNullOrEmpty(gameKey, "gameKey");
+         ValidationHelper.AssertNotNullOrEmpty(secret, "secret");
          Key = gameKey;
          Secret = secret;
       }
@@ -23,6 +25,9 @@ namespace Mogade
 
       public Ranks SaveScore(string leaderboardId, Score score)
       {
+         ValidationHelper.AssertValidId(leaderboardId, "leaderboardId");
+         ValidationHelper.AssertNotNull(score, "score");
+
          var payload = new Dictionary<string, object>
                        {
                           {"leaderboard_id", leaderboardId}, 
@@ -34,6 +39,7 @@ namespace Mogade
 
       public Leaderboard GetLeaderboard(string leaderboardId, LeaderboardScope scope, int page)
       {
+         ValidationHelper.AssertValidId(leaderboardId, "leaderboardId");
          var payload = new Dictionary<string, object> {{"leaderboard", new {id = leaderboardId, scope = (int) scope, page = page}}};
          var communicator = new Communicator(this);
          return JsonConvert.DeserializeObject<Leaderboard>(communicator.SendPayload(Communicator.POST, "scores", payload));       

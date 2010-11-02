@@ -47,6 +47,7 @@
     <Compile Include="FakeContext.cs" />
     <Compile Include="FakeServer.cs" />
     <Compile Include="InstructureTests\ErrorHandlingTests.cs" />
+    <Compile Include="InstructureTests\MogadeTests.cs" />
     <Compile Include="InstructureTests\SignatureTests.cs" />
     <Compile Include="LeaderboardsTest\GetLeaderboardTests.cs" />
     <Compile Include="LeaderboardsTest\SaveScoreTests.cs" />

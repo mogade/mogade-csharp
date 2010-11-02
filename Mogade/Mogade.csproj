@@ -51,6 +51,7 @@
     <Compile Include="MogadeException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Leaderboards\Score.cs" />
+    <Compile Include="ValidationHelper.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

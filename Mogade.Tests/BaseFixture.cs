@@ -34,5 +34,11 @@ namespace Mogade.Tests
       }
       public virtual void AfterEachTest() { }
       public virtual void BeforeEachTest() { }
+
+      protected void AssertMogadeException(string expectedMessage, Action code)
+      {
+         var ex = Assert.Throws<MogadeException>(() => code());
+         Assert.AreEqual(expectedMessage, ex.Message);
+      }
    }   
 }
