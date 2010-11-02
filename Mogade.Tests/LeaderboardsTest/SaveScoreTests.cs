@@ -71,7 +71,7 @@ namespace Mogade.Tests.LeaderboardsTest
       [Test]
       public void LongDataCausesAnExceptionToBeThrown()
       {
-         AssertMogadeException("score data cannot be longer than 25 characters", () => new Mogade("key", "secret").SaveScore("abc", new Score{Data = new string('a', 25)}));
+         AssertMogadeException("score data cannot be longer than 25 characters", () => new Mogade("key", "secret").SaveScore("abc", new Score{Data = new string('a', 26)}));
       }
    }
 }

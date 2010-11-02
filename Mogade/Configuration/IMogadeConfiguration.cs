@@ -6,6 +6,12 @@ namespace Mogade
    {
       IMogadeConfiguration ConnectTo(string url);
    }
+   /// <summary>
+   /// Configures the internal workings of the library.
+   /// </summary>
+   /// <remarks>
+   /// You probably don't need/want to use this class
+   /// </remarks>
    public class MogadeConfiguration : IMogadeConfiguration
    {
       private ConfigurationData _data = new ConfigurationData();
