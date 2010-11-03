@@ -1,12 +1,28 @@
+using System;
 using System.Collections.Generic;
+using System.Drawing;
 using Mogade.Leaderboards;
 using Newtonsoft.Json;
 
 namespace Mogade
 {
    public class Mogade : IMogade, IRequestContext
-   {
+   {      
       public const int VERSION = 1;
+
+      /// <summary>
+      /// The Mogade logo
+      /// </summary>
+      public static Image Logo 
+      { 
+         get
+         {
+            using (var stream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("Mogade.logo.png"))
+            {
+               return new Bitmap(stream);
+            }
+         }   
+      }
       
       public Mogade(string gameKey, string secret)
       {
@@ -20,6 +36,8 @@ namespace Mogade
       {
          get { return VERSION; }
       }
+
+
       public string Key { get; private set; }
       public string Secret { get; private set; }
 
