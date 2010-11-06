@@ -41,7 +41,7 @@ namespace Mogade
 
          try
          {
-            var response = request.GetResponse();            
+            var response = (HttpWebResponse)request.GetResponse();
             return GetResponseBody(response);
          }
          catch (Exception ex)
@@ -85,9 +85,9 @@ namespace Mogade
       {
          using (var stream = response.GetResponseStream())
          {
-            var buffer = new byte[response.ContentLength];
-            stream.Read(buffer, 0, (int)response.ContentLength);
-            return Encoding.Default.GetString(buffer);
+            var buffer = new byte[response.ContentLength == -1 ? 1024 : response.ContentLength];
+            stream.Read(buffer, 0, buffer.Length);            
+            return Encoding.Default.GetString(buffer).TrimEnd('\0');
          }
       }
       private static void BuildPayloadParameters(IEnumerable<KeyValuePair<string, object>> payload, IDictionary<string, string> parameters)
