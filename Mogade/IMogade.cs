@@ -1,3 +1,4 @@
+using Mogade.Achievements;
 using Mogade.Leaderboards;
 
 namespace Mogade
@@ -46,7 +47,23 @@ namespace Mogade
       /// </remarks>
       int GameVersion();
 
-      
+      /// <summary>
+      /// Grants the user the specified achievement
+      /// </summary>
+      /// <param name="achievementId">The id of the achievement being granted</param>
+      /// <param name="userName">The user's username</param>
+      /// <param name="uniqueIdentifier">A unique identifier for the user. Mobile devices should use the deviceId.</param>
+      /// <returns>The number of points earned</returns>
+      int GrantAchievement(string achievementId, string userName, string uniqueIdentifier);
+
+      /// <summary>
+      /// Grants the user the specified achievement
+      /// </summary>
+      /// <param name="achievementId">The achievement being granted</param>
+      /// <param name="userName">The user's username</param>
+      /// <param name="uniqueIdentifier">A unique identifier for the user. Mobile devices should use the deviceId.</param>
+      /// <returns>The number of points earned</returns>
+      int GrantAchievement(Achievement achievement, string userName, string uniqueIdentifier);
 
    }
 }

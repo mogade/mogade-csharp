@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Drawing;
+using Mogade.Achievements;
 using Mogade.Leaderboards;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -71,6 +73,24 @@ namespace Mogade
          var communicator = new Communicator(this);
          var container = (JContainer) JsonConvert.DeserializeObject(communicator.SendPayload(Communicator.POST, "conf/version", payload));
          return container["version"].Value<int>();
+      }
+
+      public int GrantAchievement(string achievementId, string userName, string uniqueIdentifier)
+      {
+         ValidationHelper.AssertValidId(achievementId, "achievementId");
+         ValidationHelper.AssertNotNullOrEmpty(userName, 20, "username");
+         ValidationHelper.AssertNotNullOrEmpty(uniqueIdentifier, 50, "unique identifier");
+         var payload = new Dictionary<string, object> { { "achievement_id", achievementId}, {"username", userName }, {"unique", uniqueIdentifier} };
+         var communicator = new Communicator(this);
+         var container = (JContainer)JsonConvert.DeserializeObject(communicator.SendPayload(Communicator.PUT, "achievements", payload));
+         return container["points"].Value<int>();
+      }
+
+
+      public int GrantAchievement(Achievement achievement, string userName, string uniqueIdentifier)
+      {
+         ValidationHelper.AssertNotNull(achievement, "achievement");
+         return GrantAchievement(achievement.Id, userName, uniqueIdentifier);
       }
    }
 }
