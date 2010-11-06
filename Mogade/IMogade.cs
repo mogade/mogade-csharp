@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Mogade.Achievements;
 using Mogade.Configuration;
 using Mogade.Leaderboards;
@@ -23,11 +22,20 @@ namespace Mogade
 
       /// <summary>
       /// Returns the user's stored settings for this game
-      /// </summary>      
-      /// <param name="userName">The user's username</param>
-      /// <param name="uniqueIdentifier">A unique identifier for the user. Mobile devices should use the deviceId.</param>
-      /// <returns>The number of points earned</returns>
+      /// </summary>            
+      /// <returns>The user's settings</returns>
+      /// <remarks>
+      /// The achievements collection is a list of achievement ids the user has earned      
+      /// </remarks>
       UserSettings GetUserSettings(string userName, string uniqueIdentifier);
+
+      /// <summary>      
+      /// Returns the game's stored settings
+      /// </summary>            
+      /// <returns>The game's configuration</returns>
+      /// <remarks>
+      /// </remarks>
+      GameConfiguration GetGameConfiguration();
 
       /// <summary>
       /// Saves a score
@@ -74,6 +82,5 @@ namespace Mogade
       /// <param name="uniqueIdentifier">A unique identifier for the user. Mobile devices should use the deviceId.</param>
       /// <returns>The number of points earned</returns>
       int GrantAchievement(Achievement achievement, string userName, string uniqueIdentifier);
-
    }
 }

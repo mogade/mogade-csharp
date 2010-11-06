@@ -5,7 +5,19 @@ namespace Mogade.Configuration
 {
    public class GameConfiguration
    {
-      public int Version { get; private set; }
-      public IList<Achievement> Acheivements { get; private set; }
+      private IList<Achievement> _achievements;
+
+      public int Version { get; set; }
+      public IList<Achievement> Achievements
+      {
+         get
+         {
+            if (_achievements == null)
+            {
+               _achievements = new List<Achievement>(0);
+            }
+            return _achievements;
+         }
+      }
    }
 }

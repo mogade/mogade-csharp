@@ -1,10 +1,13 @@
+using Newtonsoft.Json;
+
 namespace Mogade.Achievements
 {
    public class Achievement
    {
-      public string Id { get; private set; }
-      public string Name { get; private set; }
-      public string Description { get; private set; }
-      public int Points { get; private set; }
+      public string Id { get; set; }
+      public string Name { get; set; }
+      [JsonProperty("desc")]
+      public string Description { get; set; }
+      public int Points { get; set; }
    }
 }

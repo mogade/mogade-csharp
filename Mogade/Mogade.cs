@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using Mogade.Achievements;
@@ -58,6 +59,13 @@ namespace Mogade
          var payload = new Dictionary<string, object> { { "username", userName }, { "unique", uniqueIdentifier } };
          var communicator = new Communicator(this);
          return JsonConvert.DeserializeObject<UserSettings>(communicator.SendPayload(Communicator.POST, "conf/my", payload));
+      }
+
+      public GameConfiguration GetGameConfiguration()
+      {         
+         var payload = new Dictionary<string, object>(0);
+         var communicator = new Communicator(this);
+         return JsonConvert.DeserializeObject<GameConfiguration>(communicator.SendPayload(Communicator.POST, "conf", payload));
       }
 
       public Ranks SaveScore(string leaderboardId, Score score)
