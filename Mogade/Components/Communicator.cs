@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
@@ -94,12 +95,21 @@ namespace Mogade
       {
          foreach (var kvp in payload)
          {
+            if (kvp.Value == null) { continue; }
             var valueType = kvp.Value.GetType();
-            if (typeof(IEnumerable<KeyValuePair<string, object>>).IsAssignableFrom(valueType))
+            if (typeof(string).IsAssignableFrom(valueType))
             {
-               BuildPayloadParameters((IEnumerable<KeyValuePair<string, object>>)kvp.Value, parameters);               
+               parameters.Add(kvp.Key, (string)kvp.Value);
             }
-            else if (typeof(IEnumerable).IsAssignableFrom(valueType) && !typeof(String).IsAssignableFrom(valueType))
+            else if (typeof(int).IsAssignableFrom(valueType) || typeof(long).IsAssignableFrom(valueType))
+            {
+               parameters.Add(kvp.Key, kvp.Value.ToString());
+            }
+            else if (typeof(bool).IsAssignableFrom(valueType))
+            {
+               parameters.Add(kvp.Key, (bool)kvp.Value ? "true" : "false");
+            }            
+            else if (typeof(IEnumerable).IsAssignableFrom(valueType))
             {
                var sb = new StringBuilder();
                foreach (var v in (IEnumerable)kvp.Value) { sb.AppendFormat("{0}-", v); }
@@ -108,16 +118,13 @@ namespace Mogade
             }
             else
             {
-               string value;
-               if (typeof(bool).IsAssignableFrom(valueType))
+               var properties = TypeDescriptor.GetProperties(kvp.Value);
+               var hash = new Dictionary<string, object>(properties.Count);
+               foreach (PropertyDescriptor descriptor in properties)
                {
-                  value = (bool) kvp.Value ? "true" : "false";
+                  hash.Add(descriptor.Name, descriptor.GetValue(kvp.Value));
                }
-               else
-               {
-                  value = kvp.Value.ToString();
-               }
-               parameters.Add(kvp.Key, value);
+               BuildPayloadParameters(hash, parameters);               
             }            
          }
       }

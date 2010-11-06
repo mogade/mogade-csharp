@@ -8,7 +8,7 @@ namespace Mogade.Tests.LeaderboardsTest
       [Test]
       public void SendsRequestForLeaderboardToTheServer()
       {
-         Server.Stub(new ApiExpectation { Method = "POST", Url = "/scores", Request = @"{""leaderboard"":{""id"":""theid"",""scope"":2,""page"":3},""key"":""akey"",""v"":1,""sig"":""ab2e100a31ce0f617277703c115f7121""}" });
+         Server.Stub(new ApiExpectation { Method = "POST", Url = "/scores", Request = @"{""leaderboard"":{""id"":""theid"",""scope"":2,""page"":3},""key"":""akey"",""v"":1,""sig"":""93a73d45c0cd3a0a648b3898d8992889""}" });
          new Mogade("akey", "sssshh2").GetLeaderboard("theid", LeaderboardScope.Weekly, 3);
       }
       [Test]
@@ -21,7 +21,7 @@ namespace Mogade.Tests.LeaderboardsTest
       [Test]
       public void RetrievesALeaderboard()
       {
-         Server.Stub(new ApiExpectation { Response = @"{'scores':[{'username':'teg', 'points': 9001, 'data': 'something'}, {'username':'paul', 'points': 8999, 'data': null}]}" });
+         Server.Stub(new ApiExpectation { Response = @"{'scores':[{'username':'teg', 'points': 9001, 'data': 'something'}, {'username':'paul', 'points': 8999}]}" });
          var leaderboard = new Mogade("akey", "sssshh2").GetLeaderboard("theid", LeaderboardScope.Weekly, 3);
          Assert.AreEqual(2, leaderboard.Scores.Count);
          Assert.AreEqual("teg", leaderboard.Scores[0].UserName);

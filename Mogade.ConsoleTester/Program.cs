@@ -1,4 +1,5 @@
 ﻿using System;
+using Mogade.Leaderboards;
 
 namespace Mogade.ConsoleTester
 {
@@ -10,9 +11,11 @@ namespace Mogade.ConsoleTester
          MogadeConfiguration.Configuration(m => m.ConnectToTest());
 
 
-         var mogade = new Mogade("4cd56def5a74080878000005", "4G@u?=o4>");
-
-         Console.WriteLine(mogade.GameVersion());
+         var mogade = new Mogade("MY", "SECRET");
+         var a = mogade.GameVersion();
+         var b = mogade.GetGameConfiguration();
+         var c = mogade.SaveScore("4cd5760b5a740810d3000002", new Score{Points =  232, UserName = "uname"});
+         var d = mogade.GetLeaderboard("4cd5760b5a740810d3000002", LeaderboardScope.Overall, 1);
          Console.ReadLine();
       }
    }
