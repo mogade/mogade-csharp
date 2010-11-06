@@ -5,6 +5,7 @@ namespace Mogade
    public interface IMogadeConfiguration
    {
       IMogadeConfiguration ConnectTo(string url);
+      IMogadeConfiguration ConnectToTest();
    }
    /// <summary>
    /// Configures the internal workings of the library.
@@ -33,6 +34,12 @@ namespace Mogade
       public IMogadeConfiguration ConnectTo(string url)
       {
          _data.Url = url;
+         return this;
+      }
+
+      public IMogadeConfiguration ConnectToTest()
+      {
+         _data.Url = ConfigurationData.TESTURL;
          return this;
       }
    }
