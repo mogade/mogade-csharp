@@ -6,7 +6,7 @@ namespace Mogade
    {
       /// <summary>
       /// Returns the version of the API this library understands
-      /// </summary>
+      /// </summary>      
       int ApiVersion { get; }
 
       /// <summary>
@@ -36,5 +36,15 @@ namespace Mogade
       /// Each page is limited to 10 scores
       /// </remarks>
       Leaderboard GetLeaderboard(string leaderboardId, LeaderboardScope scope, int page);
+
+      /// <summary>
+      /// Returns the game's configuration version
+      /// </summary>
+      /// <remarks>
+      /// The intent of this is that games (or platform libraries) can cache a game's mogade configuration, and
+      /// rely on GameVersion to detect a change (which is far less expensive on our poor servers)
+      /// </remarks>
+      int GameVersion();
+
    }
 }

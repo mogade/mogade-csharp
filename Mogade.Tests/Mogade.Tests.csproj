@@ -44,6 +44,7 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigurationTests\GameVersionTests.cs" />
     <Compile Include="InstructureTests\CoreCommunicationTests.cs" />
     <Compile Include="FakeContext.cs" />
     <Compile Include="FakeServer.cs" />
