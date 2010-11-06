@@ -1,7 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using Mogade.Achievements;
+using Mogade.Configuration;
 using Mogade.Leaderboards;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -42,6 +42,23 @@ namespace Mogade
 
       public string Key { get; private set; }
       public string Secret { get; private set; }
+      
+      public int GameVersion()
+      {
+         var payload = new Dictionary<string, object>(0);
+         var communicator = new Communicator(this);
+         var container = (JContainer)JsonConvert.DeserializeObject(communicator.SendPayload(Communicator.POST, "conf/version", payload));
+         return container["version"].Value<int>();
+      }
+
+      public UserSettings GetUserSettings(string userName, string uniqueIdentifier)
+      {
+         ValidationHelper.AssertNotNullOrEmpty(userName, 20, "username");
+         ValidationHelper.AssertNotNullOrEmpty(uniqueIdentifier, 50, "unique identifier");
+         var payload = new Dictionary<string, object> { { "username", userName }, { "unique", uniqueIdentifier } };
+         var communicator = new Communicator(this);
+         return JsonConvert.DeserializeObject<UserSettings>(communicator.SendPayload(Communicator.POST, "conf/my", payload));
+      }
 
       public Ranks SaveScore(string leaderboardId, Score score)
       {
@@ -65,14 +82,6 @@ namespace Mogade
          var payload = new Dictionary<string, object> {{"leaderboard", new {id = leaderboardId, scope = (int) scope, page = page}}};
          var communicator = new Communicator(this);
          return JsonConvert.DeserializeObject<Leaderboard>(communicator.SendPayload(Communicator.POST, "scores", payload));       
-      }
-
-      public int GameVersion()
-      {
-         var payload = new Dictionary<string, object>(0);
-         var communicator = new Communicator(this);
-         var container = (JContainer) JsonConvert.DeserializeObject(communicator.SendPayload(Communicator.POST, "conf/version", payload));
-         return container["version"].Value<int>();
       }
 
       public int GrantAchievement(string achievementId, string userName, string uniqueIdentifier)

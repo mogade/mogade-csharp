@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using Mogade.Achievements;
+using Mogade.Configuration;
 using Mogade.Leaderboards;
 
 namespace Mogade
@@ -9,6 +11,23 @@ namespace Mogade
       /// Returns the version of the API this library understands
       /// </summary>      
       int ApiVersion { get; }
+
+      /// <summary>
+      /// Returns the game's configuration version
+      /// </summary>
+      /// <remarks>
+      /// The intent of this is that games (or platform libraries) can cache a game's mogade configuration, and
+      /// rely on GameVersion to detect a change (which is far less expensive on our poor servers)
+      /// </remarks>
+      int GameVersion();
+
+      /// <summary>
+      /// Returns the user's stored settings for this game
+      /// </summary>      
+      /// <param name="userName">The user's username</param>
+      /// <param name="uniqueIdentifier">A unique identifier for the user. Mobile devices should use the deviceId.</param>
+      /// <returns>The number of points earned</returns>
+      UserSettings GetUserSettings(string userName, string uniqueIdentifier);
 
       /// <summary>
       /// Saves a score
@@ -37,15 +56,6 @@ namespace Mogade
       /// Each page is limited to 10 scores
       /// </remarks>
       Leaderboard GetLeaderboard(string leaderboardId, LeaderboardScope scope, int page);
-
-      /// <summary>
-      /// Returns the game's configuration version
-      /// </summary>
-      /// <remarks>
-      /// The intent of this is that games (or platform libraries) can cache a game's mogade configuration, and
-      /// rely on GameVersion to detect a change (which is far less expensive on our poor servers)
-      /// </remarks>
-      int GameVersion();
 
       /// <summary>
       /// Grants the user the specified achievement

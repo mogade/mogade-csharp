@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="AchievementTests\GrantAchievementTests.cs" />
     <Compile Include="ConfigurationTests\GameVersionTests.cs" />
+    <Compile Include="ConfigurationTests\GetUserSettingsTests.cs" />
     <Compile Include="InstructureTests\CoreCommunicationTests.cs" />
     <Compile Include="FakeContext.cs" />
     <Compile Include="FakeServer.cs" />
