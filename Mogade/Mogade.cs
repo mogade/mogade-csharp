@@ -17,7 +17,7 @@ namespace Mogade
       { 
          get
          {
-            using (var stream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("Mogade.logo.png"))
+            using (var stream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("Mogade.Assets.logo.png"))
             {
                return new Bitmap(stream);
             }

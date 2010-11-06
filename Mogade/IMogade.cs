@@ -46,5 +46,7 @@ namespace Mogade
       /// </remarks>
       int GameVersion();
 
+      
+
    }
 }
