@@ -7,7 +7,7 @@ namespace Mogade.Tests.ConfigurationTests
       [Test]
       public void SendsRequestToTheServer()
       {
-         Server.Stub(new ApiExpectation { Method = "POST", Url = "/conf/my", Request = @"{""username"":""Edric"",""unique"":""2323"",""key"":""thekey"",""v"":1,""sig"":""8be923bdb5bf9caf0e037652628cbbdb""}"});
+         Server.Stub(new ApiExpectation { Method = "POST", Url = "/conf/my", Request = @"{""username"":""Edric"",""unique"":""2323"",""key"":""thekey"",""v"":1,""sig"":""6e274f04cc65861614e39e58ca29fb24""}" });
          new Mogade("thekey", "sssshh").GetUserSettings("Edric", "2323");         
       }
       [Test]

@@ -8,7 +8,7 @@ namespace Mogade.Tests.LeaderboardsTest
       [Test]
       public void SendsRequestForLeaderboardToTheServer()
       {
-         Server.Stub(new ApiExpectation { Method = "POST", Url = "/scores", Request = @"{""leaderboard"":{""id"":""theid"",""scope"":2,""page"":3},""key"":""akey"",""v"":1,""sig"":""535677a3f54da64ba89131b089fee2f7""}" });
+         Server.Stub(new ApiExpectation { Method = "POST", Url = "/scores", Request = @"{""leaderboard"":{""id"":""theid"",""scope"":2,""page"":3},""key"":""akey"",""v"":1,""sig"":""ab2e100a31ce0f617277703c115f7121""}" });
          new Mogade("akey", "sssshh2").GetLeaderboard("theid", LeaderboardScope.Weekly, 3);
       }
       [Test]

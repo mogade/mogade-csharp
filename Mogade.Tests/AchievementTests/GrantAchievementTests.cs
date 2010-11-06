@@ -8,7 +8,7 @@ namespace Mogade.Tests.AchievementTests
       [Test]
       public void SendsRequestToTheServer()
       {
-         Server.Stub(new ApiExpectation { Method = "PUT", Url = "/achievements", Request = @"{""achievement_id"":""hasafirstname"",""username"":""Scytale"",""unique"":""10039"",""key"":""thekey"",""v"":1,""sig"":""439c72d0e7e14903570435813fb4b6fe""}", Response = "{points:123}" });
+         Server.Stub(new ApiExpectation { Method = "PUT", Url = "/achievements", Request = @"{""achievement_id"":""hasafirstname"",""username"":""Scytale"",""unique"":""10039"",""key"":""thekey"",""v"":1,""sig"":""64c32fca72deb24aa93f24f756403506""}", Response = "{points:123}" });
          new Mogade("thekey", "sssshh").GrantAchievement("hasafirstname", "Scytale", "10039");
       }
 

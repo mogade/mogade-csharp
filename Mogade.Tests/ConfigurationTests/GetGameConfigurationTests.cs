@@ -7,7 +7,7 @@ namespace Mogade.Tests.ConfigurationTests
       [Test]
       public void SendsRequestForVersionTheServer()
       {
-         Server.Stub(new ApiExpectation { Method = "POST", Url = "/conf", Request = @"{""key"":""akey"",""v"":1,""sig"":""b0721964c554325c53250fa17b2cae29""}", Response = "{version:0}" });
+         Server.Stub(new ApiExpectation { Method = "POST", Url = "/conf", Request = @"{""key"":""akey"",""v"":1,""sig"":""b2cf06b6f6f1d7c3b51092670b005010""}", Response = "{version:0}" });
          new Mogade("akey", "sssshh2").GetGameConfiguration();
       }
 

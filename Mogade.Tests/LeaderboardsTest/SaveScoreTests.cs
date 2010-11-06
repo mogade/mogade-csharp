@@ -8,7 +8,7 @@ namespace Mogade.Tests.LeaderboardsTest
       [Test]
       public void SendsScoreWithoutDataToTheServer()
       {
-         Server.Stub(new ApiExpectation { Method = "PUT", Url = "/scores", Request = @"{""leaderboard_id"":""mybaloney"",""score"":{""username"":""Scytale"",""points"":10039},""key"":""thekey"",""v"":1,""sig"":""a4a793793b09c24bb9d4af726634aec4""}" });
+         Server.Stub(new ApiExpectation { Method = "PUT", Url = "/scores", Request = @"{""leaderboard_id"":""mybaloney"",""score"":{""username"":""Scytale"",""points"":10039},""key"":""thekey"",""v"":1,""sig"":""91debd2259e4f1a72f085fcd0aef9bf1""}" });
          var score = new Score {Points = 10039, UserName = "Scytale"};
          new Mogade("thekey", "sssshh").SaveScore("mybaloney", score);
       }
@@ -16,7 +16,7 @@ namespace Mogade.Tests.LeaderboardsTest
       [Test]
       public void SendsScoreWithDataToTheServer()
       {
-         Server.Stub(new ApiExpectation { Method = "PUT", Url = "/scores", Request = @"{""leaderboard_id"":""mybaloney"",""score"":{""username"":""Scytale"",""points"":10039,""data"":""mydata""},""key"":""thekey"",""v"":1,""sig"":""1e50fc7b84c0cd1d61ad543a5618c821""}" });
+         Server.Stub(new ApiExpectation { Method = "PUT", Url = "/scores", Request = @"{""leaderboard_id"":""mybaloney"",""score"":{""username"":""Scytale"",""points"":10039,""data"":""mydata""},""key"":""thekey"",""v"":1,""sig"":""b67815abdb69a43d639b5a92b2b882c9""}" });
          var score = new Score { Points = 10039, UserName = "Scytale", Data = "mydata" };
          new Mogade("thekey", "sssshh").SaveScore("mybaloney", score);
       }

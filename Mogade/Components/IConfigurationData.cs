@@ -8,7 +8,7 @@ namespace Mogade
    public class ConfigurationData : IConfigurationData
    {
       public const string APIURL = "http://api.mogade.com/api/";
-      public const string TESTURL = "http://api.mogade.com/api/";
+      public const string TESTURL = "http://testing.mogade.com/api/";
       private string _url;
       public string Url
       {

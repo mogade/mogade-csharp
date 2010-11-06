@@ -99,7 +99,7 @@ namespace Mogade
             {
                BuildPayloadParameters((IEnumerable<KeyValuePair<string, object>>)kvp.Value, parameters);               
             }
-            else if (typeof(IEnumerable).IsAssignableFrom(valueType))
+            else if (typeof(IEnumerable).IsAssignableFrom(valueType) && !typeof(String).IsAssignableFrom(valueType))
             {
                var sb = new StringBuilder();
                foreach (var v in (IEnumerable)kvp.Value) { sb.AppendFormat("{0}-", v); }

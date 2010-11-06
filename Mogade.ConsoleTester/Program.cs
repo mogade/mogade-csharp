@@ -13,7 +13,7 @@ namespace Mogade.ConsoleTester
          var mogade = new Mogade("4cd56def5a74080878000005", "4G@u?=o4>");
 
          Console.WriteLine(mogade.GameVersion());
-
+         Console.ReadLine();
       }
    }
 }
