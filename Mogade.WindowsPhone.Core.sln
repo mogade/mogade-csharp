@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mogade.WindowsPhone", "Mogade\Mogade.WindowsPhone.csproj", "{99CC94EF-BB97-4EBB-8E80-F1714A0D2809}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mogade.WindowsPhone.Core", "Mogade.Core\Mogade.WindowsPhone.Core.csproj", "{99CC94EF-BB97-4EBB-8E80-F1714A0D2809}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

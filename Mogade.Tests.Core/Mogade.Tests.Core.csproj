@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Mogade.Tests</RootNamespace>
-    <AssemblyName>Mogade.Tests</AssemblyName>
+    <AssemblyName>Mogade.Core.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -78,7 +78,7 @@
     <Compile Include="BaseFixture.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Mogade\Mogade.csproj">
+    <ProjectReference Include="..\Mogade.Core\Mogade.Core.csproj">
       <Project>{B1BF8760-7C28-410E-813E-AC86514B2C8A}</Project>
       <Name>Mogade</Name>
     </ProjectReference>
