@@ -44,13 +44,13 @@
     <Compile Include="Components\IConfigurationData.cs" />
     <Compile Include="Configuration\GameConfiguration.cs" />
     <Compile Include="Configuration\UserSettings.cs" />
-    <Compile Include="IMogade.cs" />
+    <Compile Include="IDriver.cs" />
     <Compile Include="Components\Communicator.cs" />
     <Compile Include="Components\IRequestContext.cs" />
     <Compile Include="Leaderboards\Leaderboard.cs" />
     <Compile Include="Leaderboards\LeaderboardScope.cs" />
     <Compile Include="Leaderboards\Ranks.cs" />
-    <Compile Include="Mogade.cs" />
+    <Compile Include="Driver.cs" />
     <Compile Include="Components\IMogadeConfiguration.cs" />
     <Compile Include="MogadeException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

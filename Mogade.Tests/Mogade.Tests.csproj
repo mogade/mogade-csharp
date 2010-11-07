@@ -62,7 +62,7 @@
     <Compile Include="InstructureTests\ErrorHandlingTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="InstructureTests\MogadeTests.cs">
+    <Compile Include="InstructureTests\DriverTests.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="InstructureTests\SignatureTests.cs">

@@ -1,38 +1,18 @@
 using System;
 using System.Collections.Generic;
-
 using Mogade.Achievements;
 using Mogade.Configuration;
 using Mogade.Leaderboards;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-#if !WINDOWS_PHONE
-using System.Drawing;
-#endif
 
 namespace Mogade
 {
-   public class Mogade : IMogade, IRequestContext
+   public class Driver : IDriver, IRequestContext
    {      
       public const int VERSION = 1;
-
-#if !WINDOWS_PHONE
-      /// <summary>
-      /// The Mogade logo
-      /// </summary>
-      public static Image Logo 
-      { 
-         get
-         {
-            using (var stream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("Mogade.Assets.logo.png"))
-            {
-               return new Bitmap(stream);
-            }
-         }   
-      }
-#endif
-      public Mogade(string gameKey, string secret)
+      public Driver(string gameKey, string secret)
       {
          ValidationHelper.AssertNotNullOrEmpty(gameKey, "gameKey");
          ValidationHelper.AssertNotNullOrEmpty(secret, "secret");

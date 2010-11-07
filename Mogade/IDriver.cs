@@ -5,7 +5,7 @@ using Mogade.Leaderboards;
 
 namespace Mogade
 {
-   public interface IMogade
+   public interface IDriver
    {
       /// <summary>
       /// Returns the version of the API this library understands
