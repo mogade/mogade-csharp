@@ -22,7 +22,7 @@ namespace Mogade.Tests
          AssertMogadeException("secret is required and cannot be null or empty", () => new Mogade("something", null));
          AssertMogadeException("secret is required and cannot be null or empty", () => new Mogade("something", string.Empty));
       }
-
+#if !WINDOWS_PHONE
       [Test]
       public void ReturnsTheLogo()
       {
@@ -30,5 +30,6 @@ namespace Mogade.Tests
          Assert.AreEqual(251, Mogade.Logo.Width);
          Assert.AreEqual(54, Mogade.Logo.Height);
       }
+#endif
    }
 }

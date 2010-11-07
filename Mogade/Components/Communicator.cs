@@ -146,11 +146,11 @@ namespace Mogade
             }
             else
             {
-               var properties = TypeDescriptor.GetProperties(kvp.Value);
-               var hash = new Dictionary<string, object>(properties.Count);
-               foreach (PropertyDescriptor descriptor in properties)
+               var properties = valueType.GetProperties();
+               var hash = new Dictionary<string, object>(properties.Length);
+               foreach (var property in properties)
                {
-                  hash.Add(descriptor.Name, descriptor.GetValue(kvp.Value));
+                  hash.Add(property.Name, property.GetValue(kvp.Value, null));                  
                }
                BuildPayloadParameters(hash, parameters);
             }
