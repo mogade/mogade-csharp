@@ -1,11 +1,15 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
+
 using Mogade.Achievements;
 using Mogade.Configuration;
 using Mogade.Leaderboards;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+
+#if !WINDOWS_PHONE
+using System.Drawing;
+#endif
 
 namespace Mogade
 {
@@ -13,6 +17,7 @@ namespace Mogade
    {      
       public const int VERSION = 1;
 
+#if !WINDOWS_PHONE
       /// <summary>
       /// The Mogade logo
       /// </summary>
@@ -26,7 +31,7 @@ namespace Mogade
             }
          }   
       }
-      
+#endif
       public Mogade(string gameKey, string secret)
       {
          ValidationHelper.AssertNotNullOrEmpty(gameKey, "gameKey");
@@ -44,31 +49,44 @@ namespace Mogade
       public string Key { get; private set; }
       public string Secret { get; private set; }
       
-      public int GameVersion()
+      public void GetGameVersion(Action<int> callback)
       {
          var payload = new Dictionary<string, object>(0);
          var communicator = new Communicator(this);
-         var container = (JContainer)JsonConvert.DeserializeObject(communicator.SendPayload(Communicator.POST, "conf/version", payload));
-         return container["version"].Value<int>();
+         communicator.SendPayload(Communicator.POST, "conf/version", payload, r =>
+         {
+            if (!r.Success){ throw new MogadeException(r.Error);}
+            var container = (JContainer) JsonConvert.DeserializeObject(r.Raw);
+            callback(container["version"].Value<int>());
+         });
       }
 
-      public UserSettings GetUserSettings(string userName, string uniqueIdentifier)
+      public void GetUserSettings(string userName, string uniqueIdentifier, Action<UserSettings> callback)
       {
          ValidationHelper.AssertNotNullOrEmpty(userName, 20, "username");
          ValidationHelper.AssertNotNullOrEmpty(uniqueIdentifier, 50, "unique identifier");
          var payload = new Dictionary<string, object> { { "username", userName }, { "unique", uniqueIdentifier } };
          var communicator = new Communicator(this);
-         return JsonConvert.DeserializeObject<UserSettings>(communicator.SendPayload(Communicator.POST, "conf/my", payload));
+         communicator.SendPayload(Communicator.POST, "conf/my", payload, r =>
+         {
+            if (!r.Success) { throw new MogadeException(r.Error); }
+            callback(JsonConvert.DeserializeObject<UserSettings>(r.Raw));
+         });
+         
       }
 
-      public GameConfiguration GetGameConfiguration()
+      public void GetGameConfiguration(Action<GameConfiguration> callback)
       {         
          var payload = new Dictionary<string, object>(0);
          var communicator = new Communicator(this);
-         return JsonConvert.DeserializeObject<GameConfiguration>(communicator.SendPayload(Communicator.POST, "conf", payload));
+         communicator.SendPayload(Communicator.POST, "conf", payload, r =>
+         {
+            if (!r.Success) { throw new MogadeException(r.Error); }
+            callback(JsonConvert.DeserializeObject<GameConfiguration>(r.Raw));
+         });
       }
 
-      public Ranks SaveScore(string leaderboardId, Score score)
+      public void SaveScore(string leaderboardId, Score score, Action<Ranks> callback)
       {
          ValidationHelper.AssertValidId(leaderboardId, "leaderboardId");
          ValidationHelper.AssertNotNull(score, "score");
@@ -81,33 +99,45 @@ namespace Mogade
                           {"score", new {username = score.UserName, points = score.Points, data = score.Data}},
                        };
          var communicator = new Communicator(this);
-         return JsonConvert.DeserializeObject<Ranks>(communicator.SendPayload(Communicator.PUT, "scores", payload));         
+         communicator.SendPayload(Communicator.PUT, "scores", payload, r =>
+         {
+            if (!r.Success) { throw new MogadeException(r.Error); }
+            callback(JsonConvert.DeserializeObject<Ranks>(r.Raw));
+         });
       }
 
-      public Leaderboard GetLeaderboard(string leaderboardId, LeaderboardScope scope, int page)
+      public void GetLeaderboard(string leaderboardId, LeaderboardScope scope, int page, Action<Leaderboard> callback)
       {
          ValidationHelper.AssertValidId(leaderboardId, "leaderboardId");
          var payload = new Dictionary<string, object> {{"leaderboard", new {id = leaderboardId, scope = (int) scope, page = page}}};
          var communicator = new Communicator(this);
-         return JsonConvert.DeserializeObject<Leaderboard>(communicator.SendPayload(Communicator.POST, "scores", payload));       
+         communicator.SendPayload(Communicator.POST, "scores", payload, r =>
+         {
+            if (!r.Success) { throw new MogadeException(r.Error); }
+            callback(JsonConvert.DeserializeObject<Leaderboard>(r.Raw));
+         });
       }
 
-      public int GrantAchievement(string achievementId, string userName, string uniqueIdentifier)
+      public void GrantAchievement(string achievementId, string userName, string uniqueIdentifier, Action<int> callback)
       {
          ValidationHelper.AssertValidId(achievementId, "achievementId");
          ValidationHelper.AssertNotNullOrEmpty(userName, 20, "username");
          ValidationHelper.AssertNotNullOrEmpty(uniqueIdentifier, 50, "unique identifier");
          var payload = new Dictionary<string, object> { { "achievement_id", achievementId}, {"username", userName }, {"unique", uniqueIdentifier} };
          var communicator = new Communicator(this);
-         var container = (JContainer)JsonConvert.DeserializeObject(communicator.SendPayload(Communicator.PUT, "achievements", payload));
-         return container["points"].Value<int>();
+         communicator.SendPayload(Communicator.PUT, "achievements", payload, r =>
+         {
+            if (!r.Success) { throw new MogadeException(r.Error); }
+            var container = (JContainer) JsonConvert.DeserializeObject(r.Raw);
+            callback(container["points"].Value<int>());
+         });         
       }
 
 
-      public int GrantAchievement(Achievement achievement, string userName, string uniqueIdentifier)
+      public void GrantAchievement(Achievement achievement, string userName, string uniqueIdentifier, Action<int> callback)
       {
          ValidationHelper.AssertNotNull(achievement, "achievement");
-         return GrantAchievement(achievement.Id, userName, uniqueIdentifier);
+         GrantAchievement(achievement.Id, userName, uniqueIdentifier, callback);
       }
    }
 }

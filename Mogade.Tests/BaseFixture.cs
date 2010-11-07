@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using NUnit.Framework;
 
 namespace Mogade.Tests
@@ -12,9 +13,12 @@ namespace Mogade.Tests
          get { return true; } 
       }
       protected FakeServer Server;
+      protected AutoResetEvent Trigger;
+
       [SetUp]
       public void SetUp()
       {
+         Trigger = new AutoResetEvent(false);         
          if (NeedAServer)
          {
             Server = new FakeServer();
@@ -40,5 +44,25 @@ namespace Mogade.Tests
          var ex = Assert.Throws<MogadeException>(() => code());
          Assert.AreEqual(expectedMessage, ex.Message);
       }
-   }   
+
+      protected void Set()
+      {
+         Trigger.Set();
+      }
+      protected void WaitOne()
+      {
+         Assert.IsTrue(Trigger.WaitOne(3000), "Test terminated without properly signalling the trigger");
+      }
+   }
+
+   internal static class AutoResetEventExtensions
+   {
+      public static void Wait(this AutoResetEvent trigger, int count)
+      {
+         for (var i = 0; i < count; ++i)
+         {
+            trigger.WaitOne();
+         }
+      }
+   }
 }

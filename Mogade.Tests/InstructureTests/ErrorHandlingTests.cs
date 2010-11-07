@@ -8,32 +8,53 @@ namespace Mogade.Tests
       public void WrapsANormalServerErrorInMogadeException()
       {
          Server.Stub(new ApiExpectation { Status = 400, Response = @"{'error': 'its over 9000!!'}" });
-         var ex = Assert.Throws<MogadeException>(() => new Communicator(FakeContext.Defaults).SendPayload("any", "any", EmptyPayload()));
-         Assert.AreEqual("its over 9000!!", ex.Message);
+         new Communicator(FakeContext.Defaults).SendPayload("any", "any", EmptyPayload(), r =>
+         {
+            Assert.IsFalse(r.Success);
+            Assert.AreEqual("its over 9000!!", r.Error.Error);
+            Set();
+         });
+         WaitOne();         
       }
 
       [Test]
       public void IncludesAnErrorInfoInTheExceptionIfPresent()
       {
          Server.Stub(new ApiExpectation { Status = 400, Response = @"{'error': 'its over 9000!!', 'info': 'some extra goodness'}" });
-         var ex = Assert.Throws<MogadeException>(() => new Communicator(FakeContext.Defaults).SendPayload("any", "any", EmptyPayload()));
-         Assert.AreEqual("some extra goodness", ex.AdditionalInformation);
+         new Communicator(FakeContext.Defaults).SendPayload("any", "any", EmptyPayload(), r =>
+         {
+            Assert.IsFalse(r.Success);
+            Assert.AreEqual("some extra goodness",r.Error.Info);
+            Set();
+         });
+         
+         WaitOne();     
       }
 
       [Test]
       public void WrapsAnUnexpectedServerErrorInMogadeException()
       {
          Server.Stub(new ApiExpectation { Status = 500, Response = @"Server CRASH!" });
-         var ex = Assert.Throws<MogadeException>(() => new Communicator(FakeContext.Defaults).SendPayload("any", "any", EmptyPayload()));
-         Assert.AreEqual("Server CRASH!", ex.Message);
+         new Communicator(FakeContext.Defaults).SendPayload("any", "any", EmptyPayload(), r =>
+         {
+            Assert.IsFalse(r.Success);
+            Assert.AreEqual("Server CRASH!", r.Error.Error);
+            Set();
+         });
+         WaitOne();
       }
 
       [Test]
       public void WrapsAMaintenanceErrorInAMogadeException() //for now
       {
          Server.Stub(new ApiExpectation { Status = 503, Response = @"{'maintenance': 'the server is down for a bit'}" });
-         var ex = Assert.Throws<MogadeException>(() => new Communicator(FakeContext.Defaults).SendPayload("any", "any", EmptyPayload()));
-         Assert.AreEqual("the server is down for a bit", ex.Message);
+         new Communicator(FakeContext.Defaults).SendPayload("any", "any", EmptyPayload(), r =>
+         {
+            Assert.IsFalse(r.Success);
+            Assert.AreEqual("the server is down for a bit", r.Error.Maintenance);
+            Set();
+         });
+         WaitOne();
       }
 
    }

@@ -10,15 +10,23 @@ namespace Mogade.Tests
       public void PayloadIncludesTheVersion()
       {
          Server.Stub(ApiExpectation.EchoAll);
-         var response = new Communicator(FakeContext.Defaults).SendPayload("PUT", "anything", new Dictionary<string, object>(0));
-         Assert.True(response.Contains(@"""v"":1"), "payload should contain the api version");
+         new Communicator(FakeContext.Defaults).SendPayload("PUT", "anything", new Dictionary<string, object>(0), s =>
+         {
+            Assert.True(s.Raw.Contains(@"""v"":1"), "payload should contain the api version");
+            Set();
+         });
+         WaitOne();         
       }
       [Test]
       public void PayloadIncludesTheGameKey()
       {
          Server.Stub(ApiExpectation.EchoAll);
-         var response = new Communicator(new FakeContext { Key = "ItsOver9000!" }).SendPayload("PUT", "anything", new Dictionary<string, object>(0));
-         Assert.True(response.Contains(@"""key"":""ItsOver9000!"""), "payload should contain the game key version");
+         new Communicator(new FakeContext { Key = "ItsOver9000!" }).SendPayload("PUT", "anything", new Dictionary<string, object>(0), s =>
+         {
+            Assert.True(s.Raw.Contains(@"""key"":""ItsOver9000!"""), "payload should contain the game key version");
+            Set();
+         });
+         WaitOne();
       }
       [Test]
       public void PayloadGetsSerializedToJson()
@@ -30,11 +38,16 @@ namespace Mogade.Tests
                           {"key2", 123.4},
                           {"score", new {username = "Leto", points = 2}}
                        };
-         var response = JObject.Parse(new Communicator(FakeContext.Defaults).SendPayload("PUT", "anything", payload));
-         Assert.AreEqual(response["key1"].Value<string>(), "value1");
-         Assert.AreEqual(response["key2"].Value<decimal>(), 123.4);
-         Assert.AreEqual(response.SelectToken("score.username").Value<string>(), "Leto");
-         Assert.AreEqual(response.SelectToken("score.points").Value<int>(), 2);
+         new Communicator(FakeContext.Defaults).SendPayload("PUT", "anything", payload, s =>
+         {
+            var response = JObject.Parse(s.Raw);
+            Assert.AreEqual(response["key1"].Value<string>(), "value1");
+            Assert.AreEqual(response["key2"].Value<decimal>(), 123.4);
+            Assert.AreEqual(response.SelectToken("score.username").Value<string>(), "Leto");
+            Assert.AreEqual(response.SelectToken("score.points").Value<int>(), 2);
+            Set();
+         });
+         WaitOne();
       }      
    }
 }

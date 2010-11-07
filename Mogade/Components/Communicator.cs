@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+#if !WINDOWS_PHONE
 using System.ComponentModel;
+#endif
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
@@ -24,30 +26,41 @@ namespace Mogade
          _context = context;
       }
 
-      public string SendPayload(string method, string endPoint, IDictionary<string, object> partialPayload)
+      public void SendPayload(string method, string endPoint, IDictionary<string, object> partialPayload, Action<Response> callback)
       {
          var request = (HttpWebRequest)WebRequest.Create(MogadeConfiguration.Data.Url + endPoint);
          request.Method = method;
          request.ContentType = "application/json";
+#if !WINDOWS_PHONE
          request.Timeout = 10000;
          request.ReadWriteTimeout = 10000;
          request.KeepAlive = false;
+#endif         
+         request.BeginGetRequestStream(GetRequestStream, new RequestState{Request = request, Payload = FinalizePayload(partialPayload), Callback = callback});         
+      }
 
-         var payload = FinalizePayload(partialPayload);
-         var requestStream = request.GetRequestStream();
-
-         requestStream.Write(payload, 0, payload.Length);
-         requestStream.Flush();         
+      private void GetRequestStream(IAsyncResult result)
+      {
+         var state = (RequestState)result.AsyncState;
+         var requestStream = state.Request.EndGetRequestStream(result);
+         requestStream.Write(state.Payload, 0, state.Payload.Length);
+         requestStream.Flush();
          requestStream.Close();
 
+         state.Request.BeginGetResponse(GetResponseStream, state);
+      }
+      
+      private void GetResponseStream(IAsyncResult result)
+      {
+         var state = (ResponseState)result.AsyncState;
          try
          {
-            var response = (HttpWebResponse)request.GetResponse();
-            return GetResponseBody(response);
+            var response = (HttpWebResponse) state.Request.EndGetResponse(result);
+            state.Callback(Response.CreateSuccess(GetResponseBody(response)));
          }
          catch (Exception ex)
          {
-            throw HandleException(ex);
+            state.Callback(Response.CreateError(HandleException(ex)));
          }
       }
 
@@ -56,8 +69,13 @@ namespace Mogade
       {
          payload.Add("key", _context.Key);
          payload.Add("v", _context.ApiVersion);
-         payload.Add("sig", GetSignature(payload, _context.Secret));
-         return Encoding.Default.GetBytes(JsonConvert.SerializeObject(payload, Formatting.None, _jsonSettings));
+#if WINDOWS_PHONE
+         const string signatureKey = "sig2";
+#else
+         const string signatureKey = "sig";
+#endif
+         payload.Add(signatureKey, GetSignature(payload, _context.Secret));
+         return Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(payload, Formatting.None, _jsonSettings));
       }
 
       public static string GetSignature(IEnumerable<KeyValuePair<string, object>> parameters, string secret)
@@ -70,9 +88,9 @@ namespace Mogade
             sb.AppendFormat("{0}={1}&", parameter.Key, parameter.Value);
          }
          sb.Append(secret);
-         using (var hasher = new MD5CryptoServiceProvider())
+         using (var hasher = CreateHasher())
          {
-            var bytes = hasher.ComputeHash(Encoding.Default.GetBytes(sb.ToString()));
+            var bytes = hasher.ComputeHash(Encoding.UTF8.GetBytes(sb.ToString()));
             var data = new StringBuilder(bytes.Length * 2);
             for (var i = 0; i < bytes.Length; ++i)
             {
@@ -82,15 +100,25 @@ namespace Mogade
          }
       }
 
+      private static HashAlgorithm CreateHasher()
+      {         
+#if WINDOWS_PHONE
+         return new SHA1Managed();
+#else
+         return new MD5CryptoServiceProvider();
+#endif
+      }
+
       private static string GetResponseBody(WebResponse response)
       {
          using (var stream = response.GetResponseStream())
          {
             var buffer = new byte[response.ContentLength == -1 ? 1024 : response.ContentLength];
-            stream.Read(buffer, 0, buffer.Length);            
-            return Encoding.Default.GetString(buffer).TrimEnd('\0');
+            stream.Read(buffer, 0, buffer.Length);
+            return Encoding.UTF8.GetString(buffer, 0, buffer.Length).TrimEnd('\0');
          }
       }
+
       private static void BuildPayloadParameters(IEnumerable<KeyValuePair<string, object>> payload, IDictionary<string, string> parameters)
       {
          foreach (var kvp in payload)
@@ -124,33 +152,39 @@ namespace Mogade
                {
                   hash.Add(descriptor.Name, descriptor.GetValue(kvp.Value));
                }
-               BuildPayloadParameters(hash, parameters);               
-            }            
+               BuildPayloadParameters(hash, parameters);
+            }
          }
       }
-      private static Exception HandleException(Exception exception)
+
+      private static ErrorMessage HandleException(Exception exception)
       {
          if (exception is WebException)
-         {            
+         {
             var body = GetResponseBody(((WebException)exception).Response);
             try
             {
                var message = JsonConvert.DeserializeObject<ErrorMessage>(body, _jsonSettings);
-               return new MogadeException(message.Error ?? message.Maintenance, message.Info, exception);
+               message.InnerException = exception;
+               return message;
             }
             catch (Exception)
             {
-               return new MogadeException(body, exception);
-            }                        
+               return new ErrorMessage {Error = body, InnerException = exception};
+            }
          }
-         return new MogadeException("Unknown Error", exception);
+         return new ErrorMessage {Error = "Unknown Error", InnerException = exception};
       }
 
-      private class ErrorMessage
+
+      private class ResponseState
       {
-         public string Error { get; set; }
-         public string Info { get; set; }
-         public string Maintenance { get; set; }
+         public HttpWebRequest Request { get; set; }
+         public Action<Response> Callback { get; set; }
+      }
+      private class RequestState : ResponseState
+      {         
+         public byte[] Payload { get; set; }
       }
    }
 }

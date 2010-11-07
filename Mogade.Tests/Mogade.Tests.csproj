@@ -44,18 +44,36 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AchievementTests\GrantAchievementTests.cs" />
-    <Compile Include="ConfigurationTests\GameVersionTests.cs" />
-    <Compile Include="ConfigurationTests\GetGameConfigurationTests.cs" />
-    <Compile Include="ConfigurationTests\GetUserSettingsTests.cs" />
+    <Compile Include="AchievementTests\GrantAchievementTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ConfigurationTests\GameVersionTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ConfigurationTests\GetGameConfigurationTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ConfigurationTests\GetUserSettingsTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="InstructureTests\CoreCommunicationTests.cs" />
     <Compile Include="FakeContext.cs" />
     <Compile Include="FakeServer.cs" />
-    <Compile Include="InstructureTests\ErrorHandlingTests.cs" />
-    <Compile Include="InstructureTests\MogadeTests.cs" />
-    <Compile Include="InstructureTests\SignatureTests.cs" />
-    <Compile Include="LeaderboardsTest\GetLeaderboardTests.cs" />
-    <Compile Include="LeaderboardsTest\SaveScoreTests.cs" />
+    <Compile Include="InstructureTests\ErrorHandlingTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InstructureTests\MogadeTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InstructureTests\SignatureTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LeaderboardsTest\GetLeaderboardTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LeaderboardsTest\SaveScoreTests.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BaseFixture.cs" />
   </ItemGroup>
