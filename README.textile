@@ -17,7 +17,15 @@ h3. Usage
 The library should be straightforward to most .NET developers. The main entry point is the @Mogade@ class (which implements @IMogade@ for you DI junkies).
 
 You instantiate @Mogade@ by supplying your game key and game secret (available from the details view of your game on the mogade.com website):
-<pre>var mogade = new Mogade("myGameKey", "shhhMySecret");</pre>
+<pre>var driver = new Driver("myGameKey", "shhhMySecret");</pre>
+
+(we call it the Driver, because its assumed this library will be wrapped in a higher level platform library, such as the "https://github.com/mogade/mogade-windwosphone":WindowsPhone one)
+
+Once created, you can use the various methods to interact with the mogade service. Note that all methods fire asynchronously, and thus return void and require a callback method:
+<pre>driver.GetLeaderboard("leaderboardId", LeaderboardScope.Daily, page, leaderboard =>
+{
+   //do something with the leaderboard
+});</pre>
 
 h3. API Overview
 
