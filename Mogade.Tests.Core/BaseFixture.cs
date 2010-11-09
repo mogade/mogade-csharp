@@ -22,7 +22,7 @@ namespace Mogade.Tests
          if (NeedAServer)
          {
             Server = new FakeServer();
-            MogadeConfiguration.Configuration(c => c.ConnectTo("http://localhost:" + FakeServer.Port + "/"));            
+            DriverConfiguration.Configuration(c => c.ConnectTo("http://localhost:" + FakeServer.Port + "/"));            
          }
          BeforeEachTest();
       }
@@ -32,7 +32,7 @@ namespace Mogade.Tests
          if (Server != null)
          {
             Server.Dispose();
-            MogadeConfiguration.ResetToDefaults();
+            DriverConfiguration.ResetToDefaults();
          }         
          AfterEachTest();
       }

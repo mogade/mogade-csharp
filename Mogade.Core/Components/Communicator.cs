@@ -28,7 +28,7 @@ namespace Mogade
 
       public void SendPayload(string method, string endPoint, IDictionary<string, object> partialPayload, Action<Response> callback)
       {
-         var request = (HttpWebRequest)WebRequest.Create(MogadeConfiguration.Data.Url + endPoint);
+         var request = (HttpWebRequest)WebRequest.Create(DriverConfiguration.Data.Url + endPoint);
          request.Method = method;
          request.ContentType = "application/json";
 #if !WINDOWS_PHONE
