@@ -6,6 +6,6 @@ namespace Mogade.Leaderboards
    public class Leaderboard
    {
       [JsonProperty("scores")]
-      public IList<Score> Scores { get; private set; }
+      public IList<Score> Scores { get; set; }
    }
 }
