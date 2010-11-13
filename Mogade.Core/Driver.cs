@@ -66,18 +66,18 @@ namespace Mogade
          });
       }
 
-      public void SaveScore(string leaderboardId, Score score, Action<Ranks> callback)
+      public void SaveScore(string leaderboardId, Score score, string uniqueIdentifier, Action<Ranks> callback)
       {
          ValidationHelper.AssertValidId(leaderboardId, "leaderboardId");
          ValidationHelper.AssertNotNull(score, "score");
          ValidationHelper.AssertMaximumLength(score.Data, 25, "score data");
          ValidationHelper.AssertNotNullOrEmpty(score.UserName, 20, "score username");
-         ValidationHelper.AssertNotNullOrEmpty(score.UniqueIdentifier, 50, "unique identifier");
+         ValidationHelper.AssertNotNullOrEmpty(uniqueIdentifier, 50, "unique identifier");
 
          var payload = new Dictionary<string, object>
                        {
                           {"leaderboard_id", leaderboardId}, 
-                          {"score", new {username = score.UserName, points = score.Points, data = score.Data}},
+                          {"score", new {username = score.UserName, points = score.Points, data = score.Data, unique = uniqueIdentifier}},
                        };
          var communicator = new Communicator(this);
          communicator.SendPayload(Communicator.PUT, "scores", payload, r =>

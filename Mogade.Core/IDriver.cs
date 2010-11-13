@@ -43,6 +43,7 @@ namespace Mogade
       /// </summary>
       /// <param name="leaderboardId">The id of the leaderboard to save the score to</param>
       /// <param name="score">The required score to save</param>
+      /// <param name="uniqueIdentifier">A unique identifier for the user. Mobile devices should use the deviceId.</param>
       /// <returns>A rank object containing the daily, weekly, and overall rank of the supplied score for the given leaderboard</returns>
       /// <remarks>
       /// The username and points properties of the Score are required.
@@ -52,7 +53,7 @@ namespace Mogade
       /// might mean the user got to level 4 and played for 12 minutes and 30 seconds. You are responsible for encoding/decoding
       /// this information...we just take it in, store it, and pass it back out      
       /// </remarks>
-      void SaveScore(string leaderboardId, Score score, Action<Ranks> callback);
+      void SaveScore(string leaderboardId, Score score, string uniqueIdentifier, Action<Ranks> callback);
 
       /// <summary>
       /// Gets a leaderboard page
