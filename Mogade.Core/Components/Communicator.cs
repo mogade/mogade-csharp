@@ -31,6 +31,7 @@ namespace Mogade
          var request = (HttpWebRequest)WebRequest.Create(DriverConfiguration.Data.Url + endPoint);
          request.Method = method;
          request.ContentType = "application/json";
+         request.UserAgent = "mogade-csharp";
 #if !WINDOWS_PHONE
          request.Timeout = 10000;
          request.ReadWriteTimeout = 10000;
@@ -42,11 +43,12 @@ namespace Mogade
       private void GetRequestStream(IAsyncResult result)
       {
          var state = (RequestState)result.AsyncState;
-         var requestStream = state.Request.EndGetRequestStream(result);
-         requestStream.Write(state.Payload, 0, state.Payload.Length);
-         requestStream.Flush();
-         requestStream.Close();
-
+         using (var requestStream = state.Request.EndGetRequestStream(result))
+         {
+            requestStream.Write(state.Payload, 0, state.Payload.Length);
+            requestStream.Flush();
+            requestStream.Close();
+         }
          state.Request.BeginGetResponse(GetResponseStream, state);
       }
       
