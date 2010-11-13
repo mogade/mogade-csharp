@@ -72,6 +72,7 @@ namespace Mogade
          ValidationHelper.AssertNotNull(score, "score");
          ValidationHelper.AssertMaximumLength(score.Data, 25, "score data");
          ValidationHelper.AssertNotNullOrEmpty(score.UserName, 20, "score username");
+         ValidationHelper.AssertNotNullOrEmpty(score.UniqueIdentifier, 50, "unique identifier");
 
          var payload = new Dictionary<string, object>
                        {

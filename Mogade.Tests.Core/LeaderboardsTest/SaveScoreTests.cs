@@ -9,7 +9,7 @@ namespace Mogade.Tests.LeaderboardsTest
       public void SendsScoreWithoutDataToTheServer()
       {
          Server.Stub(new ApiExpectation { Method = "PUT", Url = "/scores", Request = @"{""leaderboard_id"":""mybaloney"",""score"":{""username"":""Scytale"",""points"":10039},""key"":""thekey"",""v"":1,""sig"":""28c45e971d84c3cb1d136c8bf518fdb1""}" });
-         var score = new Score {Points = 10039, UserName = "Scytale"};
+         var score = new Score { Points = 10039, UserName = "Scytale", UniqueIdentifier = "gom jabbar" };
          new Driver("thekey", "sssshh").SaveScore("mybaloney", score, r => { });
       }
 
@@ -17,7 +17,7 @@ namespace Mogade.Tests.LeaderboardsTest
       public void SendsScoreWithDataToTheServer()
       {
          Server.Stub(new ApiExpectation { Method = "PUT", Url = "/scores", Request = @"{""leaderboard_id"":""mybaloney"",""score"":{""username"":""Scytale"",""points"":10039,""data"":""mydata""},""key"":""thekey"",""v"":1,""sig"":""a501a457b6684989f77298e6a61b7403""}" });
-         var score = new Score { Points = 10039, UserName = "Scytale", Data = "mydata" };
+         var score = new Score { Points = 10039, UserName = "Scytale", Data = "mydata", UniqueIdentifier = "gom jabbar" };
          new Driver("thekey", "sssshh").SaveScore("mybaloney", score, r => { });
       }
 
@@ -26,7 +26,7 @@ namespace Mogade.Tests.LeaderboardsTest
       public void RetrievesAllTheRanksFromTheResponse()
       {
          Server.Stub(new ApiExpectation { Response = @"{""daily"": 20, ""weekly"": 25, ""overall"": 45}" });
-         var score = new Score { Points = 10039, UserName = "Scytale" };
+         var score = new Score { Points = 10039, UserName = "Scytale", UniqueIdentifier = "gom jabbar" };
          new Driver("thekey", "sssshh").SaveScore("mybaloney", score, ranks =>
          {
             Assert.AreEqual(20, ranks.Daily);
@@ -38,13 +38,26 @@ namespace Mogade.Tests.LeaderboardsTest
       }
 
       [Test]
-      public void RetrievesWhetherItWasATopScoreFromTheResponse()
+      public void RetrievesANewTopFlag()
       {
          Server.Stub(new ApiExpectation { Response = @"{top_score: true}" });
-         var score = new Score { Points = 10039, UserName = "Scytale" };
+         var score = new Score { Points = 10039, UserName = "Scytale", UniqueIdentifier = "gom jabbar" };
          new Driver("thekey", "sssshh").SaveScore("mybaloney", score, ranks =>
          {
-            Assert.AreEqual(true, ranks.TopScore);            
+            Assert.AreEqual(true, ranks.TopScore);
+            Set();
+         });
+         WaitOne();
+      }
+
+      [Test]
+      public void RetrievesANonTopScoreFlag()
+      {
+         Server.Stub(new ApiExpectation { Response = @"{top_score: false}" });
+         var score = new Score { Points = 10039, UserName = "Scytale", UniqueIdentifier = "gom jabbar" };
+         new Driver("thekey", "sssshh").SaveScore("mybaloney", score, ranks =>
+         {
+            Assert.AreEqual(false, ranks.TopScore);
             Set();
          });
          WaitOne();
@@ -54,7 +67,7 @@ namespace Mogade.Tests.LeaderboardsTest
       public void RetrievesAnEmptyRankSet() //SaveScore isn't guaranteed to return all, or even any rank
       {
          Server.Stub(new ApiExpectation { Response = @"{}" });
-         var score = new Score { Points = 10039, UserName = "Scytale" };
+         var score = new Score { Points = 10039, UserName = "Scytale", UniqueIdentifier = "gom jabbar" };
          new Driver("thekey", "sssshh").SaveScore("mybaloney", score, ranks =>
          {
             Assert.AreEqual(0, ranks.Daily);
@@ -69,7 +82,7 @@ namespace Mogade.Tests.LeaderboardsTest
       public void RetrievesAnPartialRankSet() //SaveScore isn't guaranteed to return all, or even any rank
       {
          Server.Stub(new ApiExpectation { Response = @"{""weekly"": 49494}" });
-         var score = new Score { Points = 10039, UserName = "Scytale" };
+         var score = new Score { Points = 10039, UserName = "Scytale", UniqueIdentifier = "gom jabbar" };
          new Driver("thekey", "sssshh").SaveScore("mybaloney", score, ranks =>
          {
             Assert.AreEqual(0, ranks.Daily);
@@ -103,6 +116,12 @@ namespace Mogade.Tests.LeaderboardsTest
       {
          AssertMogadeException("score username is required and cannot be null or empty", () => new Driver("key", "secret").SaveScore("abc", new Score(), r => { }));
          AssertMogadeException("score username is required and cannot be null or empty", () => new Driver("key", "secret").SaveScore("abc", new Score { UserName = string.Empty }, r => { }));
+      }
+      [Test]
+      public void NullOrEmptUniqueIdentifierCausesAnException()
+      {
+         AssertMogadeException("unique identifier is required and cannot be null or empty", () => new Driver("key", "secret").SaveScore("abc", new Score {UserName = "Leto"}, r => { }));
+         AssertMogadeException("unique identifier is required and cannot be null or empty", () => new Driver("key", "secret").SaveScore("abc", new Score { UserName = "Ghanima", UniqueIdentifier = string.Empty}, r => { }));
       }
       [Test]
       public void LongUserNameCausesAnException()
