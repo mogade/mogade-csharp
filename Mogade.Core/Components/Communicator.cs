@@ -57,8 +57,10 @@ namespace Mogade
          var state = (ResponseState)result.AsyncState;
          try
          {
-            var response = (HttpWebResponse) state.Request.EndGetResponse(result);
-            state.Callback(Response.CreateSuccess(GetResponseBody(response)));
+            using (var response = (HttpWebResponse)state.Request.EndGetResponse(result))
+            {
+               state.Callback(Response.CreateSuccess(GetResponseBody(response)));
+            }
          }
          catch (Exception ex)
          {
