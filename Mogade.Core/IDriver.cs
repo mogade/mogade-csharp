@@ -64,7 +64,7 @@ namespace Mogade
       /// <remarks>
       /// Each page is limited to 10 scores
       /// </remarks>
-      void GetLeaderboard(string leaderboardId, LeaderboardScope scope, int page, Action<Leaderboard> callback);
+      void GetLeaderboard(string leaderboardId, LeaderboardScope scope, int page, Action<LeaderboardScores> callback);
 
       /// <summary>
       /// Grants the user the specified achievement

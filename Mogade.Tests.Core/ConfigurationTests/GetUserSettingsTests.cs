@@ -22,7 +22,7 @@ namespace Mogade.Tests.ConfigurationTests
          WaitOne();
       }
       [Test]
-      public void GetsConfigurationFromServer()
+      public void GetsAchievementConfigurationFromServer()
       {
          Server.Stub(new ApiExpectation { Response = "{achievements: ['abc', '123']}" });
          new Driver("thekey", "sssshh").GetUserSettings("Edric", "2323", settings =>
@@ -32,7 +32,20 @@ namespace Mogade.Tests.ConfigurationTests
             Assert.AreEqual("123", settings.Achievements[1]);
             Set();
          });
-         WaitOne();         
+         WaitOne();
+      }
+      [Test]
+      public void GetsTopScoresConfigurationFromServer()
+      {
+         Server.Stub(new ApiExpectation { Response = "{leaderboards: [{id: 'id1', points: 123}, {id: 'id5', points: 9001}]}" });
+         new Driver("thekey", "sssshh").GetUserSettings("Edric", "2323", settings =>
+         {
+            Assert.AreEqual(2, settings.LeaderboardHighScores.Count);
+            Assert.AreEqual(123, settings.LeaderboardHighScores["id1"]);
+            Assert.AreEqual(9001, settings.LeaderboardHighScores["id5"]);
+            Set();
+         });
+         WaitOne();
       }
       [Test]
       public void NullOrEmptyUserNameCausesAnException()

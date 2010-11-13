@@ -54,6 +54,7 @@
     <Compile Include="Achievements\Achievement.cs" />
     <Compile Include="Components\IDriverConfiguration.cs" />
     <Compile Include="Components\IDriverData.cs" />
+    <Compile Include="Components\JsonConverters\LeaderboardHighScoresConverter.cs" />
     <Compile Include="Components\Response.cs" />
     <Compile Include="Components\SortedDictionary.cs" />
     <Compile Include="Configuration\GameConfiguration.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="IDriver.cs" />
     <Compile Include="Leaderboards\Leaderboard.cs" />
     <Compile Include="Leaderboards\LeaderboardScope.cs" />
+    <Compile Include="Leaderboards\LeaderboardScores.cs" />
     <Compile Include="Leaderboards\Ranks.cs" />
     <Compile Include="MogadeException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -42,12 +42,14 @@
   <ItemGroup>
     <Compile Include="Achievements\Achievement.cs" />
     <Compile Include="Components\IDriverData.cs" />
+    <Compile Include="Components\JsonConverters\LeaderboardHighScoresConverter.cs" />
     <Compile Include="Configuration\GameConfiguration.cs" />
     <Compile Include="Configuration\UserSettings.cs" />
     <Compile Include="IDriver.cs" />
     <Compile Include="Components\Communicator.cs" />
     <Compile Include="Components\IRequestContext.cs" />
     <Compile Include="Leaderboards\Leaderboard.cs" />
+    <Compile Include="Leaderboards\LeaderboardScores.cs" />
     <Compile Include="Leaderboards\LeaderboardScope.cs" />
     <Compile Include="Leaderboards\Ranks.cs" />
     <Compile Include="Driver.cs" />

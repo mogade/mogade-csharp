@@ -40,7 +40,7 @@ namespace Mogade
          request.BeginGetRequestStream(GetRequestStream, new RequestState{Request = request, Payload = FinalizePayload(partialPayload), Callback = callback});         
       }
 
-      private void GetRequestStream(IAsyncResult result)
+      private static void GetRequestStream(IAsyncResult result)
       {
          var state = (RequestState)result.AsyncState;
          using (var requestStream = state.Request.EndGetRequestStream(result))
@@ -52,7 +52,7 @@ namespace Mogade
          state.Request.BeginGetResponse(GetResponseStream, state);
       }
       
-      private void GetResponseStream(IAsyncResult result)
+      private static void GetResponseStream(IAsyncResult result)
       {
          var state = (ResponseState)result.AsyncState;
          try

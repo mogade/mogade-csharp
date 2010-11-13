@@ -38,6 +38,19 @@ namespace Mogade.Tests.LeaderboardsTest
       }
 
       [Test]
+      public void RetrievesWhetherItWasATopScoreFromTheResponse()
+      {
+         Server.Stub(new ApiExpectation { Response = @"{top_score: true}" });
+         var score = new Score { Points = 10039, UserName = "Scytale" };
+         new Driver("thekey", "sssshh").SaveScore("mybaloney", score, ranks =>
+         {
+            Assert.AreEqual(true, ranks.TopScore);            
+            Set();
+         });
+         WaitOne();
+      }
+
+      [Test]
       public void RetrievesAnEmptyRankSet() //SaveScore isn't guaranteed to return all, or even any rank
       {
          Server.Stub(new ApiExpectation { Response = @"{}" });

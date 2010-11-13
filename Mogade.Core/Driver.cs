@@ -86,7 +86,7 @@ namespace Mogade
          });
       }
 
-      public void GetLeaderboard(string leaderboardId, LeaderboardScope scope, int page, Action<Leaderboard> callback)
+      public void GetLeaderboard(string leaderboardId, LeaderboardScope scope, int page, Action<LeaderboardScores> callback)
       {
          ValidationHelper.AssertValidId(leaderboardId, "leaderboardId");
          var payload = new Dictionary<string, object> {{"leaderboard", new {id = leaderboardId, scope = (int) scope, page = page}}};
@@ -94,7 +94,7 @@ namespace Mogade
          communicator.SendPayload(Communicator.POST, "scores", payload, r =>
          {
             if (!r.Success) { throw new MogadeException(r.Error); }
-            callback(JsonConvert.DeserializeObject<Leaderboard>(r.Raw));
+            callback(JsonConvert.DeserializeObject<LeaderboardScores>(r.Raw));
          });
       }
 
