@@ -84,5 +84,12 @@ namespace Mogade
       /// <param name="uniqueIdentifier">A unique identifier for the user. Mobile devices should use the deviceId.</param>
       /// <returns>The number of points earned</returns>
       void GrantAchievement(Achievement achievement, string userName, string uniqueIdentifier, Action<int> callback);
+
+      /// <summary>
+      /// Logs an error
+      /// </summary>
+      /// <param name="subject">the subject of the error (a brief description)</param>
+      /// <param name="details">the error's details</param>
+      void LogError(string subject, string details);
    }
 }

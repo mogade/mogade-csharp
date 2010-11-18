@@ -59,12 +59,12 @@ namespace Mogade
          {
             using (var response = (HttpWebResponse)state.Request.EndGetResponse(result))
             {
-               state.Callback(Response.CreateSuccess(GetResponseBody(response)));
+               if (state.Callback != null) { state.Callback(Response.CreateSuccess(GetResponseBody(response))); }
             }
          }
          catch (Exception ex)
          {
-            state.Callback(Response.CreateError(HandleException(ex)));
+            if (state.Callback != null) { state.Callback(Response.CreateError(HandleException(ex))); }
          }
       }
 

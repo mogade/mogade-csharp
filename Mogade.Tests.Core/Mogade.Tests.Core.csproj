@@ -74,6 +74,7 @@
     <Compile Include="LeaderboardsTest\SaveScoreTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LoggingTests\ErrorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BaseFixture.cs" />
   </ItemGroup>

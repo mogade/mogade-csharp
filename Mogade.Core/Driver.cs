@@ -120,5 +120,12 @@ namespace Mogade
          ValidationHelper.AssertNotNull(achievement, "achievement");
          GrantAchievement(achievement.Id, userName, uniqueIdentifier, callback);
       }
+
+      public void LogError(string subject, string details)
+      {
+         var payload = new Dictionary<string, object> { { "subject", subject }, { "details", details }};
+         var communicator = new Communicator(this);
+         communicator.SendPayload(Communicator.PUT, "logging/error", payload, null);       
+      }
    }
 }
