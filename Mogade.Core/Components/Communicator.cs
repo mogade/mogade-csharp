@@ -117,9 +117,17 @@ namespace Mogade
       {
          using (var stream = response.GetResponseStream())
          {
-            var buffer = new byte[response.ContentLength == -1 ? 1024 : response.ContentLength];
-            stream.Read(buffer, 0, buffer.Length);
-            return Encoding.UTF8.GetString(buffer, 0, buffer.Length).TrimEnd('\0');
+            var sb = new StringBuilder();
+            var read = 0;
+            var bufferSize = response.ContentLength == -1 ? 2048 : (int)response.ContentLength;
+            if (bufferSize == 0) { return null; }
+            do
+            {
+               var buffer = new byte[2048];
+               read = stream.Read(buffer, 0, buffer.Length);
+               sb.Append(Encoding.UTF8.GetString(buffer, 0, read));
+            } while (read > 0);
+            return sb.ToString();
          }
       }
 
