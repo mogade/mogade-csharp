@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
@@ -15,7 +16,7 @@ namespace Mogade.Tests
             Assert.True(s.Raw.Contains(@"""v"":1"), "payload should contain the api version");
             Set();
          });
-         WaitOne();         
+         WaitOne();
       }
       [Test]
       public void PayloadIncludesTheGameKey()
@@ -48,6 +49,19 @@ namespace Mogade.Tests
             Set();
          });
          WaitOne();
-      }      
+      }
+
+      [Test]
+      public void WontTryToConnectIfNetworkCheckReturnsFalse()
+      {
+         DriverConfiguration.Configuration(c => c.NetworkAvailableCheck(() => false));
+         new Communicator(FakeContext.Defaults).SendPayload("PUT", "anything", null, s =>
+         {
+            Assert.AreEqual("Network is not available", s.Error.Message);
+            Assert.AreEqual(false, s.Success);
+            Set();
+         });
+         WaitOne();
+      }
    }
 }

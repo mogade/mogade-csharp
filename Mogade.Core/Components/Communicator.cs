@@ -28,7 +28,12 @@ namespace Mogade
 
       public void SendPayload(string method, string endPoint, IDictionary<string, object> partialPayload, Action<Response> callback)
       {
-         var request = (HttpWebRequest)WebRequest.Create(DriverConfiguration.Data.Url + endPoint);
+         if (!DriverConfiguration.Data.NetworkCheck())
+         {
+            callback(Response.CreateError(new ErrorMessage {Message = "Network is not available"}));
+            return;
+         }
+         var request = (HttpWebRequest)WebRequest.Create(DriverConfiguration.Data.Url + endPoint);         
          request.Method = method;
          request.ContentType = "application/json";
          request.UserAgent = "mogade-csharp";
@@ -182,10 +187,10 @@ namespace Mogade
             }
             catch (Exception)
             {
-               return new ErrorMessage {Error = body, InnerException = exception};
+               return new ErrorMessage {Message = body, InnerException = exception};
             }
          }
-         return new ErrorMessage {Error = "Unknown Error", InnerException = exception};
+         return new ErrorMessage {Message = "Unknown Error", InnerException = exception};
       }
 
 

@@ -6,7 +6,8 @@ namespace Mogade
    {
       IDriverConfiguration ConnectTo(string url);
       IDriverConfiguration ConnectToTest();
-      
+      IDriverConfiguration NetworkAvailableCheck(Func<bool> networkCheck);
+
    }
    /// <summary>
    /// Configures the internal workings of the library.
@@ -43,6 +44,12 @@ namespace Mogade
       public IDriverConfiguration ConnectToTest()
       {
          _data.Url = DriverData.TESTURL;
+         return this;
+      }
+
+      public IDriverConfiguration NetworkAvailableCheck(Func<bool> networkCheck)
+      {
+         _data.NetworkCheck = networkCheck;
          return this;
       }
    }

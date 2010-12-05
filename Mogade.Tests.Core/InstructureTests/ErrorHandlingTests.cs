@@ -11,7 +11,7 @@ namespace Mogade.Tests
          new Communicator(FakeContext.Defaults).SendPayload("any", "any", EmptyPayload(), r =>
          {
             Assert.IsFalse(r.Success);
-            Assert.AreEqual("its over 9000!!", r.Error.Error);
+            Assert.AreEqual("its over 9000!!", r.Error.Message);
             Set();
          });
          WaitOne();         
@@ -38,7 +38,7 @@ namespace Mogade.Tests
          new Communicator(FakeContext.Defaults).SendPayload("any", "any", EmptyPayload(), r =>
          {
             Assert.IsFalse(r.Success);
-            Assert.AreEqual("Server CRASH!", r.Error.Error);
+            Assert.AreEqual("Server CRASH!", r.Error.Message);
             Set();
          });
          WaitOne();

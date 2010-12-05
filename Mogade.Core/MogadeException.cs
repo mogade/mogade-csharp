@@ -7,10 +7,10 @@ namespace Mogade
       public ErrorMessage Details { get; set; }
 
       public MogadeException() { }
-      public MogadeException(ErrorMessage message) : this(message.Error, message.InnerException){}
+      public MogadeException(ErrorMessage message) : this(message.Message, message.InnerException){}
       public MogadeException(string message) : base(message) { }
       public MogadeException(string message, Exception innerException) : base(message, innerException) { }
-      public MogadeException(ErrorMessage message, Exception innerException) : base(message.Error, innerException)
+      public MogadeException(ErrorMessage message, Exception innerException) : base(message.Message, innerException)
       {
          Details = message;
       }
