@@ -1,4 +1,5 @@
 using System;
+using Newtonsoft.Json;
 
 namespace Mogade
 {
@@ -20,6 +21,7 @@ namespace Mogade
 
    public class ErrorMessage
    {
+      [JsonProperty("error")]
       public string Message { get; set; }
       public string Info { get; set; }
       public string Maintenance { get; set; }
