@@ -16,3 +16,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("1.0.0.0")]
 [assembly: InternalsVisibleTo("Mogade.Tests.Core")]
 [assembly: InternalsVisibleTo("Newtonsoft.Json.Silverlight")]
+[assembly: InternalsVisibleTo("Mogade.WindowsPhone")]
