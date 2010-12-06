@@ -26,11 +26,11 @@ namespace Mogade
          _context = context;
       }
 
-      public void SendPayload(string method, string endPoint, IDictionary<string, object> partialPayload, Action<Response> callback)
+      public void SendPayload<T>(string method, string endPoint, IDictionary<string, object> partialPayload, Action<Response<T>> callback)
       {
          if (!DriverConfiguration.Data.NetworkCheck())
          {
-            callback(Response.CreateError(new ErrorMessage {Message = "Network is not available"}));
+            callback(Response<T>.CreateError(new ErrorMessage {Message = "Network is not available"}));
             return;
          }
          var request = (HttpWebRequest)WebRequest.Create(DriverConfiguration.Data.Url + endPoint);         
@@ -42,34 +42,34 @@ namespace Mogade
          request.ReadWriteTimeout = 10000;
          request.KeepAlive = false;
 #endif         
-         request.BeginGetRequestStream(GetRequestStream, new RequestState{Request = request, Payload = FinalizePayload(partialPayload), Callback = callback});         
+         request.BeginGetRequestStream(GetRequestStream<T>, new RequestState<T>{Request = request, Payload = FinalizePayload(partialPayload), Callback = callback});         
       }
 
-      private static void GetRequestStream(IAsyncResult result)
+      private static void GetRequestStream<T>(IAsyncResult result)
       {
-         var state = (RequestState)result.AsyncState;
+         var state = (RequestState<T>)result.AsyncState;
          using (var requestStream = state.Request.EndGetRequestStream(result))
          {
             requestStream.Write(state.Payload, 0, state.Payload.Length);
             requestStream.Flush();
             requestStream.Close();
          }
-         state.Request.BeginGetResponse(GetResponseStream, state);
+         state.Request.BeginGetResponse(GetResponseStream<T>, state);
       }
-      
-      private static void GetResponseStream(IAsyncResult result)
+
+      private static void GetResponseStream<T>(IAsyncResult result)
       {
-         var state = (ResponseState)result.AsyncState;
+         var state = (ResponseState<T>)result.AsyncState;
          try
          {
             using (var response = (HttpWebResponse)state.Request.EndGetResponse(result))
             {
-               if (state.Callback != null) { state.Callback(Response.CreateSuccess(GetResponseBody(response))); }
+               if (state.Callback != null) { state.Callback(Response<T>.CreateSuccess(GetResponseBody(response))); }
             }
          }
          catch (Exception ex)
          {
-            if (state.Callback != null) { state.Callback(Response.CreateError(HandleException(ex))); }
+            if (state.Callback != null) { state.Callback(Response<T>.CreateError(HandleException(ex))); }
          }
       }
 
@@ -194,12 +194,12 @@ namespace Mogade
       }
 
 
-      private class ResponseState
+      private class ResponseState<T>
       {
          public HttpWebRequest Request { get; set; }
-         public Action<Response> Callback { get; set; }
+         public Action<Response<T>> Callback { get; set; }
       }
-      private class RequestState : ResponseState
+      private class RequestState<T> : ResponseState<T> 
       {         
          public byte[] Payload { get; set; }
       }

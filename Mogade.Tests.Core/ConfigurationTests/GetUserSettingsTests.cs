@@ -16,7 +16,8 @@ namespace Mogade.Tests.ConfigurationTests
          Server.Stub(new ApiExpectation { Response = "{}" });
          new Driver("thekey", "sssshh").GetUserSettings("Edric", "2323", settings =>
          {
-            Assert.AreEqual(0, settings.Achievements.Count);
+            Assert.AreEqual(true, settings.Success);
+            Assert.AreEqual(0, settings.Data.Achievements.Count);
             Set();
          });
          WaitOne();
@@ -27,9 +28,10 @@ namespace Mogade.Tests.ConfigurationTests
          Server.Stub(new ApiExpectation { Response = "{achievements: ['abc', '123']}" });
          new Driver("thekey", "sssshh").GetUserSettings("Edric", "2323", settings =>
          {
-            Assert.AreEqual(2, settings.Achievements.Count);
-            Assert.AreEqual("abc", settings.Achievements[0]);
-            Assert.AreEqual("123", settings.Achievements[1]);
+            Assert.AreEqual(true, settings.Success);
+            Assert.AreEqual(2, settings.Data.Achievements.Count);
+            Assert.AreEqual("abc", settings.Data.Achievements[0]);
+            Assert.AreEqual("123", settings.Data.Achievements[1]);
             Set();
          });
          WaitOne();
@@ -40,9 +42,10 @@ namespace Mogade.Tests.ConfigurationTests
          Server.Stub(new ApiExpectation { Response = "{leaderboards: [{id: 'id1', points: 123}, {id: 'id5', points: 9001}]}" });
          new Driver("thekey", "sssshh").GetUserSettings("Edric", "2323", settings =>
          {
-            Assert.AreEqual(2, settings.LeaderboardHighScores.Count);
-            Assert.AreEqual(123, settings.LeaderboardHighScores["id1"]);
-            Assert.AreEqual(9001, settings.LeaderboardHighScores["id5"]);
+            Assert.AreEqual(true, settings.Success);
+            Assert.AreEqual(2, settings.Data.LeaderboardHighScores.Count);
+            Assert.AreEqual(123, settings.Data.LeaderboardHighScores["id1"]);
+            Assert.AreEqual(9001, settings.Data.LeaderboardHighScores["id5"]);
             Set();
          });
          WaitOne();

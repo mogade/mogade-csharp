@@ -19,7 +19,7 @@ namespace Mogade
       /// The intent of this is that games (or platform libraries) can cache a game's mogade configuration, and
       /// rely on GetGameVersion to detect a change (which is far less expensive on our poor servers)
       /// </remarks>
-      void GetGameVersion(Action<int> callback);
+      void GetGameVersion(Action<Response<int>> callback);
 
       /// <summary>
       /// Returns the user's stored settings for this game
@@ -28,7 +28,7 @@ namespace Mogade
       /// <remarks>
       /// The achievements collection is a list of achievement ids the user has earned      
       /// </remarks>
-      void GetUserSettings(string userName, string uniqueIdentifier, Action<UserSettings> callback);
+      void GetUserSettings(string userName, string uniqueIdentifier, Action<Response<UserSettings>> callback);
 
       /// <summary>      
       /// Returns the game's stored settings
@@ -36,7 +36,7 @@ namespace Mogade
       /// <returns>The game's configuration</returns>
       /// <remarks>
       /// </remarks>
-      void GetGameConfiguration(Action<GameConfiguration> callback);
+      void GetGameConfiguration(Action<Response<GameConfiguration>> callback);
 
       /// <summary>
       /// Saves a score
@@ -53,7 +53,7 @@ namespace Mogade
       /// might mean the user got to level 4 and played for 12 minutes and 30 seconds. You are responsible for encoding/decoding
       /// this information...we just take it in, store it, and pass it back out      
       /// </remarks>
-      void SaveScore(string leaderboardId, Score score, string uniqueIdentifier, Action<Ranks> callback);
+      void SaveScore(string leaderboardId, Score score, string uniqueIdentifier, Action<Response<Ranks>> callback);
 
       /// <summary>
       /// Gets a leaderboard page
@@ -65,7 +65,7 @@ namespace Mogade
       /// <remarks>
       /// Each page is limited to 10 scores
       /// </remarks>
-      void GetLeaderboard(string leaderboardId, LeaderboardScope scope, int page, Action<LeaderboardScores> callback);
+      void GetLeaderboard(string leaderboardId, LeaderboardScope scope, int page, Action<Response<LeaderboardScores>> callback);
 
       /// <summary>
       /// Grants the user the specified achievement
@@ -74,7 +74,7 @@ namespace Mogade
       /// <param name="userName">The user's username</param>
       /// <param name="uniqueIdentifier">A unique identifier for the user. Mobile devices should use the deviceId.</param>
       /// <returns>The number of points earned</returns>
-      void GrantAchievement(string achievementId, string userName, string uniqueIdentifier, Action<int> callback);
+      void GrantAchievement(string achievementId, string userName, string uniqueIdentifier, Action<Response<int>> callback);
 
       /// <summary>
       /// Grants the user the specified achievement
@@ -83,7 +83,7 @@ namespace Mogade
       /// <param name="userName">The user's username</param>
       /// <param name="uniqueIdentifier">A unique identifier for the user. Mobile devices should use the deviceId.</param>
       /// <returns>The number of points earned</returns>
-      void GrantAchievement(Achievement achievement, string userName, string uniqueIdentifier, Action<int> callback);
+      void GrantAchievement(Achievement achievement, string userName, string uniqueIdentifier, Action<Response<int>> callback);
 
       /// <summary>
       /// Logs an error

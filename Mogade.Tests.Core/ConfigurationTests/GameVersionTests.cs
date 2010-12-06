@@ -17,7 +17,8 @@ namespace Mogade.Tests.ConfigurationTests
          Server.Stub(new ApiExpectation { Response = "{version: 47}"});
          new Driver("akey", "sssshh2").GetGameVersion(v =>
          {
-            Assert.AreEqual(47, v);
+            Assert.AreEqual(true, v.Success);
+            Assert.AreEqual(47, v.Data);
             Set();
          });
          WaitOne();

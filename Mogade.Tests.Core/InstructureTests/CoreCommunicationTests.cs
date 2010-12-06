@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 
@@ -11,7 +10,7 @@ namespace Mogade.Tests
       public void PayloadIncludesTheVersion()
       {
          Server.Stub(ApiExpectation.EchoAll);
-         new Communicator(FakeContext.Defaults).SendPayload("PUT", "anything", new Dictionary<string, object>(0), s =>
+         new Communicator(FakeContext.Defaults).SendPayload<object>("PUT", "anything", new Dictionary<string, object>(0), s =>
          {
             Assert.True(s.Raw.Contains(@"""v"":1"), "payload should contain the api version");
             Set();
@@ -22,7 +21,7 @@ namespace Mogade.Tests
       public void PayloadIncludesTheGameKey()
       {
          Server.Stub(ApiExpectation.EchoAll);
-         new Communicator(new FakeContext { Key = "ItsOver9000!" }).SendPayload("PUT", "anything", new Dictionary<string, object>(0), s =>
+         new Communicator(new FakeContext { Key = "ItsOver9000!" }).SendPayload<object>("PUT", "anything", new Dictionary<string, object>(0), s =>
          {
             Assert.True(s.Raw.Contains(@"""key"":""ItsOver9000!"""), "payload should contain the game key version");
             Set();
@@ -39,7 +38,7 @@ namespace Mogade.Tests
                           {"key2", 123.4},
                           {"score", new {username = "Leto", points = 2}}
                        };
-         new Communicator(FakeContext.Defaults).SendPayload("PUT", "anything", payload, s =>
+         new Communicator(FakeContext.Defaults).SendPayload<object>("PUT", "anything", payload, s =>
          {
             var response = JObject.Parse(s.Raw);
             Assert.AreEqual(response["key1"].Value<string>(), "value1");
@@ -55,7 +54,7 @@ namespace Mogade.Tests
       public void WontTryToConnectIfNetworkCheckReturnsFalse()
       {
          DriverConfiguration.Configuration(c => c.NetworkAvailableCheck(() => false));
-         new Communicator(FakeContext.Defaults).SendPayload("PUT", "anything", null, s =>
+         new Communicator(FakeContext.Defaults).SendPayload<object>("PUT", "anything", null, s =>
          {
             Assert.AreEqual("Network is not available", s.Error.Message);
             Assert.AreEqual(false, s.Success);

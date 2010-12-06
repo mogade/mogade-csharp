@@ -18,7 +18,8 @@ namespace Mogade.Tests.AchievementTests
          Server.Stub(new ApiExpectation { Response = "{points:293}" });
          new Driver("thekey", "sssshh").GrantAchievement("hasafirstname", "Scytale", "10039", r =>
          {
-            Assert.AreEqual(293, r);
+            Assert.AreEqual(true, r.Success);
+            Assert.AreEqual(293, r.Data);
             Set();
          });         
          WaitOne();

@@ -17,7 +17,8 @@ namespace Mogade.Tests.ConfigurationTests
          Server.Stub(new ApiExpectation { Response = "{version: 48}" });
          new Driver("akey", "sssshh2").GetGameConfiguration(configuration =>
          {
-            Assert.AreEqual(48, configuration.Version);         
+            Assert.AreEqual(true, configuration.Success);
+            Assert.AreEqual(48, configuration.Data.Version);         
             Set();
          });
          WaitOne();
@@ -28,16 +29,16 @@ namespace Mogade.Tests.ConfigurationTests
          Server.Stub(new ApiExpectation { Response = "{achievements: [{id: 'id1', name: 'first', points: 100, desc: 'dfirst'}, {id: 'id2', name: 'second', points: 200}]}" });
          new Driver("akey", "sssshh2").GetGameConfiguration(configuration =>
          {
-            Assert.AreEqual(2, configuration.Achievements.Count);
-            Assert.AreEqual("id1", configuration.Achievements[0].Id);
-            Assert.AreEqual("first", configuration.Achievements[0].Name);
-            Assert.AreEqual(100, configuration.Achievements[0].Points);
-            Assert.AreEqual("dfirst", configuration.Achievements[0].Description);
+            Assert.AreEqual(2, configuration.Data.Achievements.Count);
+            Assert.AreEqual("id1", configuration.Data.Achievements[0].Id);
+            Assert.AreEqual("first", configuration.Data.Achievements[0].Name);
+            Assert.AreEqual(100, configuration.Data.Achievements[0].Points);
+            Assert.AreEqual("dfirst", configuration.Data.Achievements[0].Description);
 
-            Assert.AreEqual("id2", configuration.Achievements[1].Id);
-            Assert.AreEqual("second", configuration.Achievements[1].Name);
-            Assert.AreEqual(200, configuration.Achievements[1].Points);
-            Assert.AreEqual(null, configuration.Achievements[1].Description);
+            Assert.AreEqual("id2", configuration.Data.Achievements[1].Id);
+            Assert.AreEqual("second", configuration.Data.Achievements[1].Name);
+            Assert.AreEqual(200, configuration.Data.Achievements[1].Points);
+            Assert.AreEqual(null, configuration.Data.Achievements[1].Description);
             Set();
          });
          WaitOne();
@@ -48,12 +49,12 @@ namespace Mogade.Tests.ConfigurationTests
          Server.Stub(new ApiExpectation { Response = "{leaderboards: [{id: 'id1', name: 'first'}, {id: 'id2', name: 'second'}]}" });
          new Driver("akey", "sssshh2").GetGameConfiguration(configuration =>
          {
-            Assert.AreEqual(2, configuration.Leaderboards.Count);
-            Assert.AreEqual("id1", configuration.Leaderboards[0].Id);
-            Assert.AreEqual("first", configuration.Leaderboards[0].Name);
+            Assert.AreEqual(2, configuration.Data.Leaderboards.Count);
+            Assert.AreEqual("id1", configuration.Data.Leaderboards[0].Id);
+            Assert.AreEqual("first", configuration.Data.Leaderboards[0].Name);
 
-            Assert.AreEqual("id2", configuration.Leaderboards[1].Id);
-            Assert.AreEqual("second", configuration.Leaderboards[1].Name);
+            Assert.AreEqual("id2", configuration.Data.Leaderboards[1].Id);
+            Assert.AreEqual("second", configuration.Data.Leaderboards[1].Name);
             Set();
          });
          WaitOne();

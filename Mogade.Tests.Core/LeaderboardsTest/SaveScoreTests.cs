@@ -29,9 +29,10 @@ namespace Mogade.Tests.LeaderboardsTest
          var score = new Score { Points = 10039, UserName = "Scytale" };
          new Driver("thekey", "sssshh").SaveScore("mybaloney", score, "gom jabbar", ranks =>
          {
-            Assert.AreEqual(20, ranks.Daily);
-            Assert.AreEqual(25, ranks.Weekly);
-            Assert.AreEqual(45, ranks.Overall);
+            Assert.AreEqual(true, ranks.Success);
+            Assert.AreEqual(20, ranks.Data.Daily);
+            Assert.AreEqual(25, ranks.Data.Weekly);
+            Assert.AreEqual(45, ranks.Data.Overall);
             Set();
          });
          WaitOne();
@@ -44,7 +45,7 @@ namespace Mogade.Tests.LeaderboardsTest
          var score = new Score { Points = 10039, UserName = "Scytale" };
          new Driver("thekey", "sssshh").SaveScore("mybaloney", score, "gom jabbar", ranks =>
          {
-            Assert.AreEqual(true, ranks.TopScore);
+            Assert.AreEqual(true, ranks.Data.TopScore);
             Set();
          });
          WaitOne();
@@ -57,7 +58,7 @@ namespace Mogade.Tests.LeaderboardsTest
          var score = new Score { Points = 10039, UserName = "Scytale" };
          new Driver("thekey", "sssshh").SaveScore("mybaloney", score, "gom jabbar", ranks =>
          {
-            Assert.AreEqual(false, ranks.TopScore);
+            Assert.AreEqual(false, ranks.Data.TopScore);
             Set();
          });
          WaitOne();
@@ -70,9 +71,9 @@ namespace Mogade.Tests.LeaderboardsTest
          var score = new Score { Points = 10039, UserName = "Scytale", };
          new Driver("thekey", "sssshh").SaveScore("mybaloney", score, "gom jabbar", ranks =>
          {
-            Assert.AreEqual(0, ranks.Daily);
-            Assert.AreEqual(0, ranks.Weekly);
-            Assert.AreEqual(0, ranks.Overall);
+            Assert.AreEqual(0, ranks.Data.Daily);
+            Assert.AreEqual(0, ranks.Data.Weekly);
+            Assert.AreEqual(0, ranks.Data.Overall);
             Set();
          });
          WaitOne();
@@ -85,9 +86,9 @@ namespace Mogade.Tests.LeaderboardsTest
          var score = new Score { Points = 10039, UserName = "Scytale", };
          new Driver("thekey", "sssshh").SaveScore("mybaloney", score, "gom jabbar", ranks =>
          {
-            Assert.AreEqual(0, ranks.Daily);
-            Assert.AreEqual(49494, ranks.Weekly);
-            Assert.AreEqual(0, ranks.Overall);
+            Assert.AreEqual(0, ranks.Data.Daily);
+            Assert.AreEqual(49494, ranks.Data.Weekly);
+            Assert.AreEqual(0, ranks.Data.Overall);
             Set();
          });         
          WaitOne();

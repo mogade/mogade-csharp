@@ -17,7 +17,8 @@ namespace Mogade.Tests.LeaderboardsTest
          Server.Stub(new ApiExpectation { Response = @"{'scores':[]}"});
          new Driver("akey", "sssshh2").GetLeaderboard("theid", LeaderboardScope.Weekly, 3, leaderboard =>
          {
-            Assert.AreEqual(0, leaderboard.Scores.Count);
+            Assert.AreEqual(true, leaderboard.Success);
+            Assert.AreEqual(0, leaderboard.Data.Scores.Count);
             Set();
          });
          WaitOne();
@@ -28,13 +29,14 @@ namespace Mogade.Tests.LeaderboardsTest
          Server.Stub(new ApiExpectation { Response = @"{'scores':[{'username':'teg', 'points': 9001, 'data': 'something'}, {'username':'paul', 'points': 8999}]}" });
          new Driver("akey", "sssshh2").GetLeaderboard("theid", LeaderboardScope.Weekly, 3, leaderboard =>
          {
-            Assert.AreEqual(2, leaderboard.Scores.Count);
-            Assert.AreEqual("teg", leaderboard.Scores[0].UserName);
-            Assert.AreEqual(9001, leaderboard.Scores[0].Points);
-            Assert.AreEqual("something", leaderboard.Scores[0].Data);
-            Assert.AreEqual("paul", leaderboard.Scores[1].UserName);
-            Assert.AreEqual(8999, leaderboard.Scores[1].Points);
-            Assert.AreEqual(null, leaderboard.Scores[1].Data);
+            Assert.AreEqual(true, leaderboard.Success);
+            Assert.AreEqual(2, leaderboard.Data.Scores.Count);
+            Assert.AreEqual("teg", leaderboard.Data.Scores[0].UserName);
+            Assert.AreEqual(9001, leaderboard.Data.Scores[0].Points);
+            Assert.AreEqual("something", leaderboard.Data.Scores[0].Data);
+            Assert.AreEqual("paul", leaderboard.Data.Scores[1].UserName);
+            Assert.AreEqual(8999, leaderboard.Data.Scores[1].Points);
+            Assert.AreEqual(null, leaderboard.Data.Scores[1].Data);
             Set();
          });
          WaitOne();
