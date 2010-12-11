@@ -102,6 +102,18 @@ namespace Mogade
          });
       }
 
+      public void GetLeaderboard(string leaderboardId, LeaderboardScope scope, int page, string userName, string uniqueIdentifier, Action<Response<LeaderboardScoresWithUser>> callback)
+      {
+         ValidationHelper.AssertValidId(leaderboardId, "leaderboardId");
+         var payload = new Dictionary<string, object> { { "leaderboard", new { id = leaderboardId, scope = (int)scope, page = page } } };
+         var communicator = new Communicator(this);
+         communicator.SendPayload<LeaderboardScoresWithUser>(Communicator.POST, "scores", payload, r =>
+         {
+            if (r.Success) { r.Data = JsonConvert.DeserializeObject<LeaderboardScoresWithUser>(r.Raw); }
+            callback(r);
+         });
+      }
+
       public void GrantAchievement(string achievementId, string userName, string uniqueIdentifier, Action<Response<int>> callback)
       {
          ValidationHelper.AssertValidId(achievementId, "achievementId");

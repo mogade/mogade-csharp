@@ -51,9 +51,11 @@
     <Compile Include="Leaderboards\Leaderboard.cs" />
     <Compile Include="Leaderboards\LeaderboardScores.cs" />
     <Compile Include="Leaderboards\LeaderboardScope.cs" />
+    <Compile Include="Leaderboards\LeaderboardScoresWithUser.cs" />
     <Compile Include="Leaderboards\Ranks.cs" />
     <Compile Include="Driver.cs" />
     <Compile Include="Components\IDriverConfiguration.cs" />
+    <Compile Include="Leaderboards\ScoreWithRank.cs" />
     <Compile Include="MogadeException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Leaderboards\Score.cs" />

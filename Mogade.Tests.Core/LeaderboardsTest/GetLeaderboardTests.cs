@@ -42,6 +42,35 @@ namespace Mogade.Tests.LeaderboardsTest
          WaitOne();
       }
       [Test]
+      public void RetrievesALeaderboardWithANullUserScore()
+      {
+         Server.Stub(new ApiExpectation { Response = @"{'user': null, 'scores':[{'username':'teg', 'points': 9001, 'data': 'something'}, {'username':'paul', 'points': 8999}]}" });
+         new Driver("akey", "sssshh2").GetLeaderboard("theid", LeaderboardScope.Weekly, 3, "username", "unique", leaderboard =>
+         {
+            Assert.AreEqual(true, leaderboard.Success);
+            Assert.AreEqual(2, leaderboard.Data.Scores.Count);            
+            Assert.AreEqual(null, leaderboard.Data.User);
+            Set();
+         });
+         WaitOne();
+      }
+      [Test]
+      public void RetrievesALeaderboardWithAUserScore()
+      {
+         Server.Stub(new ApiExpectation { Response = @"{'user': {'username':'thatsMe!', 'points': 2393, 'data': 'mydata', 'rank': 4}, 'scores':[{'username':'teg', 'points': 9001, 'data': 'something'}, {'username':'paul', 'points': 8999}]}" });
+         new Driver("akey", "sssshh2").GetLeaderboard("theid", LeaderboardScope.Weekly, 3, "username", "unique", leaderboard =>
+         {
+            Assert.AreEqual(true, leaderboard.Success);
+            Assert.AreEqual(2, leaderboard.Data.Scores.Count);            
+            Assert.AreEqual("thatsMe!", leaderboard.Data.User.UserName);
+            Assert.AreEqual(2393, leaderboard.Data.User.Points);
+            Assert.AreEqual("mydata", leaderboard.Data.User.Data);
+            Assert.AreEqual(4, leaderboard.Data.User.Rank);
+            Set();
+         });
+         WaitOne();
+      }
+      [Test]
       public void NullOrEmptyLeaderboardIdCausesAnExceptionToBeThrown()
       {
          AssertMogadeException("leaderboardId is required and cannot be null or empty", () => new Driver("key", "secret").GetLeaderboard(null, LeaderboardScope.Daily, 3, r => { }));
