@@ -10,7 +10,7 @@ namespace Mogade.Tests.LeaderboardsTest
       {
          Server.Stub(new ApiExpectation { Method = "PUT", Url = "/scores", Request = @"{""leaderboard_id"":""mybaloney"",""score"":{""username"":""Scytale"",""points"":10039},""key"":""thekey"",""v"":1,""sig"":""28c45e971d84c3cb1d136c8bf518fdb1""}" });
          var score = new Score { Points = 10039, UserName = "Scytale"};
-         new Driver("thekey", "sssshh").SaveScore("mybaloney", score, "gom jabbar", r => { });
+         new Driver("thekey", "sssshh").SaveScore("mybaloney", score, "gom jabbar", SetIfSuccess);
       }
 
       [Test]
@@ -18,7 +18,14 @@ namespace Mogade.Tests.LeaderboardsTest
       {
          Server.Stub(new ApiExpectation { Method = "PUT", Url = "/scores", Request = @"{""leaderboard_id"":""mybaloney"",""score"":{""username"":""Scytale"",""points"":10039,""data"":""mydata""},""key"":""thekey"",""v"":1,""sig"":""a501a457b6684989f77298e6a61b7403""}" });
          var score = new Score { Points = 10039, UserName = "Scytale", Data = "mydata" };
-         new Driver("thekey", "sssshh").SaveScore("mybaloney", score, "gom jabbar", r => { });
+         new Driver("thekey", "sssshh").SaveScore("mybaloney", score, "gom jabbar", SetIfSuccess);
+      }
+      [Test]
+      public void SendsScoreWithUniqueToTheServer()
+      {
+         Server.Stub(new ApiExpectation { Method = "PUT", Url = "/scores", Request = @"{""leaderboard_id"":""mybaloney"",""score"":{""username"":""Scytale"",""points"":10039,""data"":""mydata"",""unique"":""gom jabbar""},""key"":""thekey"",""v"":1,""sig"":""a501a457b6684989f77298e6a61b7403""}" });
+         var score = new Score { Points = 10039, UserName = "Scytale", Data = "mydata" };
+         new Driver("thekey", "sssshh").SaveScore("mybaloney", score, "gom jabbar", SetIfSuccess);
       }
 
 

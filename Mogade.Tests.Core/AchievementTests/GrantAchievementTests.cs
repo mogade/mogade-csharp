@@ -9,7 +9,7 @@ namespace Mogade.Tests.AchievementTests
       public void SendsRequestToTheServer()
       {
          Server.Stub(new ApiExpectation { Method = "PUT", Url = "/achievements", Request = @"{""achievement_id"":""hasafirstname"",""username"":""Scytale"",""unique"":""10039"",""key"":""thekey"",""v"":1,""sig"":""64c32fca72deb24aa93f24f756403506""}", Response = "{points:123}" });
-         new Driver("thekey", "sssshh").GrantAchievement("hasafirstname", "Scytale", "10039", r => { });
+         new Driver("thekey", "sssshh").GrantAchievement("hasafirstname", "Scytale", "10039", SetIfSuccess);
       }
 
       [Test]

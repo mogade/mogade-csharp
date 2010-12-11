@@ -45,6 +45,12 @@ namespace Mogade.Tests
          Assert.AreEqual(expectedMessage, ex.Message);
       }
 
+      protected void SetIfSuccess(Response response)
+      {
+         if (response.Success) { Set(); }
+
+         Assert.Fail(response.Error.Message);
+      }
       protected void Set()
       {
          Trigger.Set();

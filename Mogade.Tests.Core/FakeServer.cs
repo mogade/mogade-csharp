@@ -46,7 +46,8 @@ namespace Mogade.Tests
             var expectation = FindExpectation(context, body);            
             if (expectation == null)
             {
-               SendResponse(context, string.Format("Unexpected call: {0} {1}{2}{3}", context.Request.HttpMethod, context.Request.Url, Environment.NewLine, body), new ApiExpectation { Status = 500 });               
+               SendResponse(context, string.Format("Unexpected call: {0} {1}{2}{3}", context.Request.HttpMethod, context.Request.Url, Environment.NewLine, body), new ApiExpectation { Status = 500 });
+               return;
             }
             SendResponse(context, body, expectation);
          }

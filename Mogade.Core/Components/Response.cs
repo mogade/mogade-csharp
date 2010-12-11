@@ -3,11 +3,14 @@ using Newtonsoft.Json;
 
 namespace Mogade
 {
-   public class Response<T>
+   public class Response
    {
       public bool Success { get; internal set; }
       internal string Raw { get; set; }
-      public ErrorMessage Error { get; internal set; }
+      public ErrorMessage Error { get; internal set; }      
+   }
+   public class Response<T> : Response
+   {      
       public T Data { get; internal set; }
 
       public static Response<T> CreateSuccess(string raw)

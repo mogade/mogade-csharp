@@ -105,7 +105,12 @@ namespace Mogade
       public void GetLeaderboard(string leaderboardId, LeaderboardScope scope, int page, string userName, string uniqueIdentifier, Action<Response<LeaderboardScoresWithUser>> callback)
       {
          ValidationHelper.AssertValidId(leaderboardId, "leaderboardId");
-         var payload = new Dictionary<string, object> { { "leaderboard", new { id = leaderboardId, scope = (int)scope, page = page } } };
+         var payload = new Dictionary<string, object>
+                       {
+                          { "leaderboard", new { id = leaderboardId, scope = (int)scope, page = page } }, 
+                          { "username", userName},
+                          { "unique", uniqueIdentifier},
+                       };
          var communicator = new Communicator(this);
          communicator.SendPayload<LeaderboardScoresWithUser>(Communicator.POST, "scores", payload, r =>
          {

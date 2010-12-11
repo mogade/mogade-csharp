@@ -8,7 +8,7 @@ namespace Mogade.Tests.ConfigurationTests
       public void SendsRequestForVersionTheServer()
       {
          Server.Stub(new ApiExpectation { Method = "POST", Url = "/conf", Request = @"{""key"":""akey"",""v"":1,""sig"":""b2cf06b6f6f1d7c3b51092670b005010""}", Response = "{version:0}" });
-         new Driver("akey", "sssshh2").GetGameConfiguration(r => { });
+         new Driver("akey", "sssshh2").GetGameConfiguration(SetIfSuccess);
       }
 
       [Test]

@@ -9,7 +9,16 @@ namespace Mogade.Tests.LeaderboardsTest
       public void SendsRequestForLeaderboardToTheServer()
       {
          Server.Stub(new ApiExpectation { Method = "POST", Url = "/scores", Request = @"{""leaderboard"":{""id"":""theid"",""scope"":2,""page"":3},""key"":""akey"",""v"":1,""sig"":""93a73d45c0cd3a0a648b3898d8992889""}" });
-         new Driver("akey", "sssshh2").GetLeaderboard("theid", LeaderboardScope.Weekly, 3, r => { });
+         new Driver("akey", "sssshh2").GetLeaderboard("theid", LeaderboardScope.Weekly, 3, SetIfSuccess);
+         WaitOne();
+      }
+
+      [Test]
+      public void SendsRequestForLeaderboardWithUserToTheServer()
+      {
+         Server.Stub(new ApiExpectation { Method = "POST", Url = "/scores", Request = @"{""leaderboard"":{""id"":""theid"",""scope"":2,""page"":3},""username"":""itsme"",""unique"":""imunique"",""key"":""akey"",""v"":1,""sig"":""8c9fc0bd05aee415a197cc0264dc4488""}" });
+         new Driver("akey", "sssshh2").GetLeaderboard("theid", LeaderboardScope.Weekly, 3, "itsme", "imunique", SetIfSuccess);
+         WaitOne();
       }
       [Test]
       public void RetrievesAnEmptyLeaderboard()
