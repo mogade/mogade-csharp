@@ -20,6 +20,7 @@ namespace Mogade.Tests
       private readonly Thread _thread;
       public const int Port = 9948;
       private readonly IList<ApiExpectation> _expectations;
+      private Action _onInvoke;
 
       public FakeServer()
       {
@@ -48,6 +49,10 @@ namespace Mogade.Tests
             {
                SendResponse(context, string.Format("Unexpected call: {0} {1}{2}{3}", context.Request.HttpMethod, context.Request.Url, Environment.NewLine, body), new ApiExpectation { Status = 500 });
                return;
+            }
+            if (_onInvoke != null)
+            {
+               _onInvoke();
             }
             SendResponse(context, body, expectation);
          }
@@ -99,10 +104,15 @@ namespace Mogade.Tests
       private void Dispose(bool disposing)
       {
          if (!_disposed && disposing)
-         {            
+         {
             _listener.Stop();
          }
-         _disposed = true;       
+         _disposed = true;
+      }
+
+      public void OnInvoke(Action callback)
+      {
+         _onInvoke = callback;
       }
    }
 

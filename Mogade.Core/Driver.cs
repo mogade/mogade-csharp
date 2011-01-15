@@ -150,5 +150,12 @@ namespace Mogade
          var communicator = new Communicator(this);
          communicator.SendPayload<object>(Communicator.PUT, "logging/error", payload, null);       
       }
+
+      public void LogApplicationStart(string uniqueIdentifier)
+      {
+         var payload = new Dictionary<string, object> { { "unique", uniqueIdentifier }};
+         var communicator = new Communicator(this);
+         communicator.SendPayload<object>(Communicator.PUT, "analytics/start", payload, null);    
+      }
    }
 }

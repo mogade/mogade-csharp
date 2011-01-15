@@ -47,6 +47,7 @@
     <Compile Include="AchievementTests\GrantAchievementTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="AnalyticsTests\LogStartTests.cs" />
     <Compile Include="ConfigurationTests\GameVersionTests.cs">
       <SubType>Code</SubType>
     </Compile>
