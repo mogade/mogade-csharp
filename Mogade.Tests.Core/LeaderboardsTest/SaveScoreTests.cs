@@ -8,26 +8,20 @@ namespace Mogade.Tests.LeaderboardsTest
       [Test]
       public void SendsScoreWithoutDataToTheServer()
       {
-         Server.Stub(new ApiExpectation { Method = "PUT", Url = "/scores", Request = @"{""leaderboard_id"":""mybaloney"",""score"":{""username"":""Scytale"",""points"":10039},""key"":""thekey"",""v"":1,""sig"":""28c45e971d84c3cb1d136c8bf518fdb1""}" });
+         Server.Stub(new ApiExpectation { Method = "PUT", Url = "/scores", Request = @"{""leaderboard_id"":""mybaloney"",""score"":{""username"":""Scytale"",""points"":10039,""unique"":""gom jabbar""},""key"":""thekey"",""v"":1,""sig"":""b3a25f82263d56640ba29572699b29d6""}", Response = "{}" });
          var score = new Score { Points = 10039, UserName = "Scytale"};
          new Driver("thekey", "sssshh").SaveScore("mybaloney", score, "gom jabbar", SetIfSuccess);
+         WaitOne();
       }
 
       [Test]
       public void SendsScoreWithDataToTheServer()
       {
-         Server.Stub(new ApiExpectation { Method = "PUT", Url = "/scores", Request = @"{""leaderboard_id"":""mybaloney"",""score"":{""username"":""Scytale"",""points"":10039,""data"":""mydata""},""key"":""thekey"",""v"":1,""sig"":""a501a457b6684989f77298e6a61b7403""}" });
+         Server.Stub(new ApiExpectation { Method = "PUT", Url = "/scores", Request = @"{""leaderboard_id"":""mybaloney"",""score"":{""username"":""Scytale"",""points"":10039,""data"":""mydata"",""unique"":""gom jabbar""},""key"":""thekey"",""v"":1,""sig"":""af421951f2b5d691e9ec42ba30a61c34""}" });
          var score = new Score { Points = 10039, UserName = "Scytale", Data = "mydata" };
          new Driver("thekey", "sssshh").SaveScore("mybaloney", score, "gom jabbar", SetIfSuccess);
+         WaitOne();
       }
-      [Test]
-      public void SendsScoreWithUniqueToTheServer()
-      {
-         Server.Stub(new ApiExpectation { Method = "PUT", Url = "/scores", Request = @"{""leaderboard_id"":""mybaloney"",""score"":{""username"":""Scytale"",""points"":10039,""data"":""mydata"",""unique"":""gom jabbar""},""key"":""thekey"",""v"":1,""sig"":""a501a457b6684989f77298e6a61b7403""}" });
-         var score = new Score { Points = 10039, UserName = "Scytale", Data = "mydata" };
-         new Driver("thekey", "sssshh").SaveScore("mybaloney", score, "gom jabbar", SetIfSuccess);
-      }
-
 
       [Test]
       public void RetrievesAllTheRanksFromTheResponse()

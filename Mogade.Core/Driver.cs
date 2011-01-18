@@ -37,8 +37,8 @@ namespace Mogade
          {            
             if (r.Success)
             {
-               var container = (JContainer)JsonConvert.DeserializeObject(r.Raw);
-               r.Data = container["version"].Value<int>();
+               var container = ((JContainer) JsonConvert.DeserializeObject(r.Raw))["version"];
+               r.Data = container == null ? 0 : container.Value<int>();
             }
             callback(r);
          });
@@ -119,6 +119,27 @@ namespace Mogade
          });
       }
 
+      public void GetYesterdaysTopRank(string leaderboardId, string userName, string uniqueIdentifier, Action<Response<int>> callback)
+      {
+         ValidationHelper.AssertValidId(leaderboardId, "leaderboardId");
+         var payload = new Dictionary<string, object>
+                       {
+                          { "leaderboard_id", leaderboardId},                           
+                          { "username", userName},
+                          { "unique", uniqueIdentifier},
+                       };
+         var communicator = new Communicator(this);
+         communicator.SendPayload<int>(Communicator.POST, "scores/yesterdays_rank", payload, r =>
+         {
+            if (r.Success)
+            {
+               var container = ((JContainer) JsonConvert.DeserializeObject(r.Raw))["rank"];
+               r.Data = container == null ? 0 : container.Value<int>();
+            }
+            callback(r);
+         });
+      }
+
       public void GrantAchievement(string achievementId, string userName, string uniqueIdentifier, Action<Response<int>> callback)
       {
          ValidationHelper.AssertValidId(achievementId, "achievementId");
@@ -130,8 +151,8 @@ namespace Mogade
          {
             if (r.Success)
             {
-               var container = (JContainer) JsonConvert.DeserializeObject(r.Raw);
-               r.Data = container["points"].Value<int>();
+               var container = ((JContainer) JsonConvert.DeserializeObject(r.Raw))["points"];
+               r.Data = container == null ? 0  : container.Value<int>();
             }            
             callback(r);
          });         

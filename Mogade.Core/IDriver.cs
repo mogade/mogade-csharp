@@ -78,7 +78,14 @@ namespace Mogade
       /// Each page is limited to 10 scores. The user's score object will only be returned when page = 1 and, of course, if the user has a score
       /// </remarks>
       void GetLeaderboard(string leaderboardId, LeaderboardScope scope, int page, string userName, string uniqueIdentifier, Action<Response<LeaderboardScoresWithUser>> callback);
-     
+
+
+      /// <summary>
+      /// Get's the user's top rank for a given leaderboard for yesterday
+      /// </summary>
+      /// <param name="leaderboardId">The id of the leaderboard to get the scores from</param>      
+      /// <returns>Returns 0 if the user doesn't have a rank</returns>
+      void GetYesterdaysTopRank(string leaderboardId, string userName, string uniqueIdentifier, Action<Response<int>> callback);
 
       /// <summary>
       /// Grants the user the specified achievement
