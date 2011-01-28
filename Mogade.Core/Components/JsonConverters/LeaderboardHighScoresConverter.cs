@@ -28,7 +28,7 @@ namespace Mogade.JsonConverters
          return dictionary;
       }
 
-      private class LeaderboardHighScoreEntry
+      public class LeaderboardHighScoreEntry
       {
          public string Id { get; set; }
          public int Points { get; set; }
