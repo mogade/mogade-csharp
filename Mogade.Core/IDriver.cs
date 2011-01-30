@@ -93,8 +93,8 @@ namespace Mogade
       /// <param name="achievementId">The id of the achievement being granted</param>
       /// <param name="userName">The user's username</param>
       /// <param name="uniqueIdentifier">A unique identifier for the user. Mobile devices should use the deviceId.</param>
-      /// <returns>The number of points earned</returns>
-      void GrantAchievement(string achievementId, string userName, string uniqueIdentifier, Action<Response<int>> callback);
+      /// <returns>A partial achievement object, containing only the id and points of the earned achievement</returns>
+      void GrantAchievement(string achievementId, string userName, string uniqueIdentifier, Action<Response<Achievement>> callback);
 
       /// <summary>
       /// Grants the user the specified achievement
@@ -102,8 +102,8 @@ namespace Mogade
       /// <param name="achievementId">The achievement being granted</param>
       /// <param name="userName">The user's username</param>
       /// <param name="uniqueIdentifier">A unique identifier for the user. Mobile devices should use the deviceId.</param>
-      /// <returns>The number of points earned</returns>
-      void GrantAchievement(Achievement achievement, string userName, string uniqueIdentifier, Action<Response<int>> callback);
+      /// <returns>A partial achievement object, containing only the id and points of the earned achievement</returns>
+      void GrantAchievement(Achievement achievement, string userName, string uniqueIdentifier, Action<Response<Achievement>> callback);
 
       /// <summary>
       /// Logs an error

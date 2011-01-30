@@ -20,9 +20,24 @@ namespace Mogade.Tests.AchievementTests
          new Driver("thekey", "sssshh").GrantAchievement("hasafirstname", "Scytale", "10039", r =>
          {
             Assert.AreEqual(true, r.Success);
-            Assert.AreEqual(293, r.Data);
+            Assert.AreEqual(293, r.Data.Points);
+            Assert.AreEqual(null, r.Data.Id);
             Set();
          });         
+         WaitOne();
+      }
+
+      [Test]
+      public void GetsTheIdEarned()
+      {
+         Server.Stub(new ApiExpectation { Response = "{id:'223'}" });
+         new Driver("thekey", "sssshh").GrantAchievement("hasafirstname", "Scytale", "10039", r =>
+         {
+            Assert.AreEqual(true, r.Success);
+            Assert.AreEqual(0, r.Data.Points);
+            Assert.AreEqual("223", r.Data.Id);
+            Set();
+         });
          WaitOne();
       }
 

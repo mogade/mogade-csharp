@@ -140,26 +140,29 @@ namespace Mogade
          });
       }
 
-      public void GrantAchievement(string achievementId, string userName, string uniqueIdentifier, Action<Response<int>> callback)
+      public void GrantAchievement(string achievementId, string userName, string uniqueIdentifier, Action<Response<Achievement>> callback)
       {
          ValidationHelper.AssertValidId(achievementId, "achievementId");
          ValidationHelper.AssertNotNullOrEmpty(userName, 20, "username");
          ValidationHelper.AssertNotNullOrEmpty(uniqueIdentifier, 50, "unique identifier");
          var payload = new Dictionary<string, object> { { "achievement_id", achievementId}, {"username", userName }, {"unique", uniqueIdentifier} };
          var communicator = new Communicator(this);
-         communicator.SendPayload<int>(Communicator.PUT, "achievements", payload, r =>
+         communicator.SendPayload<Achievement>(Communicator.PUT, "achievements", payload, r =>
          {
             if (r.Success)
             {
-               var container = ((JContainer) JsonConvert.DeserializeObject(r.Raw))["points"];
-               r.Data = container == null ? 0  : container.Value<int>();
+               r.Data = new Achievement();
+               var pointsContainer = ((JContainer)JsonConvert.DeserializeObject(r.Raw))["points"];
+               var idContainer = ((JContainer)JsonConvert.DeserializeObject(r.Raw))["id"];
+               r.Data.Points = pointsContainer == null ? 0 : pointsContainer.Value<int>();
+               r.Data.Id = idContainer == null ? null : idContainer.Value<string>();
             }            
             callback(r);
          });         
       }
 
 
-      public void GrantAchievement(Achievement achievement, string userName, string uniqueIdentifier, Action<Response<int>> callback)
+      public void GrantAchievement(Achievement achievement, string userName, string uniqueIdentifier, Action<Response<Achievement>> callback)
       {
          ValidationHelper.AssertNotNull(achievement, "achievement");
          GrantAchievement(achievement.Id, userName, uniqueIdentifier, callback);
