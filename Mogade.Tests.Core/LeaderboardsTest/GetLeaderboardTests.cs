@@ -35,10 +35,11 @@ namespace Mogade.Tests.LeaderboardsTest
       [Test]
       public void RetrievesALeaderboard()
       {
-         Server.Stub(new ApiExpectation { Response = @"{'scores':[{'username':'teg', 'points': 9001, 'data': 'something'}, {'username':'paul', 'points': 8999}]}" });
+         Server.Stub(new ApiExpectation { Response = @"{'page': 23, 'scores':[{'username':'teg', 'points': 9001, 'data': 'something'}, {'username':'paul', 'points': 8999}]}" });
          new Driver("akey", "sssshh2").GetLeaderboard("theid", LeaderboardScope.Weekly, 3, leaderboard =>
-         {
+         {            
             Assert.AreEqual(true, leaderboard.Success);
+            Assert.AreEqual(23, leaderboard.Data.Page);
             Assert.AreEqual(2, leaderboard.Data.Scores.Count);
             Assert.AreEqual("teg", leaderboard.Data.Scores[0].UserName);
             Assert.AreEqual(9001, leaderboard.Data.Scores[0].Points);

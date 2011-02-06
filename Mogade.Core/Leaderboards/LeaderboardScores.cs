@@ -7,5 +7,7 @@ namespace Mogade.Leaderboards
    {
       [JsonProperty("scores")]
       public IList<Score> Scores { get; set; }
+      [JsonProperty("page")]
+      public int Page { get; set; }
    }
 }
