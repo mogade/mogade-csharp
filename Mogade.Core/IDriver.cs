@@ -63,10 +63,20 @@ namespace Mogade
       /// <param name="page">The page to get (starting with 1)</param>
       /// <returns>A leaderboard object containing an array of scores</returns>
       /// <remarks>
-      /// Each page is limited to 10 scores
+      /// Will return up to 10 records
       /// </remarks>
       void GetLeaderboard(string leaderboardId, LeaderboardScope scope, int page, Action<Response<LeaderboardScores>> callback);
-      
+
+      /// <summary>
+      /// Gets a leaderboard page with a specific number of records
+      /// </summary>
+      /// <param name="leaderboardId">The id of the leaderboard to get the scores from</param>
+      /// <param name="scope">The scope to get the scores from (daily, weekly or overall)</param>
+      /// <param name="page">The page to get (starting with 1)</param>
+      /// <param name="records">The number of records (up to 50)</param>
+      /// <returns>A leaderboard object containing an array of scores</returns>      
+      void GetLeaderboard(string leaderboardId, LeaderboardScope scope, int page, int records, Action<Response<LeaderboardScores>> callback);
+
       /// <summary>
       /// Gets a leaderboard page AND the user's score object for the specified leaderboard
       /// </summary>
@@ -75,10 +85,22 @@ namespace Mogade
       /// <param name="page">The page to get (starting with 1)</param>
       /// <returns>A leaderboard object containing an array of scores</returns>
       /// <remarks>
-      /// Each page is limited to 10 scores. The user's score object will only be returned when page = 1 and, of course, if the user has a score
+      /// Will return up to 10 records. The user's score object will only be returned when page = 1 and, of course, if the user has a score
       /// </remarks>
       void GetLeaderboard(string leaderboardId, LeaderboardScope scope, int page, string userName, string uniqueIdentifier, Action<Response<LeaderboardScoresWithUser>> callback);
 
+      /// <summary>
+      /// Gets a leaderboard page AND the user's score object for the specified leaderboard
+      /// </summary>
+      /// <param name="leaderboardId">The id of the leaderboard to get the scores from</param>
+      /// <param name="scope">The scope to get the scores from (daily, weekly or overall)</param>
+      /// <param name="page">The page to get (starting with 1)</param>
+      /// <param name="records">The number of records (up to 50)</param>
+      /// <returns>A leaderboard object containing an array of scores</returns>
+      /// <remarks>
+      /// Will return up to 10 records. The user's score object will only be returned when page = 1 and, of course, if the user has a score
+      /// </remarks>
+      void GetLeaderboard(string leaderboardId, LeaderboardScope scope, int page, int records, string userName, string uniqueIdentifier, Action<Response<LeaderboardScoresWithUser>> callback);
 
       /// <summary>
       /// Get's the user's top rank for a given leaderboard for yesterday

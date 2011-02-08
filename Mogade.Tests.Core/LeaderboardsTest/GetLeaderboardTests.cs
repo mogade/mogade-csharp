@@ -8,18 +8,35 @@ namespace Mogade.Tests.LeaderboardsTest
       [Test]
       public void SendsRequestForLeaderboardToTheServer()
       {
-         Server.Stub(new ApiExpectation { Method = "POST", Url = "/scores", Request = @"{""leaderboard"":{""id"":""theid"",""scope"":2,""page"":3},""key"":""akey"",""v"":1,""sig"":""93a73d45c0cd3a0a648b3898d8992889""}" });
+         Server.Stub(new ApiExpectation { Method = "POST", Url = "/scores", Request = @"{""leaderboard"":{""id"":""theid"",""scope"":2,""page"":3,""records"":10},""key"":""akey"",""v"":1,""sig"":""9e3ba78d2325a3faf27c14508787a244""}" });
          new Driver("akey", "sssshh2").GetLeaderboard("theid", LeaderboardScope.Weekly, 3, SetIfSuccess);
+         WaitOne();
+      }
+
+      [Test]
+      public void SendsRequestForLeaderboardToTheServerWithRecordCount()
+      {
+         Server.Stub(new ApiExpectation { Method = "POST", Url = "/scores", Request = @"{""leaderboard"":{""id"":""theid"",""scope"":2,""page"":3,""records"":23},""key"":""akey"",""v"":1,""sig"":""f9b9c834d1254f90ce8895e89cd9b1b0""}" });
+         new Driver("akey", "sssshh2").GetLeaderboard("theid", LeaderboardScope.Weekly, 3, 23, SetIfSuccess);
          WaitOne();
       }
 
       [Test]
       public void SendsRequestForLeaderboardWithUserToTheServer()
       {
-         Server.Stub(new ApiExpectation { Method = "POST", Url = "/scores", Request = @"{""leaderboard"":{""id"":""theid"",""scope"":2,""page"":3},""username"":""itsme"",""unique"":""imunique"",""key"":""akey"",""v"":1,""sig"":""8c9fc0bd05aee415a197cc0264dc4488""}" });
+         Server.Stub(new ApiExpectation { Method = "POST", Url = "/scores", Request = @"{""leaderboard"":{""id"":""theid"",""scope"":2,""page"":3,""records"":10},""username"":""itsme"",""unique"":""imunique"",""key"":""akey"",""v"":1,""sig"":""9086e80770a1be750e59c747d82501e1""}" });
          new Driver("akey", "sssshh2").GetLeaderboard("theid", LeaderboardScope.Weekly, 3, "itsme", "imunique", SetIfSuccess);
          WaitOne();
       }
+
+      [Test]
+      public void SendsRequestForLeaderboardWitUserAndRecordCount()
+      {
+         Server.Stub(new ApiExpectation { Method = "POST", Url = "/scores", Request = @"{""leaderboard"":{""id"":""theid"",""scope"":2,""page"":3,""records"":25},""username"":""itsme"",""unique"":""imunique"",""key"":""akey"",""v"":1,""sig"":""e5c855bd1baad59d1fbb0cc40fe90943""}" });
+         new Driver("akey", "sssshh2").GetLeaderboard("theid", LeaderboardScope.Weekly, 3, 25, "itsme", "imunique", SetIfSuccess);
+         WaitOne();
+      }
+
       [Test]
       public void RetrievesAnEmptyLeaderboard()
       {

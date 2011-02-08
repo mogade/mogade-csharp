@@ -92,8 +92,13 @@ namespace Mogade
 
       public void GetLeaderboard(string leaderboardId, LeaderboardScope scope, int page, Action<Response<LeaderboardScores>> callback)
       {
+         GetLeaderboard(leaderboardId, scope, page, 10, callback);
+      }
+
+      public void GetLeaderboard(string leaderboardId, LeaderboardScope scope, int page, int records, Action<Response<LeaderboardScores>> callback)
+      {
          ValidationHelper.AssertValidId(leaderboardId, "leaderboardId");
-         var payload = new Dictionary<string, object> {{"leaderboard", new {id = leaderboardId, scope = (int) scope, page = page}}};
+         var payload = new Dictionary<string, object> { { "leaderboard", new { id = leaderboardId, scope = (int)scope, page = page, records = records } } };
          var communicator = new Communicator(this);
          communicator.SendPayload<LeaderboardScores>(Communicator.POST, "scores", payload, r =>
          {
@@ -104,10 +109,15 @@ namespace Mogade
 
       public void GetLeaderboard(string leaderboardId, LeaderboardScope scope, int page, string userName, string uniqueIdentifier, Action<Response<LeaderboardScoresWithUser>> callback)
       {
+         GetLeaderboard(leaderboardId, scope, page, 10, userName, uniqueIdentifier, callback);
+      }
+
+      public void GetLeaderboard(string leaderboardId, LeaderboardScope scope, int page, int records, string userName, string uniqueIdentifier, Action<Response<LeaderboardScoresWithUser>> callback)
+      {
          ValidationHelper.AssertValidId(leaderboardId, "leaderboardId");
          var payload = new Dictionary<string, object>
                        {
-                          { "leaderboard", new { id = leaderboardId, scope = (int)scope, page = page } }, 
+                          { "leaderboard", new { id = leaderboardId, scope = (int)scope, page = page, records = records  } }, 
                           { "username", userName},
                           { "unique", uniqueIdentifier},
                        };
