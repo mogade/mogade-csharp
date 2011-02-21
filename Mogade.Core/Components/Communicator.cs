@@ -30,7 +30,10 @@ namespace Mogade
       {
          if (!DriverConfiguration.Data.NetworkCheck())
          {
-            callback(Response<T>.CreateError(new ErrorMessage {Message = "Network is not available"}));
+            if (callback != null)
+            {
+               callback(Response<T>.CreateError(new ErrorMessage {Message = "Network is not available"}));
+            }
             return;
          }
          var request = (HttpWebRequest)WebRequest.Create(DriverConfiguration.Data.Url + endPoint);         

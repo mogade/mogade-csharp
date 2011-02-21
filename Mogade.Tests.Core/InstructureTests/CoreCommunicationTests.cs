@@ -62,5 +62,12 @@ namespace Mogade.Tests
          });
          WaitOne();
       }
+
+      [Test]
+      public void NoNetworkAndNoCallbackDoestThrowException()
+      {
+         DriverConfiguration.Configuration(c => c.NetworkAvailableCheck(() => false));
+         new Communicator(FakeContext.Defaults).SendPayload<object>("PUT", "anything", null, null);         
+      }
    }
 }
