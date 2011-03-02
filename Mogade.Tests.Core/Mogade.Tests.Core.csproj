@@ -75,6 +75,7 @@
     <Compile Include="LeaderboardsTest\SaveScoreTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LeaderboardsTest\YesterdaysLeadersTests.cs" />
     <Compile Include="LeaderboardsTest\YesterdaysRankTests.cs" />
     <Compile Include="LoggingTests\ErrorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -78,6 +78,13 @@ namespace Mogade
       void GetLeaderboard(string leaderboardId, LeaderboardScope scope, int page, int records, Action<Response<LeaderboardScores>> callback);
 
       /// <summary>
+      /// Gets the top 3 scores from yesterday
+      /// </summary>
+      /// <param name="leaderboardId">The id of the leaderboard to get the scores from</param>
+      /// <returns>A leaderboard object containing an array of scores</returns
+      void GetYesterdaysLeaders(string leaderboardId, Action<Response<LeaderboardScores>> callback);
+
+      /// <summary>
       /// Gets a leaderboard page AND the user's score object for the specified leaderboard
       /// </summary>
       /// <param name="leaderboardId">The id of the leaderboard to get the scores from</param>

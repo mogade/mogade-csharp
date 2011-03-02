@@ -18,9 +18,9 @@ namespace Mogade.Tests.LeaderboardsTest
          Server.Stub(new ApiExpectation { Response = "{rank: 54}" });
          new Driver("thekey", "sssshh").GetYesterdaysTopRank("mybaloney", "Scytale", "gom jabbar", rank =>
          {
-            Assert.AreEqual(54, rank.Data);           
+            Assert.AreEqual(54, rank.Data);
             Set();
-         });         
+         });
          WaitOne();
       }
    }

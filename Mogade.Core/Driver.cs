@@ -107,6 +107,18 @@ namespace Mogade
          });
       }
 
+      public void GetYesterdaysLeaders(string leaderboardId, Action<Response<LeaderboardScores>> callback)
+      {
+         ValidationHelper.AssertValidId(leaderboardId, "leaderboardId");
+         var payload = new Dictionary<string, object> { { "leaderboard_id", leaderboardId } };
+         var communicator = new Communicator(this);
+         communicator.SendPayload<LeaderboardScores>(Communicator.POST, "scores/yesterdays_leaders", payload, r =>
+         {
+            if (r.Success) { r.Data = JsonConvert.DeserializeObject<LeaderboardScores>(r.Raw); }
+            callback(r);
+         });
+      }
+
       public void GetLeaderboard(string leaderboardId, LeaderboardScope scope, int page, string userName, string uniqueIdentifier, Action<Response<LeaderboardScoresWithUser>> callback)
       {
          GetLeaderboard(leaderboardId, scope, page, 10, userName, uniqueIdentifier, callback);
@@ -134,7 +146,7 @@ namespace Mogade
          ValidationHelper.AssertValidId(leaderboardId, "leaderboardId");
          var payload = new Dictionary<string, object>
                        {
-                          { "leaderboard_id", leaderboardId},                           
+                          { "leaderboard_id", leaderboardId},
                           { "username", userName},
                           { "unique", uniqueIdentifier},
                        };
