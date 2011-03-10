@@ -1,3 +1,4 @@
+using System;
 using Mogade.Leaderboards;
 using NUnit.Framework;
 
@@ -52,18 +53,20 @@ namespace Mogade.Tests.LeaderboardsTest
       [Test]
       public void RetrievesALeaderboard()
       {
-         Server.Stub(new ApiExpectation { Response = @"{'page': 23, 'scores':[{'username':'teg', 'points': 9001, 'data': 'something'}, {'username':'paul', 'points': 8999}]}" });
+         Server.Stub(new ApiExpectation { Response = @"{'page': 23, 'scores':[{'username':'teg', 'points': 9001, 'data': 'something', 'cat': '2009-02-15T04:05:06Z'}, {'username':'paul', 'points': 8999, 'cat': '2009-02-16T04:06:06Z'}]}" });
          new Driver("akey", "sssshh2").GetLeaderboard("theid", LeaderboardScope.Weekly, 3, leaderboard =>
-         {            
+         {
             Assert.AreEqual(true, leaderboard.Success);
             Assert.AreEqual(23, leaderboard.Data.Page);
             Assert.AreEqual(2, leaderboard.Data.Scores.Count);
             Assert.AreEqual("teg", leaderboard.Data.Scores[0].UserName);
             Assert.AreEqual(9001, leaderboard.Data.Scores[0].Points);
             Assert.AreEqual("something", leaderboard.Data.Scores[0].Data);
+            Assert.AreEqual(new DateTime(2009, 2, 15, 4, 5, 6), leaderboard.Data.Scores[0].Date.ToUniversalTime());
             Assert.AreEqual("paul", leaderboard.Data.Scores[1].UserName);
             Assert.AreEqual(8999, leaderboard.Data.Scores[1].Points);
             Assert.AreEqual(null, leaderboard.Data.Scores[1].Data);
+            Assert.AreEqual(new DateTime(2009, 2, 16, 4, 6, 6), leaderboard.Data.Scores[1].Date.ToUniversalTime());
             Set();
          });
          WaitOne();
