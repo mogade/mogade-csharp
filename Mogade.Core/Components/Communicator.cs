@@ -18,7 +18,7 @@ namespace Mogade
       private readonly IRequestContext _context;
       private static readonly JsonSerializerSettings _jsonSettings = new JsonSerializerSettings
                                                                      {
-                                                                        DefaultValueHandling = DefaultValueHandling.Ignore,  
+                                                                        DefaultValueHandling = DefaultValueHandling.Ignore,
                                                                      };
 
       public Communicator(IRequestContext context)
@@ -36,7 +36,7 @@ namespace Mogade
             }
             return;
          }
-         var request = (HttpWebRequest)WebRequest.Create(DriverConfiguration.Data.Url + endPoint);         
+         var request = (HttpWebRequest)WebRequest.Create(DriverConfiguration.Data.Url + endPoint);
          request.Method = method;
          request.ContentType = "application/json";
          request.UserAgent = "mogade-csharp";
