@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>mogade-csharp</id>
+    <version>0.1</version>
+    <authors>Karl Seguin</authors>
+    <owners>Karl Seguin</owners>
+    <projectUrl>http://mogade.com</projectUrl>
+    <iconUrl>http://cdn.mogade.com/images/logo_tran.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>csharp library for mogade.com</description>
+    <tags>mogade game library leaderboard achievments</tags>
+	  <dependencies>
+		<dependency id="Newtonsoft.Json" version="4.0.2" />
+	  </dependencies>
+  </metadata>
+  <files>
+	<file src="Mogade.Core\bin\Release\Mogade.Core.dll" target="lib"/>
+  </files>
+</package>
