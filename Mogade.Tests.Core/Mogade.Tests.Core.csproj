@@ -43,19 +43,6 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AchievementTests\GrantAchievementTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="AnalyticsTests\LogStartTests.cs" />
-    <Compile Include="ConfigurationTests\GameVersionTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ConfigurationTests\GetGameConfigurationTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ConfigurationTests\GetUserSettingsTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="InstructureTests\CoreCommunicationTests.cs" />
     <Compile Include="FakeContext.cs" />
     <Compile Include="FakeServer.cs" />
@@ -74,9 +61,6 @@
     <Compile Include="LeaderboardsTest\SaveScoreTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="LeaderboardsTest\YesterdaysLeadersTests.cs" />
-    <Compile Include="LeaderboardsTest\YesterdaysRankTests.cs" />
-    <Compile Include="LoggingTests\ErrorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BaseFixture.cs" />
   </ItemGroup>

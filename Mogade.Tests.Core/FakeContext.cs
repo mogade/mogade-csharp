@@ -4,7 +4,7 @@ namespace Mogade.Tests
    {
       public readonly static IRequestContext Defaults = new FakeContext();
 
-      private int version = 1;
+      private int version = 2;
       private string secret = "secret";
       private string key = "api key";
       

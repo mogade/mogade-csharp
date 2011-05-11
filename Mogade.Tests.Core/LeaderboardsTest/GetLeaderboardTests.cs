@@ -1,4 +1,3 @@
-using System;
 using Mogade.Leaderboards;
 using NUnit.Framework;
 
@@ -9,32 +8,16 @@ namespace Mogade.Tests.LeaderboardsTest
       [Test]
       public void SendsRequestForLeaderboardToTheServer()
       {
-         Server.Stub(new ApiExpectation { Method = "POST", Url = "/scores", Request = @"{""leaderboard"":{""id"":""theid"",""scope"":2,""page"":3,""records"":10},""key"":""akey"",""v"":1,""sig"":""9e3ba78d2325a3faf27c14508787a244""}" });
-         new Driver("akey", "sssshh2").GetLeaderboard("theid", LeaderboardScope.Weekly, 3, SetIfSuccess);
-         WaitOne();
-      }
-
-      [Test]
-      public void SendsRequestForLeaderboardToTheServerWithRecordCount()
-      {
-         Server.Stub(new ApiExpectation { Method = "POST", Url = "/scores", Request = @"{""leaderboard"":{""id"":""theid"",""scope"":2,""page"":3,""records"":23},""key"":""akey"",""v"":1,""sig"":""f9b9c834d1254f90ce8895e89cd9b1b0""}" });
-         new Driver("akey", "sssshh2").GetLeaderboard("theid", LeaderboardScope.Weekly, 3, 23, SetIfSuccess);
-         WaitOne();
-      }
-
-      [Test]
-      public void SendsRequestForLeaderboardWithUserToTheServer()
-      {
-         Server.Stub(new ApiExpectation { Method = "POST", Url = "/scores", Request = @"{""leaderboard"":{""id"":""theid"",""scope"":2,""page"":3,""records"":10},""username"":""itsme"",""unique"":""imunique"",""key"":""akey"",""v"":1,""sig"":""9086e80770a1be750e59c747d82501e1""}" });
-         new Driver("akey", "sssshh2").GetLeaderboard("theid", LeaderboardScope.Weekly, 3, "itsme", "imunique", SetIfSuccess);
+         Server.Stub(new ApiExpectation { Method = "GET", Url = "/scores", Request = "lid=theid&page=3&records=10&scope=2&key=akey&v=2&sig=2f84d6abe88f62b502d1bd8cc662da4460bb16c2", Response = "{}" });
+         new Driver("akey", "sssshh2").GetLeaderboard("theid", LeaderboardScope.Weekly, 3, 10, SetIfSuccess);
          WaitOne();
       }
 
       [Test]
       public void SendsRequestForLeaderboardWitUserAndRecordCount()
       {
-         Server.Stub(new ApiExpectation { Method = "POST", Url = "/scores", Request = @"{""leaderboard"":{""id"":""theid"",""scope"":2,""page"":3,""records"":25},""username"":""itsme"",""unique"":""imunique"",""key"":""akey"",""v"":1,""sig"":""e5c855bd1baad59d1fbb0cc40fe90943""}" });
-         new Driver("akey", "sssshh2").GetLeaderboard("theid", LeaderboardScope.Weekly, 3, 25, "itsme", "imunique", SetIfSuccess);
+         Server.Stub(new ApiExpectation { Method = "GET", Url = "/scores", Request = "lid=theid&username=itsme&userKey=imunique&records=25&scope=2&key=akey&v=2&sig=cd24187f41657428cecd75b049c7b677593b6a20", Response = "{}" });
+         new Driver("akey", "sssshh2").GetLeaderboard("theid", LeaderboardScope.Weekly, "itsme", "imunique", 25, SetIfSuccess);
          WaitOne();
       }
 
@@ -42,7 +25,7 @@ namespace Mogade.Tests.LeaderboardsTest
       public void RetrievesAnEmptyLeaderboard()
       {
          Server.Stub(new ApiExpectation { Response = @"{'scores':[]}"});
-         new Driver("akey", "sssshh2").GetLeaderboard("theid", LeaderboardScope.Weekly, 3, leaderboard =>
+         new Driver("akey", "sssshh2").GetLeaderboard("theid", LeaderboardScope.Weekly, 3, 10, leaderboard =>
          {
             Assert.AreEqual(true, leaderboard.Success);
             Assert.AreEqual(0, leaderboard.Data.Scores.Count);
@@ -53,8 +36,8 @@ namespace Mogade.Tests.LeaderboardsTest
       [Test]
       public void RetrievesALeaderboard()
       {
-         Server.Stub(new ApiExpectation { Response = @"{'page': 23, 'scores':[{'username':'teg', 'points': 9001, 'data': 'something', 'cat': '2009-02-15T04:05:06Z'}, {'username':'paul', 'points': 8999, 'cat': '2009-02-16T04:06:06Z'}]}" });
-         new Driver("akey", "sssshh2").GetLeaderboard("theid", LeaderboardScope.Weekly, 3, leaderboard =>
+         Server.Stub(new ApiExpectation { Response = @"{'page': 23, 'scores':[{'username':'teg', 'points': 9001, 'data': 'something'}, {'username':'paul', 'points': 8999}]}" });
+         new Driver("akey", "sssshh2").GetLeaderboard("theid", LeaderboardScope.Weekly, 3, 10, leaderboard =>
          {
             Assert.AreEqual(true, leaderboard.Success);
             Assert.AreEqual(23, leaderboard.Data.Page);
@@ -62,49 +45,12 @@ namespace Mogade.Tests.LeaderboardsTest
             Assert.AreEqual("teg", leaderboard.Data.Scores[0].UserName);
             Assert.AreEqual(9001, leaderboard.Data.Scores[0].Points);
             Assert.AreEqual("something", leaderboard.Data.Scores[0].Data);
-            Assert.AreEqual(new DateTime(2009, 2, 15, 4, 5, 6), leaderboard.Data.Scores[0].Date.ToUniversalTime());
             Assert.AreEqual("paul", leaderboard.Data.Scores[1].UserName);
             Assert.AreEqual(8999, leaderboard.Data.Scores[1].Points);
             Assert.AreEqual(null, leaderboard.Data.Scores[1].Data);
-            Assert.AreEqual(new DateTime(2009, 2, 16, 4, 6, 6), leaderboard.Data.Scores[1].Date.ToUniversalTime());
             Set();
          });
          WaitOne();
-      }
-      [Test]
-      public void RetrievesALeaderboardWithANullUserScore()
-      {
-         Server.Stub(new ApiExpectation { Response = @"{'user': null, 'scores':[{'username':'teg', 'points': 9001, 'data': 'something'}, {'username':'paul', 'points': 8999}]}" });
-         new Driver("akey", "sssshh2").GetLeaderboard("theid", LeaderboardScope.Weekly, 3, "username", "unique", leaderboard =>
-         {
-            Assert.AreEqual(true, leaderboard.Success);
-            Assert.AreEqual(2, leaderboard.Data.Scores.Count);            
-            Assert.AreEqual(null, leaderboard.Data.User);
-            Set();
-         });
-         WaitOne();
-      }
-      [Test]
-      public void RetrievesALeaderboardWithAUserScore()
-      {
-         Server.Stub(new ApiExpectation { Response = @"{'user': {'username':'thatsMe!', 'points': 2393, 'data': 'mydata', 'rank': 4}, 'scores':[{'username':'teg', 'points': 9001, 'data': 'something'}, {'username':'paul', 'points': 8999}]}" });
-         new Driver("akey", "sssshh2").GetLeaderboard("theid", LeaderboardScope.Weekly, 3, "username", "unique", leaderboard =>
-         {
-            Assert.AreEqual(true, leaderboard.Success);
-            Assert.AreEqual(2, leaderboard.Data.Scores.Count);            
-            Assert.AreEqual("thatsMe!", leaderboard.Data.User.UserName);
-            Assert.AreEqual(2393, leaderboard.Data.User.Points);
-            Assert.AreEqual("mydata", leaderboard.Data.User.Data);
-            Assert.AreEqual(4, leaderboard.Data.User.Rank);
-            Set();
-         });
-         WaitOne();
-      }
-      [Test]
-      public void NullOrEmptyLeaderboardIdCausesAnExceptionToBeThrown()
-      {
-         AssertMogadeException("leaderboardId is required and cannot be null or empty", () => new Driver("key", "secret").GetLeaderboard(null, LeaderboardScope.Daily, 3, r => { }));
-         AssertMogadeException("leaderboardId is required and cannot be null or empty", () => new Driver("key", "secret").GetLeaderboard(string.Empty, LeaderboardScope.Overall, 4, r => { }));
       }
    }
 }

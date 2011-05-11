@@ -4,6 +4,7 @@ namespace Mogade.Leaderboards
    {
       Daily = 1,
       Weekly = 2,
-      Overall = 3
+      Overall = 3,
+      Yesterday = 4,
    }
 }
