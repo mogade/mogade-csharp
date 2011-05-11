@@ -1,15 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mogade", "Mogade.Core\Mogade.Core.csproj", "{B1BF8760-7C28-410E-813E-AC86514B2C8A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mogade.Core", "Mogade.Core\Mogade.Core.csproj", "{B1BF8760-7C28-410E-813E-AC86514B2C8A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mogade.Tests.Core", "Mogade.Tests.Core\Mogade.Tests.Core.csproj", "{C52F53E2-55D7-4627-967C-937700C4A20A}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "stuff", "stuff", "{D4262614-6FF4-4ACC-A76E-565054DC4F88}"
-	ProjectSection(SolutionItems) = preProject
-		license.txt = license.txt
-		README.textile = README.textile
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
