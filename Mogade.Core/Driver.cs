@@ -57,28 +57,37 @@ namespace Mogade
          });
       }
 
-      public void GetRanks(string leaderboardId, string userName, string uniqueIdentifier, LeaderboardScope scope, Action<Response<int>> callback)
+      public void GetRank(string leaderboardId, string userName, string uniqueIdentifier, LeaderboardScope scope, Action<Response<int>> callback)
       {
          var payload = new Dictionary<string, object> { { "lid", leaderboardId }, { "username", userName }, { "userkey", uniqueIdentifier },  {"scopes", (int)scope} };
          var communicator = new Communicator(this);
-         communicator.SendPayload<int>(Communicator.Get, "scores", payload, r =>
+         communicator.SendPayload<int>(Communicator.Get, "ranks", payload, r =>
          {
-            if (r.Success) { r.Data = JsonConvert.DeserializeObject<int>(r.Raw); }
+            if (r.Success)
+            {
+               var ranks = JsonConvert.DeserializeObject<Ranks>(r.Raw);
+               r.Data = ranks.GetByScope(scope);
+            }
             callback(r);
          });
       }
 
       public void GetRanks(string leaderboardId, string userName, string uniqueIdentifier, Action<Response<Ranks>> callback)
       {
-         var allScopes = new[] { LeaderboardScope.Daily, LeaderboardScope.Yesterday, LeaderboardScope.Weekly, LeaderboardScope.Overall };
+         var allScopes = new[] { LeaderboardScope.Daily, LeaderboardScope.Weekly, LeaderboardScope.Overall, LeaderboardScope.Yesterday};
          GetRanks(leaderboardId, userName, uniqueIdentifier, allScopes, callback);
       }
 
       public void GetRanks(string leaderboardId, string userName, string uniqueIdentifier, LeaderboardScope[] scopes, Action<Response<Ranks>> callback)
       {
-         var payload = new Dictionary<string, object> { { "lid", leaderboardId }, { "username", userName }, { "userkey", uniqueIdentifier }, { "scopes", scopes } };
+         var realScopes = new int[scopes.Length];
+         for (var i = 0; i < scopes.Length; ++i)
+         {
+            realScopes[i] = (int) scopes[i];
+         }
+         var payload = new Dictionary<string, object> { { "lid", leaderboardId }, { "username", userName }, { "userkey", uniqueIdentifier }, { "scopes", realScopes } };
          var communicator = new Communicator(this);
-         communicator.SendPayload<Ranks>(Communicator.Get, "scores", payload, r =>
+         communicator.SendPayload<Ranks>(Communicator.Get, "ranks", payload, r =>
          {
             if (r.Success) { r.Data = JsonConvert.DeserializeObject<Ranks>(r.Raw); }
             callback(r);

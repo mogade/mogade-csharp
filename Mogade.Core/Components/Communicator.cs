@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using System.Security.Cryptography;
@@ -31,24 +32,27 @@ namespace Mogade
             }
             return;
          }
+
+         var isGet = method == Get;
+
          var url = DriverConfiguration.Data.Url + endPoint;
-         var payload = FinalizePayload(partialPayload);
+         var payload = FinalizePayload(partialPayload, isGet);
          if (method == Get) { url += '?' + payload; }
          var request = (HttpWebRequest)WebRequest.Create(url);
          request.Method = method;
-         request.ContentType = "application/json";
          request.UserAgent = "mogade-csharp";
 #if !WINDOWS_PHONE
          request.Timeout = 10000;
          request.ReadWriteTimeout = 10000;
          request.KeepAlive = false;
 #endif   
-         if (method == Get)
+         if (isGet)
          {
             request.BeginGetResponse(GetResponseStream<T>, new RequestState<T> {Request = request, Callback = callback});
          }
          else 
          {
+            request.ContentType = "application/x-www-form-urlencode";
             request.BeginGetRequestStream(GetRequestStream<T>, new RequestState<T> { Request = request, Payload = Encoding.UTF8.GetBytes(payload), Callback = callback });
          }
       }
@@ -82,23 +86,43 @@ namespace Mogade
       }
 
 
-      private string FinalizePayload(IDictionary<string, object> payload)
+      private string FinalizePayload(IDictionary<string, object> payload, bool isGet)
       {
-         payload.Add("key", _context.Key);
+         if (!isGet) { payload.Add("key", _context.Key); }
          payload.Add("v", _context.ApiVersion);
-         payload.Add("sig", GetSignature(payload, _context.Secret));
+         if (!isGet) { payload.Add("sig", GetSignature(payload, _context.Secret)); }
          var sb = new StringBuilder();
          foreach (var kvp in payload)
          {
             if (kvp.Value == null) { continue; }
-            sb.Append(kvp.Key);
-            sb.Append("=");
-            sb.Append(Uri.EscapeUriString(kvp.Value.ToString()));
-            sb.Append("&");
+            var valueType = kvp.Value.GetType();
+            if (!typeof(string).IsAssignableFrom(valueType) && typeof(IEnumerable).IsAssignableFrom(valueType))
+            {
+               sb.Append(Serialize(kvp.Key, (IEnumerable) kvp.Value));
+            }
+            else
+            {
+               sb.Append(SerializeSingleParameter(kvp.Key, kvp.Value.ToString()));
+            }
          }
          return sb.Remove(sb.Length - 1, 1).ToString();
       }
 
+      private static string Serialize(string key, IEnumerable values)
+      {
+         var sb = new StringBuilder();
+         key = string.Concat(key, "[]");
+         foreach(var value in values)
+         {
+            sb.Append(SerializeSingleParameter(key, value.ToString()));
+         }
+         return sb.ToString();
+      }
+
+      private static string SerializeSingleParameter(string key, string value)
+      {
+         return string.Concat(key, '=', Uri.EscapeUriString(value), '&');
+      }
       public static string GetSignature(IEnumerable<KeyValuePair<string, object>> parameters, string secret)
       {
          var sorted = SortParameterForSignature(parameters);

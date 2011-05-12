@@ -12,5 +12,22 @@ namespace Mogade.Leaderboards
       public int Overall { get; set; }
       [JsonProperty("4")]
       public int Yesterday { get; set; }
+
+
+      public int GetByScope(LeaderboardScope scope)
+      {
+         switch (scope)
+         {
+            case LeaderboardScope.Daily:
+               return Daily;
+            case LeaderboardScope.Overall:
+               return Overall;
+            case LeaderboardScope.Weekly:
+               return Weekly;
+            case LeaderboardScope.Yesterday:
+               return Yesterday;
+         }
+         return 0;
+      }
    }
 }

@@ -18,11 +18,11 @@ namespace Mogade.Tests
       [SetUp]
       public void SetUp()
       {
-         Trigger = new AutoResetEvent(false);         
+         Trigger = new AutoResetEvent(false);
          if (NeedAServer)
          {
             Server = new FakeServer();
-            DriverConfiguration.Configuration(c => c.ConnectTo("http://localhost:" + FakeServer.Port + "/"));            
+            DriverConfiguration.Configuration(c => c.ConnectTo("http://localhost:" + FakeServer.Port + "/"));
          }
          BeforeEachTest();
       }
@@ -33,7 +33,7 @@ namespace Mogade.Tests
          {
             Server.Dispose();
             DriverConfiguration.ResetToDefaults();
-         }         
+         }
          AfterEachTest();
       }
       public virtual void AfterEachTest() { }

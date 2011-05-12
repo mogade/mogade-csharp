@@ -16,11 +16,12 @@ namespace Mogade.Tests
          });
          WaitOne();
       }
+
       [Test]
       public void PayloadIncludesTheGameKey()
       {
          Server.Stub(ApiExpectation.EchoAll);
-         new Communicator(new FakeContext { Key = "ItsOver9000!" }).SendPayload<object>("GET", "anything", new Dictionary<string, object>(0), s =>
+         new Communicator(new FakeContext { Key = "ItsOver9000!" }).SendPayload<object>("POST", "anything", new Dictionary<string, object>(0), s =>
          {
             Assert.True(s.Raw.Contains("key=ItsOver9000!"), "payload should contain the game key version");
             Set();
@@ -28,6 +29,17 @@ namespace Mogade.Tests
          WaitOne();
       }
 
+      [Test]
+      public void PayloadProperlyHandlesIEnumerables()
+      {
+         Server.Stub(ApiExpectation.EchoAll);
+         new Communicator(new FakeContext { Key = "ItsOver9000!" }).SendPayload<object>("GET", "anything", new Dictionary<string, object>{{"scopes", new[]{2,5,6}}}, s =>
+         {
+            Assert.True(s.Raw.Contains("scopes%5B%5D=2&scopes%5B%5D=5&scopes%5B%5D=6"), "payload should contain the game key version");
+            Set();
+         });
+         WaitOne();
+      }
 
       [Test]
       public void WontTryToConnectIfNetworkCheckReturnsFalse()
@@ -46,7 +58,7 @@ namespace Mogade.Tests
       public void NoNetworkAndNoCallbackDoestThrowException()
       {
          DriverConfiguration.Configuration(c => c.NetworkAvailableCheck(() => false));
-         new Communicator(FakeContext.Defaults).SendPayload<object>("PUT", "anything", null, null);         
+         new Communicator(FakeContext.Defaults).SendPayload<object>("PUT", "anything", null, null);
       }
    }
 }

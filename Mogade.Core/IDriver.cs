@@ -69,7 +69,7 @@ namespace Mogade
       /// <param name="uniqueIdentifier">A unique identifier for the user. Mobile devices should use the deviceId</param>
       /// <param name="scope">The scope to get the rank for</param>
       /// <returns>Returns the user's rank (0 means the user doesn't have a rank for the specified scope)</returns>
-      void GetRanks(string leaderboardId, string userName, string uniqueIdentifier, LeaderboardScope scope, Action<Response<int>> callback);
+      void GetRank(string leaderboardId, string userName, string uniqueIdentifier, LeaderboardScope scope, Action<Response<int>> callback);
 
       /// <summary>
       /// Gets a a user's rank across an individual scope
