@@ -156,7 +156,11 @@ namespace Mogade
             else if (typeof(bool).IsAssignableFrom(valueType))
             {
                parameters.Add(kvp.Key, (bool)kvp.Value ? "true" : "false");
-            }            
+            }
+            else if (typeof(IDictionary<string, object>).IsAssignableFrom(valueType))
+            {
+               BuildPayloadParameters((IDictionary<string, object>)kvp.Value, parameters);
+            }
             else if (typeof(IEnumerable).IsAssignableFrom(valueType))
             {
                var sb = new StringBuilder();
@@ -170,7 +174,7 @@ namespace Mogade
                var hash = new Dictionary<string, object>(properties.Length);
                foreach (var property in properties)
                {
-                  hash.Add(property.Name, property.GetValue(kvp.Value, null));                  
+                  hash.Add(property.Name, property.GetValue(kvp.Value, null));
                }
                BuildPayloadParameters(hash, parameters);
             }

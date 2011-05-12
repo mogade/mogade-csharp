@@ -65,8 +65,8 @@ namespace Mogade.Tests
          response.ContentLength64 = (expectation.Response ?? body).Length;
          using (var sw = new StreamWriter(response.OutputStream))
          {
-            sw.Write(expectation.Response ?? body);               
-         }            
+            sw.Write(expectation.Response ?? body);
+         }
          response.Close();
       }
 
@@ -83,7 +83,7 @@ namespace Mogade.Tests
          {
             if (expectation.Method != null && string.Compare(request.HttpMethod, expectation.Method, true) != 0) {  continue;  }
             if (expectation.Url != null && string.Compare(request.Url.AbsolutePath, expectation.Url, true) != 0) { continue; }
-            if (expectation.Request != null && string.Compare(body, expectation.Request, true) != 0) { continue; }            
+            if (expectation.Request != null && string.Compare(body, expectation.Request, true) != 0) { continue; }
             return expectation; //we found a match!
          }
          return null;

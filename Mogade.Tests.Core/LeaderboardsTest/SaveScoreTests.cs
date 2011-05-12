@@ -17,7 +17,7 @@ namespace Mogade.Tests.LeaderboardsTest
       [Test]
       public void SendsScoreWithDataToTheServer()
       {
-         Server.Stub(new ApiExpectation { Method = "PUT", Url = "/scores", Request = @"{""leaderboard_id"":""mybaloney"",""score"":{""username"":""Scytale"",""points"":10039,""data"":""mydata"",""unique"":""gom jabbar""},""key"":""thekey"",""v"":1,""sig"":""af421951f2b5d691e9ec42ba30a61c34""}" });
+         Server.Stub(new ApiExpectation { Method = "PUT", Url = "/scores", Request = @"{""leaderboard_id"":""mybaloney"",""score"":{""username"":""Scytale"",""points"":10039,""unique"":""gom jabbar"",""data"":""mydata""},""key"":""thekey"",""v"":1,""sig"":""af421951f2b5d691e9ec42ba30a61c34""}" });
          var score = new Score { Points = 10039, UserName = "Scytale", Data = "mydata" };
          new Driver("thekey", "sssshh").SaveScore("mybaloney", score, "gom jabbar", SetIfSuccess);
          WaitOne();

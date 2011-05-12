@@ -29,7 +29,7 @@ namespace Mogade.Tests
                                      }
                           }
                        };
-         Assert.AreEqual("e04df86b1b3b46bd195470097d039fa3", Communicator.GetSignature(payload, "duncanidaho"));
+         Assert.AreEqual("e78a795a3ede106b6f935b6d3b466aad", Communicator.GetSignature(payload, "duncanidaho"));
       }
 
       [Test]
@@ -43,7 +43,7 @@ namespace Mogade.Tests
                                      }
                           }
                        };
-         Assert.AreEqual("46048805712f72eef059610f745883bb", Communicator.GetSignature(payload, "einstein"));
+         Assert.AreEqual("708fce95cca6a26f245d2719eeb9b22d", Communicator.GetSignature(payload, "einstein"));
       }
    }   
 }

@@ -80,8 +80,12 @@ namespace Mogade
          var payload = new Dictionary<string, object>
                        {
                           {"leaderboard_id", leaderboardId}, 
-                          {"score", new {username = score.UserName, points = score.Points, data = score.Data, unique = uniqueIdentifier}},
+                          {"score", new Dictionary<string, object>{{"username", score.UserName}, {"points", score.Points}, {"unique", uniqueIdentifier}}},
                        };
+         if (score.Data != null)
+         {
+            ((IDictionary<string, object>) payload["score"])["data"] = score.Data;
+         }
          var communicator = new Communicator(this);
          communicator.SendPayload<Ranks>(Communicator.PUT, "scores", payload, r =>
          {
@@ -98,7 +102,7 @@ namespace Mogade
       public void GetLeaderboard(string leaderboardId, LeaderboardScope scope, int page, int records, Action<Response<LeaderboardScores>> callback)
       {
          ValidationHelper.AssertValidId(leaderboardId, "leaderboardId");
-         var payload = new Dictionary<string, object> { { "leaderboard", new { id = leaderboardId, scope = (int)scope, page = page, records = records } } };
+         var payload = new Dictionary<string, object> {{"leaderboard", new Dictionary<string, object> {{"id", leaderboardId}, {"scope", (int) scope}, {"page", page}, {"records", records}}}};
          var communicator = new Communicator(this);
          communicator.SendPayload<LeaderboardScores>(Communicator.POST, "scores", payload, r =>
          {
@@ -129,7 +133,7 @@ namespace Mogade
          ValidationHelper.AssertValidId(leaderboardId, "leaderboardId");
          var payload = new Dictionary<string, object>
                        {
-                          { "leaderboard", new { id = leaderboardId, scope = (int)scope, page = page, records = records  } }, 
+                          { "leaderboard", new Dictionary<string, object> {{"id", leaderboardId}, {"scope", (int) scope}, {"page", page}, {"records", records}}},
                           { "username", userName},
                           { "unique", uniqueIdentifier},
                        };
