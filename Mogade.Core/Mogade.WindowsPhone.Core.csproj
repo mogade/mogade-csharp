@@ -42,7 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json.WindowsPhone">
-      <HintPath>E:\My Dropbox\emoh\Work\Mogade.Examples.WindowsPhone\References\Newtonsoft.Json.WindowsPhone.dll</HintPath>
+      <HintPath>..\References\Newtonsoft.Json.WindowsPhone.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows" />
     <Reference Include="system" />
