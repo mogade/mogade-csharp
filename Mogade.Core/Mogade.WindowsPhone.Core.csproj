@@ -41,6 +41,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json.WindowsPhone">
+      <HintPath>E:\My Dropbox\emoh\Work\Mogade.Examples.WindowsPhone\References\Newtonsoft.Json.WindowsPhone.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows" />
     <Reference Include="system" />
     <Reference Include="System.Core" />
@@ -73,12 +76,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Assets\logo.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="E:\Source\Src\Newtonsoft.Json\Newtonsoft.Json.WindowsPhone.csproj">
-      <Project>{7A7F70AB-5C07-47ED-BDD2-ECC14DBACA5E}</Project>
-      <Name>Newtonsoft.Json.WindowsPhone</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
