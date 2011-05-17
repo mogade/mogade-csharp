@@ -14,7 +14,7 @@ namespace Mogade.Tests
       public void ProperlySignsThePayLoadBlackBox1()
       {
          var payload = new Dictionary<string, object> {{"itsover", 9000}, {"really", true}, {"howmuch?", "9000"}};
-         Assert.AreEqual("8a5c0159ea064a04a0602e0da40d7706adac07a0", Communicator.GetSignature(payload, "vegeta!"));
+         Assert.AreEqual("b66fd76116f3d2549f33b1d1cf6f4347b73c3482", Communicator.GetSignature(payload, "vegeta!"));
       }
    }   
 }

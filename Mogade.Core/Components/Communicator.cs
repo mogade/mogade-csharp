@@ -26,21 +26,17 @@ namespace Mogade
       {
          if (!DriverConfiguration.Data.NetworkCheck())
          {
-            if (callback != null)
-            {
-               callback(Response<T>.CreateError(new ErrorMessage {Message = "Network is not available"}));
-            }
+            if (callback != null) { callback(Response<T>.CreateError(new ErrorMessage {Message = "Network is not available"})); }
             return;
          }
-
          var isGet = method == Get;
 
          var url = DriverConfiguration.Data.Url + endPoint;
          var payload = FinalizePayload(partialPayload, isGet);
-         if (method == Get) { url += '?' + payload; }
+         if (isGet) { url += '?' + payload; }
          var request = (HttpWebRequest)WebRequest.Create(url);
          request.Method = method;
-         request.UserAgent = "mogade-csharp";
+         request.UserAgent = "mogade-csharp2";
 #if !WINDOWS_PHONE
          request.Timeout = 10000;
          request.ReadWriteTimeout = 10000;
@@ -52,8 +48,10 @@ namespace Mogade
          }
          else 
          {
-            request.ContentType = "application/x-www-form-urlencode";
-            request.BeginGetRequestStream(GetRequestStream<T>, new RequestState<T> { Request = request, Payload = Encoding.UTF8.GetBytes(payload), Callback = callback });
+            request.ContentType = "application/x-www-form-urlencoded";
+            var data = Encoding.UTF8.GetBytes(payload);
+            request.ContentLength = data.Length;
+            request.BeginGetRequestStream(GetRequestStream<T>, new RequestState<T> { Request = request, Payload = data, Callback = callback });
          }
       }
 
@@ -129,7 +127,7 @@ namespace Mogade
          var sb = new StringBuilder();
          foreach (var parameter in sorted)
          {
-            sb.AppendFormat("{0}={1}&", parameter.Key, parameter.Value);
+            sb.AppendFormat("{0}|{1}|", parameter.Key, parameter.Value);
          }
          sb.Append(secret);
          using (var hasher = new SHA1Managed())
