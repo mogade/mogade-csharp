@@ -30,7 +30,7 @@ namespace Mogade
          communicator.SendPayload<Ranks>(Communicator.Post, "scores", payload, r =>
          {
             if (r.Success) { r.Data = JsonConvert.DeserializeObject<Ranks>(r.Raw); }
-            callback(r);
+            if (callback != null) { callback(r); }
          });
       }
 
@@ -113,7 +113,17 @@ namespace Mogade
          communicator.SendPayload<Achievement>(Communicator.Post, "achievements", payload, r =>
          {
             if (r.Success) { r.Data = JsonConvert.DeserializeObject<Achievement>(r.Raw); }
-            callback(r);
+            if (callback != null) { callback(r); }
+         });
+      }
+
+      public void LogApplicationStart(string uniqueIdentifier, Action<Response> callback)
+      {
+         var payload = new Dictionary<string, object> { { "unique", uniqueIdentifier } };
+         var communicator = new Communicator(this);
+         communicator.SendPayload<object>(Communicator.Post, "stats", payload, r =>
+         {
+            if (callback != null) { callback(r); }
          });
       }
    }

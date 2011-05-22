@@ -97,5 +97,11 @@ namespace Mogade
       /// <param name="uniqueIdentifier">A unique identifier for the user. Mobile devices should use the deviceId</param>
       /// <returns>An array containing the achievements earned by the user (or an achievement with a null id if the user has already earned it)</returns>
       void AchievementEarned(string achievementId, string userName, string uniqueIdentifier, Action<Response<Achievement>> callback);
+
+      /// <summary>
+      /// Logs an application start (for analytic purposes)
+      /// </summary>
+      /// <param name="uniqueIdentifier">A unique identifier for the user. Mobile devices should use the deviceId</param>
+      void LogApplicationStart(string uniqueIdentifier, Action<Response> callback);
    }
 }

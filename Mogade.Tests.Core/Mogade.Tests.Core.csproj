@@ -66,6 +66,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BaseFixture.cs" />
+    <Compile Include="StatsTests\LogApplicationStartTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mogade.Core\Mogade.Core.csproj">
