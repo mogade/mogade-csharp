@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace Mogade.Leaderboards
+namespace Mogade
 {
    public class Ranks
    {

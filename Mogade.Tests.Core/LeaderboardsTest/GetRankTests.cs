@@ -1,4 +1,3 @@
-using Mogade.Leaderboards;
 using NUnit.Framework;
 
 namespace Mogade.Tests.LeaderboardsTest

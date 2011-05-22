@@ -1,5 +1,5 @@
 using System;
-using Mogade.Leaderboards;
+using System.Collections.Generic;
 
 namespace Mogade
 {
@@ -81,5 +81,21 @@ namespace Mogade
       /// <returns>Returns the user's rank (0 means the user doesn't have a rank for the specified scope, or that the scope wasn't requested)</returns>
       void GetRanks(string leaderboardId, string userName, string uniqueIdentifier, LeaderboardScope[] scopes, Action<Response<Ranks>> callback);
 
+      /// <summary>
+      /// Gets the achievement ids that the player has earned
+      /// </summary>
+      /// <param name="userName">the name of the user</param>
+      /// <param name="uniqueIdentifier">A unique identifier for the user. Mobile devices should use the deviceId</param>
+      /// <returns>An array containing the achievements earned by the user (or an empty array if the user hasn't earned anything)</returns>
+      void GetEarnedAchievements(string userName, string uniqueIdentifier, Action<Response<ICollection<string>>> callback);
+
+      /// <summary>
+      /// Grants the user the specified achievement
+      /// </summary>
+      /// <param name="achievementId">The id of the achievementId earned</param>
+      /// <param name="userName">the name of the user</param>
+      /// <param name="uniqueIdentifier">A unique identifier for the user. Mobile devices should use the deviceId</param>
+      /// <returns>An array containing the achievements earned by the user (or an achievement with a null id if the user has already earned it)</returns>
+      void AchievementEarned(string achievementId, string userName, string uniqueIdentifier, Action<Response<Achievement>> callback);
    }
 }

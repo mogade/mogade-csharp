@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Mogade.Leaderboards;
 using Newtonsoft.Json;
 
 namespace Mogade
@@ -90,6 +89,30 @@ namespace Mogade
          communicator.SendPayload<Ranks>(Communicator.Get, "ranks", payload, r =>
          {
             if (r.Success) { r.Data = JsonConvert.DeserializeObject<Ranks>(r.Raw); }
+            callback(r);
+         });
+      }
+
+      public void GetEarnedAchievements(string userName, string uniqueIdentifier, Action<Response<ICollection<string>>> callback)
+      {
+         //unlike most GET operation, this actually requies the game's key
+         //though it still doesn't require signing
+         var payload = new Dictionary<string, object> {  { "username", userName }, { "userKey", uniqueIdentifier }, {"key", Key}};
+         var communicator = new Communicator(this);
+         communicator.SendPayload<ICollection<string>>(Communicator.Get, "achievements", payload, r =>
+         {
+            if (r.Success) { r.Data = JsonConvert.DeserializeObject<ICollection<string>>(r.Raw); }
+            callback(r);
+         });
+      }
+
+      public void AchievementEarned(string achievementId, string userName, string uniqueIdentifier, Action<Response<Achievement>> callback)
+      {
+         var payload = new Dictionary<string, object> { {"aid", achievementId}, { "username", userName }, { "userKey", uniqueIdentifier }};
+         var communicator = new Communicator(this);
+         communicator.SendPayload<Achievement>(Communicator.Post, "achievements", payload, r =>
+         {
+            if (r.Success) { r.Data = JsonConvert.DeserializeObject<Achievement>(r.Raw); }
             callback(r);
          });
       }

@@ -1,4 +1,4 @@
-namespace Mogade.Leaderboards
+namespace Mogade
 {
    public enum LeaderboardScope
    {

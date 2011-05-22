@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Mogade.Leaderboards
+namespace Mogade
 {
    public class LeaderboardScores
    {
