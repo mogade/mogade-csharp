@@ -7,7 +7,7 @@ namespace Mogade.Tests.LeaderboardsTest
       [Test]
       public void SendsScoreWithoutDataToTheServer()
       {
-         Server.Stub(new ApiExpectation { Method = "POST", Url = "/scores", Request = @"lid=mybaloney&username=Scytale&userkey=gom%20jabbar&points=10039&key=thekey&v=2&sig=5c4b2d79065ba7fb735f57e6c1a8642ed42bfc1e", Response = "{}" });
+         Server.Stub(new ApiExpectation { Method = "POST", Url = "/scores", Request = "lid=mybaloney&username=Scytale&userkey=gom%20jabbar&points=10039&key=thekey&v=2&sig=5c4b2d79065ba7fb735f57e6c1a8642ed42bfc1e", Response = "{}" });
          var score = new Score { Points = 10039, UserName = "Scytale"};
          new Driver("thekey", "sssshh").SaveScore("mybaloney", score, "gom jabbar", SetIfSuccess);
          WaitOne();

@@ -97,7 +97,7 @@ namespace Mogade
       {
          //unlike most GET operation, this actually requies the game's key
          //though it still doesn't require signing
-         var payload = new Dictionary<string, object> {  { "username", userName }, { "userKey", uniqueIdentifier }, {"key", Key}};
+         var payload = new Dictionary<string, object> { { "username", userName }, { "userkey", uniqueIdentifier }, { "key", Key } };
          var communicator = new Communicator(this);
          communicator.SendPayload<ICollection<string>>(Communicator.Get, "achievements", payload, r =>
          {
@@ -108,7 +108,7 @@ namespace Mogade
 
       public void AchievementEarned(string achievementId, string userName, string uniqueIdentifier, Action<Response<Achievement>> callback)
       {
-         var payload = new Dictionary<string, object> { {"aid", achievementId}, { "username", userName }, { "userKey", uniqueIdentifier }};
+         var payload = new Dictionary<string, object> { { "aid", achievementId }, { "username", userName }, { "userkey", uniqueIdentifier } };
          var communicator = new Communicator(this);
          communicator.SendPayload<Achievement>(Communicator.Post, "achievements", payload, r =>
          {
@@ -119,7 +119,7 @@ namespace Mogade
 
       public void LogApplicationStart(string uniqueIdentifier, Action<Response> callback)
       {
-         var payload = new Dictionary<string, object> { { "unique", uniqueIdentifier } };
+         var payload = new Dictionary<string, object> { { "userkey", uniqueIdentifier } };
          var communicator = new Communicator(this);
          communicator.SendPayload<object>(Communicator.Post, "stats", payload, r =>
          {

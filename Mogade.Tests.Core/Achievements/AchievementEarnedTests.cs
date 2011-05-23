@@ -7,7 +7,7 @@ namespace Mogade.Tests.Achievements
       [Test]
       public void SendsTheRequest()
       {
-         Server.Stub(new ApiExpectation { Method = "POST", Url = "/achievements", Request = @"aid=123abc&username=paul&userkey=jessica&key=thekey&v=2&sig=5c3d993466e2c0d0ee990b594375cc0a43038821", Response = "{}" });
+         Server.Stub(new ApiExpectation { Method = "POST", Url = "/achievements", Request = "aid=123abc&username=paul&userkey=jessica&key=thekey&v=2&sig=e6ed2fbac241f1f553f562c6f4f500de99880511", Response = "{}" });
          new Driver("thekey", "sssshh").AchievementEarned("123abc", "paul", "jessica", SetIfSuccess);
          WaitOne();
       }

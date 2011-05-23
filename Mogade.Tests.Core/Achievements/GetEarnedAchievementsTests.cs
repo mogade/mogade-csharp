@@ -8,7 +8,7 @@ namespace Mogade.Tests.Achievements
       [Test]
       public void SendsTheRequest()
       {
-         Server.Stub(new ApiExpectation { Method = "GET", Url = "/achievements", Request = @"username=paul&userkey=jessica&key=thekey&v=2", Response = "[]" });
+         Server.Stub(new ApiExpectation { Method = "GET", Url = "/achievements", Request = "username=paul&userkey=jessica&key=thekey&v=2", Response = "[]" });
          new Driver("thekey", "sssshh").GetEarnedAchievements("paul", "jessica", SetIfSuccess);
          WaitOne();
       }
