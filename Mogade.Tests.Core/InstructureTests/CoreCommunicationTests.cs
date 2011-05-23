@@ -6,18 +6,6 @@ namespace Mogade.Tests
    public class CoreCommunicationTests : BaseFixture
    {
       [Test]
-      public void PayloadIncludesTheVersion()
-      {
-         Server.Stub(ApiExpectation.EchoAll);
-         new Communicator(FakeContext.Defaults).SendPayload<object>("POST", "anything", new Dictionary<string, object>(0), s =>
-         {
-            Assert.True(s.Raw.Contains("v=2"), "payload should contain the api version");
-            Set();
-         });
-         WaitOne();
-      }
-
-      [Test]
       public void PayloadIncludesTheGameKey()
       {
          Server.Stub(ApiExpectation.EchoAll);

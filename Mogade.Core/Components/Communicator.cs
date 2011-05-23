@@ -31,7 +31,7 @@ namespace Mogade
          }
          var isGet = method == Get;
 
-         var url = DriverConfiguration.Data.Url + endPoint;
+         var url = string.Concat(DriverConfiguration.Data.Url, _context.ApiVersion, "/", endPoint);
          var payload = FinalizePayload(partialPayload, isGet);
          if (isGet) { url += '?' + payload; }
          var request = (HttpWebRequest)WebRequest.Create(url);
@@ -87,7 +87,6 @@ namespace Mogade
       private string FinalizePayload(IDictionary<string, object> payload, bool isGet)
       {
          if (!isGet) { payload.Add("key", _context.Key); }
-         payload.Add("v", _context.ApiVersion);
          if (!isGet) { payload.Add("sig", GetSignature(payload, _context.Secret)); }
          var sb = new StringBuilder();
          foreach (var kvp in payload)

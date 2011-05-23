@@ -6,7 +6,7 @@ namespace Mogade
 {
    public class Driver : IDriver, IRequestContext
    {      
-      public const int VERSION = 2;
+      public const string VERSION = "gamma";
       public Driver(string gameKey, string secret)
       {
          ValidationHelper.AssertNotNullOrEmpty(gameKey, "gameKey");
@@ -15,7 +15,7 @@ namespace Mogade
          Secret = secret;
       }
 
-      public int ApiVersion
+      public string ApiVersion
       {
          get { return VERSION; }
       }

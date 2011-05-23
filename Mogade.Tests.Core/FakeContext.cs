@@ -4,11 +4,11 @@ namespace Mogade.Tests
    {
       public readonly static IRequestContext Defaults = new FakeContext();
 
-      private int version = 2;
+      private string version = "gamma";
       private string secret = "secret";
       private string key = "api key";
       
-      public int ApiVersion
+      public string ApiVersion
       {
          get { return version; }
          set { version = value; }

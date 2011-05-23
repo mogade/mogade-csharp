@@ -7,7 +7,7 @@ namespace Mogade.Tests.LeaderboardsTest
       [Test]
       public void SendsIndividualRankRequestToTheServer()
       {
-         Server.Stub(new ApiExpectation { Method = "GET", Url = "/ranks", Request = "lid=mybaloney&username=paul&userkey=jessica&scopes=3&v=2", Response = "{}" });
+         Server.Stub(new ApiExpectation { Method = "GET", Url = "/gamma/ranks", Request = "lid=mybaloney&username=paul&userkey=jessica&scopes=3", Response = "{}" });
          new Driver("thekey", "sssshh").GetRank("mybaloney", "paul", "jessica", LeaderboardScope.Overall, SetIfSuccess);
          WaitOne();
       }
@@ -15,7 +15,7 @@ namespace Mogade.Tests.LeaderboardsTest
       [Test]
       public void SendMultipleRankRequestToServer()
       {
-         Server.Stub(new ApiExpectation { Method = "GET", Url = "/ranks", Request = "lid=mybaloney&username=paul&userkey=jessica&scopes%5B%5D=1&scopes%5B%5D=2&v=2", Response = "{}" });
+         Server.Stub(new ApiExpectation { Method = "GET", Url = "/gamma/ranks", Request = "lid=mybaloney&username=paul&userkey=jessica&scopes%5B%5D=1&scopes%5B%5D=2", Response = "{}" });
          new Driver("thekey", "sssshh").GetRanks("mybaloney", "paul", "jessica", new[]{LeaderboardScope.Daily, LeaderboardScope.Weekly}, SetIfSuccess);
          WaitOne();
       }
@@ -23,7 +23,7 @@ namespace Mogade.Tests.LeaderboardsTest
       [Test]
       public void SendsAllRanksRequestToServer()
       {
-         Server.Stub(new ApiExpectation { Method = "GET", Url = "/ranks", Request = "lid=mybaloney&username=paul&userkey=jessica&scopes%5B%5D=1&scopes%5B%5D=2&scopes%5B%5D=3&scopes%5B%5D=4&v=2", Response = "{}" });
+         Server.Stub(new ApiExpectation { Method = "GET", Url = "/gamma/ranks", Request = "lid=mybaloney&username=paul&userkey=jessica&scopes%5B%5D=1&scopes%5B%5D=2&scopes%5B%5D=3&scopes%5B%5D=4", Response = "{}" });
          new Driver("thekey", "sssshh").GetRanks("mybaloney", "paul", "jessica", SetIfSuccess);
          WaitOne();
       }

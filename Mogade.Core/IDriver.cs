@@ -7,8 +7,8 @@ namespace Mogade
    {
       /// <summary>
       /// Returns the version of the API this library understands
-      /// </summary>      
-      int ApiVersion { get; }
+      /// </summary
+      string ApiVersion { get; }
 
       /// <summary>
       /// Saves a score

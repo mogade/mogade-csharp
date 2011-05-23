@@ -8,7 +8,7 @@ namespace Mogade.Tests.Achievements
       [Test]
       public void SendsTheRequest()
       {
-         Server.Stub(new ApiExpectation { Method = "GET", Url = "/achievements", Request = "username=paul&userkey=jessica&key=thekey&v=2", Response = "[]" });
+         Server.Stub(new ApiExpectation { Method = "GET", Url = "/gamma/achievements", Request = "username=paul&userkey=jessica&key=thekey", Response = "[]" });
          new Driver("thekey", "sssshh").GetEarnedAchievements("paul", "jessica", SetIfSuccess);
          WaitOne();
       }
@@ -16,7 +16,7 @@ namespace Mogade.Tests.Achievements
       [Test]
       public void DeserializesEarnedAchievements()
       {
-         Server.Stub(new ApiExpectation { Method = "GET", Url = "/achievements", Response = "['its over', '9000']" });
+         Server.Stub(new ApiExpectation { Method = "GET", Url = "/gamma/achievements", Response = "['its over', '9000']" });
          new Driver("thekey", "sssshh").GetEarnedAchievements("paul", "jessica", r =>
          {
             Assert.AreEqual(true, r.Success);
@@ -31,7 +31,7 @@ namespace Mogade.Tests.Achievements
       [Test]
       public void DeserializesEmptyAchievements()
       {
-         Server.Stub(new ApiExpectation { Method = "GET", Url = "/achievements", Response = "[]" });
+         Server.Stub(new ApiExpectation { Method = "GET", Url = "/gamma/achievements", Response = "[]" });
          new Driver("thekey", "sssshh").GetEarnedAchievements("paul", "jessica", r =>
          {
             Assert.AreEqual(true, r.Success);

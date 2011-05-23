@@ -7,7 +7,7 @@ namespace Mogade.Tests.LeaderboardsTest
       [Test]
       public void SendsRequestForLeaderboardToTheServer()
       {
-         Server.Stub(new ApiExpectation { Method = "GET", Url = "/scores", Request = "lid=theid&page=3&records=10&scope=2&v=2", Response = "{}" });
+         Server.Stub(new ApiExpectation { Method = "GET", Url = "/gamma/scores", Request = "lid=theid&page=3&records=10&scope=2", Response = "{}" });
          new Driver("akey", "sssshh2").GetLeaderboard("theid", LeaderboardScope.Weekly, 3, 10, SetIfSuccess);
          WaitOne();
       }
@@ -15,7 +15,7 @@ namespace Mogade.Tests.LeaderboardsTest
       [Test]
       public void SendsRequestForLeaderboardWitUserAndRecordCount()
       {
-         Server.Stub(new ApiExpectation { Method = "GET", Url = "/scores", Request = "lid=theid&username=itsme&userKey=imunique&records=25&scope=2&v=2", Response = "{}" });
+         Server.Stub(new ApiExpectation { Method = "GET", Url = "/gamma/scores", Request = "lid=theid&username=itsme&userKey=imunique&records=25&scope=2", Response = "{}" });
          new Driver("akey", "sssshh2").GetLeaderboard("theid", LeaderboardScope.Weekly, "itsme", "imunique", 25, SetIfSuccess);
          WaitOne();
       }

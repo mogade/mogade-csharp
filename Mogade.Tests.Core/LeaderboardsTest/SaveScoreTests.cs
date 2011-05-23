@@ -7,7 +7,7 @@ namespace Mogade.Tests.LeaderboardsTest
       [Test]
       public void SendsScoreWithoutDataToTheServer()
       {
-         Server.Stub(new ApiExpectation { Method = "POST", Url = "/scores", Request = "lid=mybaloney&username=Scytale&userkey=gom%20jabbar&points=10039&key=thekey&v=2&sig=5c4b2d79065ba7fb735f57e6c1a8642ed42bfc1e", Response = "{}" });
+         Server.Stub(new ApiExpectation { Method = "POST", Url = "/gamma/scores", Request = "lid=mybaloney&username=Scytale&userkey=gom%20jabbar&points=10039&key=thekey&sig=ea56e70da9398d58eff2ec78d7d00605021dba12", Response = "{}" });
          var score = new Score { Points = 10039, UserName = "Scytale"};
          new Driver("thekey", "sssshh").SaveScore("mybaloney", score, "gom jabbar", SetIfSuccess);
          WaitOne();
@@ -16,7 +16,7 @@ namespace Mogade.Tests.LeaderboardsTest
       [Test]
       public void SendsScoreWithDataToTheServer()
       {
-         Server.Stub(new ApiExpectation { Method = "POST", Url = "/scores", Request = "lid=mybaloney&username=Scytale&userkey=gom%20jabbar&points=10039&data=mydata&key=thekey&v=2&sig=5a5a91c4d2171374d3c05ce6e19b712a07dcfcf2", Response = "{}" });
+         Server.Stub(new ApiExpectation { Method = "POST", Url = "/gamma/scores", Request = "lid=mybaloney&username=Scytale&userkey=gom%20jabbar&points=10039&data=mydata&key=thekey&sig=750c0ae7304e3e4cdc4e97e09f197f05d5708fad", Response = "{}" });
          var score = new Score { Points = 10039, UserName = "Scytale", Data = "mydata" };
          new Driver("thekey", "sssshh").SaveScore("mybaloney", score, "gom jabbar", SetIfSuccess);
          WaitOne();

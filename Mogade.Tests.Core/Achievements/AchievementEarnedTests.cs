@@ -7,7 +7,7 @@ namespace Mogade.Tests.Achievements
       [Test]
       public void SendsTheRequest()
       {
-         Server.Stub(new ApiExpectation { Method = "POST", Url = "/achievements", Request = "aid=123abc&username=paul&userkey=jessica&key=thekey&v=2&sig=e6ed2fbac241f1f553f562c6f4f500de99880511", Response = "{}" });
+         Server.Stub(new ApiExpectation { Method = "POST", Url = "/gamma/achievements", Request = "aid=123abc&username=paul&userkey=jessica&key=thekey&sig=1ddea35e4249044f29a16ac0b12e98162ad76855", Response = "{}" });
          new Driver("thekey", "sssshh").AchievementEarned("123abc", "paul", "jessica", SetIfSuccess);
          WaitOne();
       }
@@ -15,7 +15,7 @@ namespace Mogade.Tests.Achievements
       [Test]
       public void GetsAnAchievementResponse()
       {
-         Server.Stub(new ApiExpectation { Method = "POST", Url = "/achievements", Response = "{id: 'the_id', points: 286}" });
+         Server.Stub(new ApiExpectation { Method = "POST", Url = "/gamma/achievements", Response = "{id: 'the_id', points: 286}" });
          new Driver("thekey", "sssshh").AchievementEarned("123abc", "paul", "jessica", r =>
          {
             Assert.AreEqual(true, r.Success);
@@ -29,7 +29,7 @@ namespace Mogade.Tests.Achievements
       [Test]
       public void GetsAnEmptyAchievement()
       {
-         Server.Stub(new ApiExpectation { Method = "POST", Url = "/achievements", Response = "{}" });
+         Server.Stub(new ApiExpectation { Method = "POST", Url = "/gamma/achievements", Response = "{}" });
          new Driver("thekey", "sssshh").AchievementEarned("123abc", "paul", "jessica", r =>
          {
             Assert.AreEqual(true, r.Success);

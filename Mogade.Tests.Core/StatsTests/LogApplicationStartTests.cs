@@ -7,7 +7,7 @@ namespace Mogade.Tests.StatsTests
       [Test]
       public void SendsRequestToTheServer()
       {
-         Server.Stub(new ApiExpectation { Method = "POST", Url = "/stats", Request = "userkey=imspecial&key=akey&v=2&sig=3f6350c0c1149c2a765dd1dc3db5c1eb5eb740cf", Response = null });
+         Server.Stub(new ApiExpectation { Method = "POST", Url = "/gamma/stats", Request = "userkey=imspecial&key=akey&sig=ecdc09ff182d5b16f85517100c224639b3611258", Response = null });
          new Driver("akey", "sssshh2").LogApplicationStart("imspecial", SetIfSuccess);
          WaitOne();
       }
