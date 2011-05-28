@@ -126,5 +126,15 @@ namespace Mogade
             if (callback != null) { callback(r); }
          });
       }
+
+      public void LogError(string subject, string details, Action<Response> callback)
+      {
+         var payload = new Dictionary<string, object> { { "subject", subject }, {"details", details} };
+         var communicator = new Communicator(this);
+         communicator.SendPayload<object>(Communicator.Post, "errors", payload, r =>
+         {
+            if (callback != null) { callback(r); }
+         });
+      }
    }
 }

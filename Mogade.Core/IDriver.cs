@@ -102,6 +102,15 @@ namespace Mogade
       /// Logs an application start (for analytic purposes)
       /// </summary>
       /// <param name="uniqueIdentifier">A unique identifier for the user. Mobile devices should use the deviceId</param>
+      /// <param name="callback">the callback (null can safely be passed in)</param>
       void LogApplicationStart(string uniqueIdentifier, Action<Response> callback);
+
+      /// <summary>
+      /// Logs an error
+      /// </summary>
+      /// <param name="subject">the subject of the error (a brief description)</param>
+      /// <param name="details">the error's details</param>
+      /// <param name="callback">the callback (null can safely be passed in)</param>
+      void LogError(string subject, string details, Action<Response> callback);
    }
 }
