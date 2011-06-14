@@ -25,15 +25,15 @@ namespace Mogade.Tests.LeaderboardsTest
       [Test]
       public void RetrievesAllTheRanksFromTheResponse()
       {
-         Server.Stub(new ApiExpectation { Response = @"{1: 20, 2: 25, 3: 45, 4:22}" });
+         Server.Stub(new ApiExpectation { Response = @"{ranks: {1: 20, 2: 25, 3: 45, 4:22}}" });
          var score = new Score { Points = 10039, UserName = "Scytale" };
-         new Driver("thekey", "sssshh").SaveScore("mybaloney", score, "gom jabbar", ranks =>
+         new Driver("thekey", "sssshh").SaveScore("mybaloney", score, "gom jabbar", r =>
          {
-            Assert.AreEqual(true, ranks.Success);
-            Assert.AreEqual(20, ranks.Data.Daily);
-            Assert.AreEqual(25, ranks.Data.Weekly);
-            Assert.AreEqual(45, ranks.Data.Overall);
-            Assert.AreEqual(22, ranks.Data.Yesterday);
+            Assert.AreEqual(true, r.Success);
+            Assert.AreEqual(20, r.Data.Ranks.Daily);
+            Assert.AreEqual(25, r.Data.Ranks.Weekly);
+            Assert.AreEqual(45, r.Data.Ranks.Overall);
+            Assert.AreEqual(22, r.Data.Ranks.Yesterday);
             Set();
          });
          WaitOne();
@@ -42,14 +42,14 @@ namespace Mogade.Tests.LeaderboardsTest
       [Test]
       public void RetrievesAnEmptyRankSet() //SaveScore isn't guaranteed to return all, or even any rank
       {
-         Server.Stub(new ApiExpectation { Response = @"{}" });
+         Server.Stub(new ApiExpectation { Response = @"{ranks:{}}" });
          var score = new Score { Points = 10039, UserName = "Scytale", };
-         new Driver("thekey", "sssshh").SaveScore("mybaloney", score, "gom jabbar", ranks =>
+         new Driver("thekey", "sssshh").SaveScore("mybaloney", score, "gom jabbar", r =>
          {
-            Assert.AreEqual(0, ranks.Data.Daily);
-            Assert.AreEqual(0, ranks.Data.Weekly);
-            Assert.AreEqual(0, ranks.Data.Overall);
-            Assert.AreEqual(0, ranks.Data.Yesterday);
+            Assert.AreEqual(0, r.Data.Ranks.Daily);
+            Assert.AreEqual(0, r.Data.Ranks.Weekly);
+            Assert.AreEqual(0, r.Data.Ranks.Overall);
+            Assert.AreEqual(0, r.Data.Ranks.Yesterday);
             Set();
          });
          WaitOne();
@@ -58,14 +58,29 @@ namespace Mogade.Tests.LeaderboardsTest
       [Test]
       public void RetrievesAnPartialRankSet() //SaveScore isn't guaranteed to return all, or even any rank
       {
-         Server.Stub(new ApiExpectation { Response = @"{2: 49494}" });
+         Server.Stub(new ApiExpectation { Response = @"{ranks:{2: 49494}}" });
          var score = new Score { Points = 10039, UserName = "Scytale", };
-         new Driver("thekey", "sssshh").SaveScore("mybaloney", score, "gom jabbar", ranks =>
+         new Driver("thekey", "sssshh").SaveScore("mybaloney", score, "gom jabbar", r =>
          {
-            Assert.AreEqual(0, ranks.Data.Daily);
-            Assert.AreEqual(49494, ranks.Data.Weekly);
-            Assert.AreEqual(0, ranks.Data.Overall);
-            Assert.AreEqual(0, ranks.Data.Yesterday);
+            Assert.AreEqual(0, r.Data.Ranks.Daily);
+            Assert.AreEqual(49494, r.Data.Ranks.Weekly);
+            Assert.AreEqual(0, r.Data.Ranks.Overall);
+            Assert.AreEqual(0, r.Data.Ranks.Yesterday);
+            Set();
+         });
+         WaitOne();
+      }
+
+      [Test]
+      public void RetrievesHighScores()
+      {
+         Server.Stub(new ApiExpectation { Response = @"{highs:{1: true, 2: false, 3:true}}" });
+         var score = new Score { Points = 10039, UserName = "Scytale", };
+         new Driver("thekey", "sssshh").SaveScore("mybaloney", score, "gom jabbar", r =>
+         {
+            Assert.AreEqual(true, r.Data.Highs.Daily);
+            Assert.AreEqual(false, r.Data.Highs.Weekly);
+            Assert.AreEqual(true, r.Data.Highs.Overall);
             Set();
          });
          WaitOne();

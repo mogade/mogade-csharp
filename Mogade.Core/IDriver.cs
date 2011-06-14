@@ -25,7 +25,7 @@ namespace Mogade
       /// might mean the user got to level 4 and played for 12 minutes and 30 seconds. You are responsible for encoding/decoding
       /// this information...we just take it in, store it, and pass it back out
       /// </remarks>
-      void SaveScore(string leaderboardId, Score score, string uniqueIdentifier, Action<Response<Ranks>> callback);
+      void SaveScore(string leaderboardId, Score score, string uniqueIdentifier, Action<Response<SavedScore>> callback);
 
 
       /// <summary>
@@ -35,7 +35,7 @@ namespace Mogade
       /// <param name="scope">The scope to get the scores from (daily, weekly or overall)</param>
       /// <param name="page">The page to get (starting with 1)</param>
       /// <param name="records">The number of records (up to 50)</param>
-      /// <returns>A leaderboard object containing an array of scores</returns
+      /// <returns>A leaderboard object containing an array of scores</returns>
       void GetLeaderboard(string leaderboardId, LeaderboardScope scope, int page, int records, Action<Response<LeaderboardScores>> callback);
 
       /// <summary>

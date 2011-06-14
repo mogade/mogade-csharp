@@ -23,13 +23,13 @@ namespace Mogade
       public string Key { get; private set; }
       public string Secret { get; private set; }
 
-      public void SaveScore(string leaderboardId, Score score, string uniqueIdentifier, Action<Response<Ranks>> callback)
+      public void SaveScore(string leaderboardId, Score score, string uniqueIdentifier, Action<Response<SavedScore>> callback)
       {
          var payload = new Dictionary<string, object> {{"lid", leaderboardId}, {"username", score.UserName}, {"userkey", uniqueIdentifier}, {"points", score.Points}, {"data", score.Data}};
          var communicator = new Communicator(this);
-         communicator.SendPayload<Ranks>(Communicator.Post, "scores", payload, r =>
+         communicator.SendPayload<SavedScore>(Communicator.Post, "scores", payload, r =>
          {
-            if (r.Success) { r.Data = JsonConvert.DeserializeObject<Ranks>(r.Raw); }
+            if (r.Success) { r.Data = JsonConvert.DeserializeObject<SavedScore>(r.Raw); }
             if (callback != null) { callback(r); }
          });
       }
