@@ -50,7 +50,9 @@ namespace Mogade
          {
             request.ContentType = "application/x-www-form-urlencoded";
             var data = Encoding.UTF8.GetBytes(payload);
+#if !WINDOWS_PHONE
             request.ContentLength = data.Length;
+#endif
             request.BeginGetRequestStream(GetRequestStream<T>, new RequestState<T> { Request = request, Payload = data, Callback = callback });
          }
       }
