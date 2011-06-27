@@ -7,7 +7,7 @@ namespace Mogade
    {
       public bool Success { get; internal set; }
       internal string Raw { get; set; }
-      public ErrorMessage Error { get; internal set; }      
+      public ErrorMessage Error { get; internal set; }
    }
    public class Response<T> : Response
    {      

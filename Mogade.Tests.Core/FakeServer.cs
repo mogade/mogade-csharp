@@ -34,17 +34,17 @@ namespace Mogade.Tests
 
       public void Stub(ApiExpectation expectation)
       {
-         _expectations.Add(expectation);         
+         _expectations.Add(expectation);
       }
 
       private void Listen()
       {
          while (true)
          {
-            var context = GetContext();            
+            var context = GetContext();
             if (context == null) { return; }
             var body = ExtractBody(context.Request);
-            var expectation = FindExpectation(context, body);            
+            var expectation = FindExpectation(context, body);
             if (expectation == null)
             {
                SendResponse(context, string.Format("Unexpected call: {0} {1}{2}{3}", context.Request.HttpMethod, context.Request.Url, Environment.NewLine, body), new ApiExpectation { Status = 500 });
@@ -58,7 +58,7 @@ namespace Mogade.Tests
          }
       }
 
-      private void SendResponse(HttpListenerContext context, string body, ApiExpectation expectation)
+      private static void SendResponse(HttpListenerContext context, string body, ApiExpectation expectation)
       {
          var response = context.Response;
          response.StatusCode = expectation.Status ?? 200;
@@ -78,7 +78,7 @@ namespace Mogade.Tests
 
       private ApiExpectation FindExpectation(HttpListenerContext context, string body)
       {
-         var request = context.Request;         
+         var request = context.Request;
          foreach (var expectation in _expectations)
          {
             if (expectation.Method != null && string.Compare(request.HttpMethod, expectation.Method, true) != 0) {  continue;  }
@@ -90,6 +90,10 @@ namespace Mogade.Tests
       }
       private static string ExtractBody(HttpListenerRequest request)
       {
+         if (request.HttpMethod == "GET")
+         {
+            return request.Url.Query.Length > 0  ? request.Url.Query.Substring(1) : null;
+         }
          var buffer = new byte[request.ContentLength64];
          request.InputStream.Read(buffer, 0, buffer.Length);
          return Encoding.Default.GetString(buffer);

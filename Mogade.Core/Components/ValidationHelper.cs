@@ -11,7 +11,7 @@ namespace Mogade
          if (@object == null)
          {
             throw new MogadeException(string.Format("{0} is required and cannot be null", name));
-         }         
+         }
       }
 
       public static void AssertNotNullOrEmpty(string @string, string name)

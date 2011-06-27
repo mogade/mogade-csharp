@@ -10,8 +10,8 @@ namespace Mogade
 
    public class DriverData : IDriverData
    {
-      public const string APIURL = "http://api.mogade.com/api/";
-      public const string TESTURL = "http://testing.mogade.com/api/";
+      public const string APIURL = "http://api2.mogade.com/api/";
+      public const string TESTURL = "http://testing2.mogade.com/api/";
       private string _url;
       private Func<bool> _networkCheck = () => true;
 

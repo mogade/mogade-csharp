@@ -1,9 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-#if !WINDOWS_PHONE
-using System.ComponentModel;
-#endif
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
@@ -13,13 +10,12 @@ namespace Mogade
 {
    public class Communicator
    {
-      public const string PUT = "PUT";
-      public const string POST = "POST";
+      public const string Get = "GET";
+      public const string Put = "PUT";
+      public const string Post = "POST";
+
       private readonly IRequestContext _context;
-      private static readonly JsonSerializerSettings _jsonSettings = new JsonSerializerSettings
-                                                                     {
-                                                                        DefaultValueHandling = DefaultValueHandling.Ignore,
-                                                                     };
+      private static readonly JsonSerializerSettings _jsonSettings = new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore, };
 
       public Communicator(IRequestContext context)
       {
@@ -30,22 +26,35 @@ namespace Mogade
       {
          if (!DriverConfiguration.Data.NetworkCheck())
          {
-            if (callback != null)
-            {
-               callback(Response<T>.CreateError(new ErrorMessage {Message = "Network is not available"}));
-            }
+            if (callback != null) { callback(Response<T>.CreateError(new ErrorMessage {Message = "Network is not available"})); }
             return;
          }
-         var request = (HttpWebRequest)WebRequest.Create(DriverConfiguration.Data.Url + endPoint);
+         var isGet = method == Get;
+
+         var url = string.Concat(DriverConfiguration.Data.Url, _context.ApiVersion, "/", endPoint);
+         var payload = FinalizePayload(partialPayload, isGet);
+         if (isGet) { url += '?' + payload; }
+         var request = (HttpWebRequest)WebRequest.Create(url);
          request.Method = method;
-         request.ContentType = "application/json";
-         request.UserAgent = "mogade-csharp";
+         request.UserAgent = "mogade-csharp2";
 #if !WINDOWS_PHONE
          request.Timeout = 10000;
          request.ReadWriteTimeout = 10000;
          request.KeepAlive = false;
-#endif         
-         request.BeginGetRequestStream(GetRequestStream<T>, new RequestState<T>{Request = request, Payload = FinalizePayload(partialPayload), Callback = callback});         
+#endif   
+         if (isGet)
+         {
+            request.BeginGetResponse(GetResponseStream<T>, new RequestState<T> {Request = request, Callback = callback});
+         }
+         else 
+         {
+            request.ContentType = "application/x-www-form-urlencoded";
+            var data = Encoding.UTF8.GetBytes(payload);
+#if !WINDOWS_PHONE
+            request.ContentLength = data.Length;
+#endif
+            request.BeginGetRequestStream(GetRequestStream<T>, new RequestState<T> { Request = request, Payload = data, Callback = callback });
+         }
       }
 
       private static void GetRequestStream<T>(IAsyncResult result)
@@ -77,30 +86,52 @@ namespace Mogade
       }
 
 
-      private byte[] FinalizePayload(IDictionary<string, object> payload)
+      private string FinalizePayload(IDictionary<string, object> payload, bool isGet)
       {
-         payload.Add("key", _context.Key);
-         payload.Add("v", _context.ApiVersion);
-#if WINDOWS_PHONE
-         const string signatureKey = "sig2";
-#else
-         const string signatureKey = "sig";
-#endif
-         payload.Add(signatureKey, GetSignature(payload, _context.Secret));
-         return Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(payload, Formatting.None, _jsonSettings));
+         if (!isGet) { payload.Add("key", _context.Key); }
+         if (!isGet) { payload.Add("sig", GetSignature(payload, _context.Secret)); }
+         var sb = new StringBuilder();
+         foreach (var kvp in payload)
+         {
+            if (kvp.Value == null) { continue; }
+            var valueType = kvp.Value.GetType();
+            if (!typeof(string).IsAssignableFrom(valueType) && typeof(IEnumerable).IsAssignableFrom(valueType))
+            {
+               sb.Append(Serialize(kvp.Key, (IEnumerable) kvp.Value));
+            }
+            else
+            {
+               sb.Append(SerializeSingleParameter(kvp.Key, kvp.Value.ToString()));
+            }
+         }
+         return sb.Remove(sb.Length - 1, 1).ToString();
       }
 
+      private static string Serialize(string key, IEnumerable values)
+      {
+         var sb = new StringBuilder();
+         key = string.Concat(key, "[]");
+         foreach(var value in values)
+         {
+            sb.Append(SerializeSingleParameter(key, value.ToString()));
+         }
+         return sb.ToString();
+      }
+
+      private static string SerializeSingleParameter(string key, string value)
+      {
+         return string.Concat(key, '=', Uri.EscapeUriString(value), '&');
+      }
       public static string GetSignature(IEnumerable<KeyValuePair<string, object>> parameters, string secret)
       {
-         var sortAndFlat = new SortedDictionary<string, string>();
-         BuildPayloadParameters(parameters, sortAndFlat);
+         var sorted = SortParameterForSignature(parameters);
          var sb = new StringBuilder();
-         foreach (var parameter in sortAndFlat)
+         foreach (var parameter in sorted)
          {
-            sb.AppendFormat("{0}={1}&", parameter.Key, parameter.Value);
+            sb.AppendFormat("{0}|{1}|", parameter.Key, parameter.Value);
          }
          sb.Append(secret);
-         using (var hasher = CreateHasher())
+         using (var hasher = new SHA1Managed())
          {
             var bytes = hasher.ComputeHash(Encoding.UTF8.GetBytes(sb.ToString()));
             var data = new StringBuilder(bytes.Length * 2);
@@ -112,42 +143,16 @@ namespace Mogade
          }
       }
 
-      private static HashAlgorithm CreateHasher()
-      {         
-#if WINDOWS_PHONE
-         return new SHA1Managed();
-#else
-         return new MD5CryptoServiceProvider();
-#endif
-      }
-
-      private static string GetResponseBody(WebResponse response)
+      private static IEnumerable<KeyValuePair<string, object>> SortParameterForSignature(IEnumerable<KeyValuePair<string, object>> payload)
       {
-         using (var stream = response.GetResponseStream())
-         {
-            var sb = new StringBuilder();
-            var read = 0;
-            var bufferSize = response.ContentLength == -1 ? 2048 : (int)response.ContentLength;
-            if (bufferSize == 0) { return null; }
-            do
-            {
-               var buffer = new byte[2048];
-               read = stream.Read(buffer, 0, buffer.Length);
-               sb.Append(Encoding.UTF8.GetString(buffer, 0, read));
-            } while (read > 0);
-            return sb.ToString();
-         }
-      }
-
-      private static void BuildPayloadParameters(IEnumerable<KeyValuePair<string, object>> payload, IDictionary<string, string> parameters)
-      {
+         var parameters = new SortedDictionary<string, object>();
          foreach (var kvp in payload)
          {
             if (kvp.Value == null) { continue; }
             var valueType = kvp.Value.GetType();
             if (typeof(string).IsAssignableFrom(valueType))
             {
-               parameters.Add(kvp.Key, (string)kvp.Value);
+               parameters.Add(kvp.Key, kvp.Value);
             }
             else if (typeof(int).IsAssignableFrom(valueType) || typeof(long).IsAssignableFrom(valueType))
             {
@@ -157,27 +162,25 @@ namespace Mogade
             {
                parameters.Add(kvp.Key, (bool)kvp.Value ? "true" : "false");
             }
-            else if (typeof(IDictionary<string, object>).IsAssignableFrom(valueType))
+         }
+         return parameters;
+      }
+
+      private static string GetResponseBody(WebResponse response)
+      {
+         using (var stream = response.GetResponseStream())
+         {
+            var sb = new StringBuilder();
+            int read;
+            var bufferSize = response.ContentLength == -1 ? 2048 : (int)response.ContentLength;
+            if (bufferSize == 0) { return null; }
+            do
             {
-               BuildPayloadParameters((IDictionary<string, object>)kvp.Value, parameters);
-            }
-            else if (typeof(IEnumerable).IsAssignableFrom(valueType))
-            {
-               var sb = new StringBuilder();
-               foreach (var v in (IEnumerable)kvp.Value) { sb.AppendFormat("{0}-", v); }
-               if (sb.Length > 0) { sb.Remove(sb.Length - 1, 1); }
-               parameters.Add(kvp.Key, sb.ToString());
-            }
-            else
-            {
-               var properties = valueType.GetProperties();
-               var hash = new Dictionary<string, object>(properties.Length);
-               foreach (var property in properties)
-               {
-                  hash.Add(property.Name, property.GetValue(kvp.Value, null));
-               }
-               BuildPayloadParameters(hash, parameters);
-            }
+               var buffer = new byte[2048];
+               read = stream.Read(buffer, 0, buffer.Length);
+               sb.Append(Encoding.UTF8.GetString(buffer, 0, read));
+            } while (read > 0);
+            return sb.ToString();
          }
       }
 

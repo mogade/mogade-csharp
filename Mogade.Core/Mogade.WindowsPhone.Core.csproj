@@ -51,27 +51,24 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Achievements\Achievement.cs" />
     <Compile Include="Components\IDriverConfiguration.cs" />
     <Compile Include="Components\IDriverData.cs" />
     <Compile Include="Components\JsonConverters\LeaderboardHighScoresConverter.cs" />
     <Compile Include="Components\Response.cs" />
     <Compile Include="Components\SortedDictionary.cs" />
-    <Compile Include="Configuration\GameConfiguration.cs" />
-    <Compile Include="Configuration\UserSettings.cs" />
     <Compile Include="Components\Communicator.cs" />
     <Compile Include="Components\IRequestContext.cs" />
     <Compile Include="Driver.cs" />
     <Compile Include="IDriver.cs" />
-    <Compile Include="Leaderboards\Leaderboard.cs" />
-    <Compile Include="Leaderboards\LeaderboardScope.cs" />
-    <Compile Include="Leaderboards\LeaderboardScores.cs" />
-    <Compile Include="Leaderboards\LeaderboardScoresWithUser.cs" />
-    <Compile Include="Leaderboards\Ranks.cs" />
-    <Compile Include="Leaderboards\ScoreWithRank.cs" />
+    <Compile Include="Models\Achievement.cs" />
+    <Compile Include="Models\Highs.cs" />
+    <Compile Include="Models\LeaderboardScope.cs" />
+    <Compile Include="Models\LeaderboardScores.cs" />
+    <Compile Include="Models\Ranks.cs" />
+    <Compile Include="Models\SavedScore.cs" />
+    <Compile Include="Models\Score.cs" />
     <Compile Include="MogadeException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Leaderboards\Score.cs" />
     <Compile Include="Components\ValidationHelper.cs" />
   </ItemGroup>
   <ItemGroup>
