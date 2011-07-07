@@ -47,10 +47,17 @@ namespace Mogade
       /// <param name="uniqueIdentifier">A unique identifier for the user. Mobile devices should use the deviceId</param>
       /// <param name="records">The number of records (up to 50)</param>
       /// <returns>A leaderboard object containing an array of scores</returns>
-      /// <remarks>
-      /// Will return up to 10 records. The user's score object will only be returned when page = 1 and, of course, if the user has a score
-      /// </remarks>
       void GetLeaderboard(string leaderboardId, LeaderboardScope scope, string userName, string uniqueIdentifier, int records, Action<Response<LeaderboardScores>> callback);
+
+      /// <summary>
+      /// Gets a user's score
+      /// </summary>
+      /// <param name="leaderboardId">The id of the leaderboard to get the scores from</param>
+      /// <param name="scope">The scope to get the scores from (daily, weekly or overall)</param>
+      /// <param name="userName">the name of the user</param>
+      /// <param name="uniqueIdentifier">A unique identifier for the user. Mobile devices should use the deviceId</param>
+      /// <returns>The user's score</returns>
+      void GetLeaderboard(string leaderboardId, LeaderboardScope scope, string userName, string uniqueIdentifier, Action<Response<Score>> callback);
 
       /// <summary>
       /// Gets a a user's rank across all scopes

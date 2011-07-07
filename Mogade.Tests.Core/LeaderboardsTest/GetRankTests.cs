@@ -7,7 +7,7 @@ namespace Mogade.Tests.LeaderboardsTest
       [Test]
       public void SendsIndividualRankRequestToTheServer()
       {
-         Server.Stub(new ApiExpectation { Method = "GET", Url = "/gamma/ranks", Request = "lid=mybaloney&username=paul&userkey=jessica&scopes=3", Response = "{}" });
+         Server.Stub(new ApiExpectation { Method = "GET", Url = "/gamma/ranks", Request = "lid=mybaloney&username=paul&userkey=jessica&scopes=3", Response = "0" });
          new Driver("thekey", "sssshh").GetRank("mybaloney", "paul", "jessica", LeaderboardScope.Overall, SetIfSuccess);
          WaitOne();
       }
