@@ -64,8 +64,7 @@ namespace Mogade
          {
             if (r.Success)
             {
-               var ranks = JsonConvert.DeserializeObject<Ranks>(r.Raw);
-               r.Data = ranks.GetByScope(scope);
+               r.Data = JsonConvert.DeserializeObject<int>(r.Raw);
             }
             callback(r);
          });

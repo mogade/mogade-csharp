@@ -47,7 +47,7 @@ namespace Mogade.Tests.LeaderboardsTest
       [Test]
       public void RetrievesASingleRank()
       {
-         Server.Stub(new ApiExpectation { Response = @"{4:55}" });
+         Server.Stub(new ApiExpectation { Response = @"55" });
          new Driver("thekey", "sssshh").GetRank("mybaloney", "paul", "jessica", LeaderboardScope.Yesterday, rank =>
          {
             Assert.AreEqual(true, rank.Success);
