@@ -42,7 +42,7 @@ namespace Mogade
 
       public void GetLeaderboard(string leaderboardId, LeaderboardScope scope, string userName, string uniqueIdentifier, int records, Action<Response<LeaderboardScores>> callback)
       {
-         var payload = new Dictionary<string, object> { { "lid", leaderboardId }, { "username", userName }, {"userKey", uniqueIdentifier}, { "records", records }, { "scope", (int)scope } };
+         var payload = new Dictionary<string, object> { { "lid", leaderboardId }, { "username", userName }, {"userkey", uniqueIdentifier}, { "records", records }, { "scope", (int)scope } };
          GetLeaderboard(payload, callback);
       }
 
