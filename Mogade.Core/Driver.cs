@@ -103,6 +103,42 @@ namespace Mogade
          });
       }
 
+      public void GetRanks(string leaderboardId, int score, Action<Response<Ranks>> callback)
+      {
+         var allScopes = new[] { LeaderboardScope.Daily, LeaderboardScope.Weekly, LeaderboardScope.Overall, LeaderboardScope.Yesterday };
+         GetRanks(leaderboardId, score, allScopes, callback);
+      }
+
+      public void GetRank(string leaderboardId, int score, LeaderboardScope scope, Action<Response<int>> callback)
+      {
+         var payload = new Dictionary<string, object> { { "lid", leaderboardId }, { "score", score }, { "scopes", (int)scope } };
+         var communicator = new Communicator(this);
+         communicator.SendPayload<int>(Communicator.Get, "ranks", payload, r =>
+         {
+            if (r.Success)
+            {
+               r.Data = JsonConvert.DeserializeObject<int>(r.Raw);
+            }
+            callback(r);
+         });
+      }
+
+      public void GetRanks(string leaderboardId, int score, LeaderboardScope[] scopes, Action<Response<Ranks>> callback)
+      {
+         var realScopes = new int[scopes.Length];
+         for (var i = 0; i < scopes.Length; ++i)
+         {
+            realScopes[i] = (int)scopes[i];
+         }
+         var payload = new Dictionary<string, object> { { "lid", leaderboardId },  { "score", score }, { "scopes", realScopes } };
+         var communicator = new Communicator(this);
+         communicator.SendPayload<Ranks>(Communicator.Get, "ranks", payload, r =>
+         {
+            if (r.Success) { r.Data = JsonConvert.DeserializeObject<Ranks>(r.Raw); }
+            callback(r);
+         });
+      }
+
       public void GetEarnedAchievements(string userName, string uniqueIdentifier, Action<Response<ICollection<string>>> callback)
       {
          //unlike most GET operation, this actually requies the game's key
