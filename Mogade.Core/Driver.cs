@@ -57,6 +57,17 @@ namespace Mogade
          });
       }
 
+      public void GetLeaderboardCount(string leaderboardId, LeaderboardScope scope, Action<Response<int>> callback)
+      {
+         var payload = new Dictionary<string, object> { { "lid", leaderboardId }, { "scope", (int)scope } };
+         var communicator = new Communicator(this);
+         communicator.SendPayload<int>(Communicator.Get, "scores/count", payload, r =>
+         {
+            if (r.Success) { r.Data = JsonConvert.DeserializeObject<int>(r.Raw); }
+            callback(r);
+         });
+      }
+
       private void GetLeaderboard(IDictionary<string, object> payload, Action<Response<LeaderboardScores>> callback)
       {
          var communicator = new Communicator(this);
@@ -179,6 +190,17 @@ namespace Mogade
          var communicator = new Communicator(this);
          communicator.SendPayload<object>(Communicator.Post, "errors", payload, r =>
          {
+            if (callback != null) { callback(r); }
+         });
+      }
+
+      public void GetAssets(Action<Response<IList<Asset>>> callback)
+      {
+         var payload = new Dictionary<string, object>() {{"key", Key}};
+         var communicator = new Communicator(this);
+         communicator.SendPayload<IList<Asset>>(Communicator.Get, "assets", payload, r =>
+         {
+            if (r.Success) { r.Data = JsonConvert.DeserializeObject<IList<Asset>> (r.Raw); }
             if (callback != null) { callback(r); }
          });
       }

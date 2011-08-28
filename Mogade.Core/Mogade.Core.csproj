@@ -46,6 +46,7 @@
     <Compile Include="Components\Communicator.cs" />
     <Compile Include="Components\IRequestContext.cs" />
     <Compile Include="Models\Achievement.cs" />
+    <Compile Include="Models\Asset.cs" />
     <Compile Include="Models\Highs.cs" />
     <Compile Include="Models\LeaderboardScores.cs" />
     <Compile Include="Models\LeaderboardScope.cs" />

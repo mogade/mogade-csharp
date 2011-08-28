@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Achievements\AchievementEarnedTests.cs" />
     <Compile Include="Achievements\GetEarnedAchievementsTests.cs" />
+    <Compile Include="AssetTests\GetAssetsTests.cs" />
     <Compile Include="ErrorsTests\LogErrorTests.cs" />
     <Compile Include="InstructureTests\CoreCommunicationTests.cs" />
     <Compile Include="FakeContext.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="InstructureTests\SignatureTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LeaderboardsTest\GetLeaderboardCountTests.cs" />
     <Compile Include="LeaderboardsTest\GetLeaderboardTests.cs">
       <SubType>Code</SubType>
     </Compile>

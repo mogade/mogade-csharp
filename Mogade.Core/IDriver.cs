@@ -60,6 +60,14 @@ namespace Mogade
       void GetLeaderboard(string leaderboardId, LeaderboardScope scope, string userName, string uniqueIdentifier, Action<Response<Score>> callback);
 
       /// <summary>
+      /// Gets the number of scores in a leaderboard (up to 25 000)
+      /// </summary>
+      /// <param name="leaderboardId">The id of the leaderboard to get the scores from</param>
+      /// <param name="scope">The scope to get the scores from (daily, weekly or overall)</param>
+      /// <returns>The number of scores</returns>
+      void GetLeaderboardCount(string leaderboardId, LeaderboardScope scope, Action<Response<int>> callback);
+
+      /// <summary>
       /// Gets a user's rank across all scopes
       /// </summary>
       /// <param name="leaderboardId">The id of the leaderboard to get the scores from</param>
@@ -145,5 +153,11 @@ namespace Mogade
       /// <param name="details">the error's details</param>
       /// <param name="callback">the callback (null can safely be passed in)</param>
       void LogError(string subject, string details, Action<Response> callback);
+
+      /// <summary>
+      /// Gets the game's assets
+      /// </summary>
+      /// <param name="callback">A list of assets</param>
+      void GetAssets(Action<Response<IList<Asset>>> callback);
    }
 }

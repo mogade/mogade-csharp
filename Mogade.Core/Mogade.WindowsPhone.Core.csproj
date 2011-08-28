@@ -61,6 +61,7 @@
     <Compile Include="Driver.cs" />
     <Compile Include="IDriver.cs" />
     <Compile Include="Models\Achievement.cs" />
+    <Compile Include="Models\Asset.cs" />
     <Compile Include="Models\Highs.cs" />
     <Compile Include="Models\LeaderboardScope.cs" />
     <Compile Include="Models\LeaderboardScores.cs" />
