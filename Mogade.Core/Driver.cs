@@ -68,6 +68,17 @@ namespace Mogade
          });
       }
 
+      public void GetRivals(string leaderboardId, LeaderboardScope scope, string userName, string uniqueIdentifier, Action<Response<IList<Score>>> callback)
+      {
+         var payload = new Dictionary<string, object> { { "lid", leaderboardId }, { "username", userName }, { "userkey", uniqueIdentifier }, { "scope", (int)scope } };
+         var communicator = new Communicator(this);
+         communicator.SendPayload<IList<Score>>(Communicator.Get, "scores/rivals", payload, r =>
+         {
+            if (r.Success) { r.Data = string.IsNullOrEmpty(r.Raw) ? new List<Score>(0) : JsonConvert.DeserializeObject<IList<Score>>(r.Raw); }
+            callback(r);
+         });
+      }
+
       private void GetLeaderboard(IDictionary<string, object> payload, Action<Response<LeaderboardScores>> callback)
       {
          var communicator = new Communicator(this);

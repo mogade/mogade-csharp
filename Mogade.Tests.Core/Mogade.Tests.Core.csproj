@@ -64,6 +64,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LeaderboardsTest\GetRankTests.cs" />
+    <Compile Include="LeaderboardsTest\GetRivalsTests.cs" />
     <Compile Include="LeaderboardsTest\SaveScoreTests.cs">
       <SubType>Code</SubType>
     </Compile>

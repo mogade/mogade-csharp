@@ -68,6 +68,16 @@ namespace Mogade
       void GetLeaderboardCount(string leaderboardId, LeaderboardScope scope, Action<Response<int>> callback);
 
       /// <summary>
+      /// Gets the scores of the players  which are immediatly ahead of the specified player in the leaderboard
+      /// </summary>
+      /// <param name="leaderboardId">The id of the leaderboard to get the scores from</param>
+      /// <param name="scope">The scope to get the scores from (daily, weekly or overall)</param>
+      /// <param name="userName">the name of the user</param>
+      /// <param name="uniqueIdentifier">A unique identifier for the user. Mobile devices should use the deviceId</param>
+      /// <returns>The scores of the closest 3 players (could be length 2, 1 or 0)</returns>
+      void GetRivals(string leaderboardId, LeaderboardScope scope, string userName, string uniqueIdentifier, Action<Response<IList<Score>>> callback);
+
+      /// <summary>
       /// Gets a user's rank across all scopes
       /// </summary>
       /// <param name="leaderboardId">The id of the leaderboard to get the scores from</param>
