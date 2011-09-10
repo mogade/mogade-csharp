@@ -188,7 +188,12 @@ namespace Mogade
       {
          if (exception is WebException)
          {
-            var body = GetResponseBody(((WebException)exception).Response);
+            var response = ((WebException) exception).Response;
+            if (response == null)
+            {
+               return new ErrorMessage {Message = "Null response (wakeup from rehydrating (multitasking)?)", InnerException = exception};
+            }
+            var body = GetResponseBody(response);
             try
             {
                var message = JsonConvert.DeserializeObject<ErrorMessage>(body, _jsonSettings);
