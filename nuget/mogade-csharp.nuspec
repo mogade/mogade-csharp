@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>mogade-csharp</id>
-    <version>0.4.1</version>
+    <version>0.4.2</version>
     <authors>Karl Seguin</authors>
     <owners>Karl Seguin</owners>
     <projectUrl>http://mogade.com</projectUrl>

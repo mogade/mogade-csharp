@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Achievements\AchievementEarnedTests.cs" />
+    <Compile Include="Achievements\GetAchievementTests.cs" />
     <Compile Include="Achievements\GetEarnedAchievementsTests.cs" />
     <Compile Include="AssetTests\GetAssetsTests.cs" />
     <Compile Include="ErrorsTests\LogErrorTests.cs" />

@@ -131,7 +131,13 @@ namespace Mogade
       /// <param name="scopes">The scopes to get the rank for</param>
       /// <returns>Returns the user's rank (0 means the user doesn't have a rank for the specified scope, or that the scope wasn't requested)</returns>
       void GetRanks(string leaderboardId, int score, LeaderboardScope[] scopes, Action<Response<Ranks>> callback);
-      
+
+      /// <summary>
+      /// Gets all of the game's achievements
+      /// </summary>
+      /// <returns>An array containing the achievements for the game</returns>
+      void GetAchievements(Action<Response<ICollection<Achievement>>> callback);
+
       /// <summary>
       /// Gets the achievement ids that the player has earned
       /// </summary>

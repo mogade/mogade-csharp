@@ -161,6 +161,17 @@ namespace Mogade
          });
       }
 
+      public void GetAchievements(Action<Response<ICollection<Achievement>>> callback)
+      {
+         var payload = new Dictionary<string, object>() { { "key", Key } };
+         var communicator = new Communicator(this);
+         communicator.SendPayload<ICollection<Achievement>>(Communicator.Get, "achievements", payload, r =>
+         {
+            if (r.Success) { r.Data = JsonConvert.DeserializeObject<ICollection<Achievement>>(r.Raw); }
+            if (callback != null) { callback(r); }
+         });
+      }
+
       public void GetEarnedAchievements(string userName, string uniqueIdentifier, Action<Response<ICollection<string>>> callback)
       {
          //unlike most GET operation, this actually requies the game's key
