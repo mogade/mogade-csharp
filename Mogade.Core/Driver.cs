@@ -40,6 +40,17 @@ namespace Mogade
          GetLeaderboard(payload, callback);
       }
 
+      public void GetLeaderboardWithPlayerStats(string leaderboardId, LeaderboardScope scope, string userName, string uniqueIdentifier, int page, int records, Action<Response<LeaderboardScoresWithPlayerStats>> callback)
+      {
+         var payload = new Dictionary<string, object> { { "lid", leaderboardId }, {"with_player", "true"}, { "username", userName }, { "userkey", uniqueIdentifier }, { "page", page }, { "records", records }, { "scope", (int)scope } };
+         var communicator = new Communicator(this);
+         communicator.SendPayload<LeaderboardScoresWithPlayerStats>(Communicator.Get, "scores", payload, r =>
+         {
+            if (r.Success) { r.Data = JsonConvert.DeserializeObject<LeaderboardScoresWithPlayerStats>(r.Raw); }
+            callback(r);
+         });
+      }
+
       public void GetLeaderboard(string leaderboardId, LeaderboardScope scope, string userName, string uniqueIdentifier, int records, Action<Response<LeaderboardScores>> callback)
       {
          var payload = new Dictionary<string, object> { { "lid", leaderboardId }, { "username", userName }, { "userkey", uniqueIdentifier }, { "records", records }, { "scope", (int)scope } };

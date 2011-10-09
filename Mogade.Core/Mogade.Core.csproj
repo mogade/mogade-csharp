@@ -50,6 +50,7 @@
     <Compile Include="Models\Highs.cs" />
     <Compile Include="Models\LeaderboardScores.cs" />
     <Compile Include="Models\LeaderboardScope.cs" />
+    <Compile Include="Models\LeaderboardScoresWithPlayerStats.cs" />
     <Compile Include="Models\Ranks.cs" />
     <Compile Include="Driver.cs" />
     <Compile Include="Components\IDriverConfiguration.cs" />
