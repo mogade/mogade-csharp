@@ -217,6 +217,16 @@ namespace Mogade
          });
       }
 
+      public void LogCustomStat(int index, Action<Response> callback)
+      {
+         var payload = new Dictionary<string, object> { { "custom", index } };
+         var communicator = new Communicator(this);
+         communicator.SendPayload<object>(Communicator.Post, "stats", payload, r =>
+         {
+            if (callback != null) { callback(r); }
+         });
+      }
+
       public void LogError(string subject, string details, Action<Response> callback)
       {
          var payload = new Dictionary<string, object> { { "subject", subject }, {"details", details} };

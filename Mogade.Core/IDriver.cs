@@ -176,6 +176,13 @@ namespace Mogade
       void LogApplicationStart(string uniqueIdentifier, Action<Response> callback);
 
       /// <summary>
+      /// Logs a hit for today to a custom stat counter
+      /// </summary>
+      /// <param name="index">The statistic to count (1-5)</param>
+      /// <param name="callback">the callback (null can safely be passed in)</param>
+      void LogCustomStat(int index, Action<Response> callback);
+
+      /// <summary>
       /// Logs an error
       /// </summary>
       /// <param name="subject">the subject of the error (a brief description)</param>
