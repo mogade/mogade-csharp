@@ -30,6 +30,18 @@ namespace Mogade.Tests
       }
 
       [Test]
+      public void PayloadPropertyEncodesValues()
+      {
+         Server.Stub(ApiExpectation.EchoAll);
+         new Communicator(new FakeContext { Key = "ItsOver9000!" }).SendPayload<object>("GET", "anything", new Dictionary<string, object> { { "data", "2 + 3 = 5" } }, s =>
+         {
+            Assert.True(s.Raw.Contains("data=2%20%2B%203%20%3D%205"), "payload should contain the game key version");
+            Set();
+         });
+         WaitOne();
+      }
+
+      [Test]
       public void WontTryToConnectIfNetworkCheckReturnsFalse()
       {
          DriverConfiguration.Configuration(c => c.NetworkAvailableCheck(() => false));

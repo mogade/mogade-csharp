@@ -48,16 +48,16 @@
     <Compile Include="Achievements\GetEarnedAchievementsTests.cs" />
     <Compile Include="AssetTests\GetAssetsTests.cs" />
     <Compile Include="ErrorsTests\LogErrorTests.cs" />
-    <Compile Include="InstructureTests\CoreCommunicationTests.cs" />
+    <Compile Include="InfrastructureTests\CoreCommunicationTests.cs" />
     <Compile Include="FakeContext.cs" />
     <Compile Include="FakeServer.cs" />
-    <Compile Include="InstructureTests\ErrorHandlingTests.cs">
+    <Compile Include="InfrastructureTests\ErrorHandlingTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="InstructureTests\DriverTests.cs">
+    <Compile Include="InfrastructureTests\DriverTests.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="InstructureTests\SignatureTests.cs">
+    <Compile Include="InfrastructureTests\SignatureTests.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LeaderboardsTest\GetLeaderboardCountTests.cs" />

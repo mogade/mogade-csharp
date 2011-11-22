@@ -120,7 +120,7 @@ namespace Mogade
 
       private static string SerializeSingleParameter(string key, string value)
       {
-         return string.Concat(key, '=', Uri.EscapeUriString(value), '&');
+         return string.Concat(key, '=', Uri.EscapeDataString(value), '&');
       }
       public static string GetSignature(IEnumerable<KeyValuePair<string, object>> parameters, string secret)
       {
