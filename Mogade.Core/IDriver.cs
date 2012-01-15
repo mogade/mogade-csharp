@@ -195,5 +195,13 @@ namespace Mogade
       /// </summary>
       /// <param name="callback">A list of assets</param>
       void GetAssets(Action<Response<IList<Asset>>> callback);
+
+      /// <summary>
+      /// Renames the player
+      /// </summary>
+      /// <param name="uniqueIdentifier">A unique identifier for the user. Mobile devices should use the deviceId</param>
+      /// <param name="oldUserName">The current username</param>
+      /// <param name="newUserName">The new username</param>
+      void Rename(string uniqueIdentifier, string oldUserName, string newUserName, Action<Response<bool>> callback);
    }
 }

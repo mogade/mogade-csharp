@@ -239,11 +239,22 @@ namespace Mogade
 
       public void GetAssets(Action<Response<IList<Asset>>> callback)
       {
-         var payload = new Dictionary<string, object>() {{"key", Key}};
+         var payload = new Dictionary<string, object> {{"key", Key}};
          var communicator = new Communicator(this);
          communicator.SendPayload<IList<Asset>>(Communicator.Get, "assets", payload, r =>
          {
             if (r.Success) { r.Data = JsonConvert.DeserializeObject<IList<Asset>> (r.Raw); }
+            if (callback != null) { callback(r); }
+         });
+      }
+
+      public void Rename(string uniqueIdentifier, string oldUserName, string newUserName, Action<Response<bool>> callback)
+      {
+         var payload = new Dictionary<string, object> { { "username", oldUserName }, { "userkey", uniqueIdentifier }, {"newname", newUserName} };
+         var communicator = new Communicator(this);
+         communicator.SendPayload<bool>(Communicator.Post, "users/rename", payload, r =>
+         {
+            if (r.Success) { r.Data = JsonConvert.DeserializeObject<bool>(r.Raw); }
             if (callback != null) { callback(r); }
          });
       }

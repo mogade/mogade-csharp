@@ -4,6 +4,15 @@ namespace Mogade.Tests.LeaderboardsTest
 {
    public class SaveScoreTests : BaseFixture
    {
+
+      [Test]
+      public void Darren()
+      {
+         Server.Stub(new ApiExpectation { Method = "POST", Url = "/gamma/scores", Request = "lid=mybaloney&username=Scytale&userkey=gom%20jabbar&points=10039&key=thekey&sig=ea56e70da9398d58eff2ec78d7d00605021dba12", Response = "{}" });
+         var score = new Score { Points = 3, UserName = "Name", Data = "Name"};
+         new Driver("4ee6add2563d8a7d3200001d", "Fw>HPS^OXw1Kx=_SATiE@32[FUZ9lW@uO").SaveScore("4ee6b064563d8a7d32000038", score, "android-emulator", SetIfSuccess);
+         WaitOne();
+      }
       [Test]
       public void SendsScoreWithoutDataToTheServer()
       {
