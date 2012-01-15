@@ -15,6 +15,6 @@
 	  </dependencies>
   </metadata>
   <files>
-	<file src="..\Mogade.Core\bin\Release\Mogade.Core.dll" target="lib"/>
+	<file src="Mogade.Core\bin\Release\Mogade.Core.dll" target="lib"/>
   </files>
 </package>
